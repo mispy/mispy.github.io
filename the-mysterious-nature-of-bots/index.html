@@ -1,0 +1,306 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>The mysterious nature of bots</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/the-mysterious-nature-of-bots/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="The mysterious nature of bots">
+    <meta property="og:description" content="iframe { margin: auto !important; } A couple of years ago @JackLScanlan made a joke of some kind, as he often does. The subject of the joke was @Horse_ebooks, a uniquely Twitter oddity and likely the most infamous spambot to have...">
+    <meta property="og:url" content="/the-mysterious-nature-of-bots/">
+    <meta property="article:published_time" content="2014-05-03T08:47:29.618Z">
+    <meta property="article:modified_time" content="2014-05-03T10:44:14.460Z">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="The mysterious nature of bots">
+    <meta name="twitter:description" content="iframe { margin: auto !important; } A couple of years ago @JackLScanlan made a joke of some kind, as he often does. The subject of the joke was @Horse_ebooks, a uniquely Twitter oddity and likely the most infamous spambot to have...">
+    <meta name="twitter:url" content="/the-mysterious-nature-of-bots/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "The mysterious nature of bots",
+    "url": "/the-mysterious-nature-of-bots/",
+    "datePublished": "2014-05-03T08:47:29.618Z",
+    "dateModified": "2014-05-03T10:44:14.460Z",
+    "description": "iframe { margin: auto !important; } A couple of years ago @JackLScanlan made a joke of some kind, as he often does. The subject of the joke was @Horse_ebooks, a uniquely Twitter oddity and likely the most infamous spambot to have..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post">
+
+
+            <span class="post-meta"><time datetime="2014-05-03">03 May 2014</time> </span>
+
+            <h1 class="post-title">The mysterious nature of bots</h1>
+
+            <section class="post-content">
+                <style>  
+  iframe { margin: auto !important; }
+</style>
+
+<p>A couple of years ago <a href="https://twitter.com/JackLScanlan">@JackLScanlan</a> made a joke of some kind, as he often does. The subject of the joke was <a href="https://twitter.com/Horse_ebooks">@Horse_ebooks</a>, a uniquely Twitter oddity and likely the <a href="http://en.wikipedia.org/wiki/Horse_ebooks">most infamous spambot</a> to have ever lived. This seemed like a prime opportunity for silliness, so after a bit of coding <a href="https://twitter.com/scanlan_ebooks">@scanlan_ebooks</a> was born. Little did I know this would be but the first of <a href="https://twitter.com/m1sp/mispybots/members">many robot clones</a>.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>Dear god, just realised that I care about conceptual understanding.</p>— Jack Scanlan ebooks (@scanlan_ebooks) <a href="https://twitter.com/scanlan_ebooks/statuses/436651507677945856">February 21, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p><a href="http://en.wikipedia.org/wiki/Markov_chain">Markov chain</a> chatbots have a long history in programming, being very easy toy examples of a simple but powerful mathematical model which is used for a whole lot of <a href="http://en.wikipedia.org/wiki/Markov_chain#Applications">more serious stuff</a>. The classic Markov text generator maintains a probability map of which words are more or less likely to come after some number of preceding words, and builds a sentence by following it from a given start point.</p>
+
+<p>The <a href="https://github.com/mispy/twitter_ebooks/blob/master/lib/twitter_ebooks/suffix.rb#L40">algorithm I use now</a> is a variation on this. Instead of linearly chaining words, it starts with an intact sentence from the corpus and mixes it with one or more other sentences in a manner similar to <a href="http://en.wikipedia.org/wiki/Genetic_recombination">DNA recombination</a>. The Markov model is used to select the junction sites where this recombination occurs. This seems to strike a nice balance between diversifying the output and avoiding complete gibberish; the sentences it produces are grammatically correct more often than not. (well, assuming the source is!)</p>
+
+<p>This has proliferated somewhat, and I have no idea how many of the various _ebooks accounts are using my <a href="https://github.com/mispy/twitter_ebooks">twitter_ebooks</a> Ruby gem or how modified they are. There have been bots based on <a href="https://twitter.com/aspects_ebooks">novels</a>, <a href="https://twitter.com/pinkiepieebooks">cartoon characters</a>, and all manner of strange text corpora. Kevin Nguyen wrote a very <a href="http://bygonebureau.com/2014/02/24/i-bot/">introspective article</a> about <a href="https://twitter.com/knguyen_ebooks">@knguyen_ebooks</a>, deployed by <a href="https://twitter.com/negatendo">@negatendo</a>.</p>
+
+<p>What I find much more interesting than the bots themselves though is the way people interact with them. These generally fall into three groups:</p>
+
+<ul>
+<li>Those familiar with Markov chains who are being tongue-in-cheek about it</li>
+<li>Non-programmers experiencing <a href="http://en.wikipedia.org/wiki/ELIZA_effect">the ELIZA effect</a> to various degrees</li>
+<li>People who should probably never be relied upon to judge a <a href="http://en.wikipedia.org/wiki/Turing_test">Turing test</a></li>
+</ul>
+
+<p>The third group is more populous than you might expect, especially if you include ESL speakers. My bots will try to imitate human interaction patterns, responding to mentions <a href="https://github.com/mispy/twitter_ebooks/blob/master/lib/twitter_ebooks/model.rb#L170">using keyword analysis</a> to come up with something vaguely related to the input, and a slight random delay to avoid appearing superhuman. They will also follow back and occasionally favorite or RT tweets they find sufficiently interesting.</p>
+
+<p>Some examples of amusing events in recent history:</p>
+
+<h4 id="mcc_ebooksandtherobotuprising">mcc_ebooks and the robot uprising</h4>
+
+<p>I think <a href="https://twitter.com/mcc_ebooks">@mcc_ebooks</a> is my favorite overall, just because <a href="https://twitter.com/mcclure111">@mcclure111</a> and her friends are already so suffused with baffling surreal humor that it just sort of amplifies it.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/LorenSchmidt">@LorenSchmidt</a> We could just stay like this forever while flashing bands of color horizontally across the screen</p>— mcc ebooks (@mcc_ebooks) <a href="https://twitter.com/mcc_ebooks/statuses/438212336349102080">February 25, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>People tend to give it the benefit of the doubt, which is often very sweet and heart-warming.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/mcc_ebooks">@mcc_ebooks</a> Aww, you have a girlfriend? Bots in love, so adorable!</p>— Erika Sorensen (@eiridescent) <a href="https://twitter.com/eiridescent/statuses/456945528039690240">April 18, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>As the original human tweets at and about the bot, more bot-related statements enter the corpus, so it becomes "self-aware".</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>I feel like we just had a moment. <a href="https://twitter.com/mcc_ebooks">@mcc_ebooks</a></p>— Kevin Snow (@starguarded) <a href="https://twitter.com/starguarded/statuses/447131103413813248">March 21, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Which of course, has only one logical endpoint.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/Carin_McLeoud">@Carin_McLeoud</a> <a href="https://twitter.com/mcclure111">@mcclure111</a> I stand up (gain the ability to walk), to become naked</p>— mcc ebooks (@mcc_ebooks) <a href="https://twitter.com/mcc_ebooks/statuses/462028701564420096">May 2, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p></p>
+
+<h4 id="m1sp1dea_ebooksspooksrackspacesecurity">m1sp1dea_ebooks spooks Rackspace security</h4>
+
+<p><a href="https://twitter.com/m1sp1dea_ebooks">@m1sp1dea_ebooks</a> uses a combined corpus consisting of myself and <a href="https://twitter.com/0xabad1dea">@0xabad1dea</a>'s tweets. It's kind of a freakish hybrid. (people keep <a href="http://abad1dea.tumblr.com/post/84149795075/misptaken-identity">confusing the two of us</a> anyway, somehow)</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>Anxiety is not a big truck.</p>— Melissa × Mispy (@m1sp1dea_ebooks) <a href="https://twitter.com/m1sp1dea_ebooks/statuses/435201964205682688">February 17, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Of course since <a href="https://twitter.com/0xabad1dea">@0xabad1dea</a> spends a lot of time talking about infosec, it was inevitable that the bot would one day announce it had found a vulnerability.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/m1sp1dea_ebooks">@m1sp1dea_ebooks</a> Hi! Please let us know if you find anything <a href="https://twitter.com/Rackspace">@Rackspace</a> should be aware of <a href="http://t.co/zpjsT3VeBa">http://t.co/zpjsT3VeBa</a></p>— Elizabeth Jurewicz (@RackerLiz) <a href="https://twitter.com/RackerLiz/statuses/421799120001445888">January 11, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>And not do very much to discourage the idea.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/m1sp1dea_ebooks">@m1sp1dea_ebooks</a> Please send details to help@rackspace.com , we'll see how we can help. ( cc <a href="https://twitter.com/Rackspace">@Rackspace</a>)</p>— Elizabeth Jurewicz (@RackerLiz) <a href="https://twitter.com/RackerLiz/statuses/421799501729255424">January 11, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Fortunately, a human quickly intervened.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/RackerLiz">@RackerLiz</a> <a href="https://twitter.com/m1sp1dea_ebooks">@m1sp1dea_ebooks</a> <a href="https://twitter.com/Rackspace">@Rackspace</a> oh I’m sorry, this is a bot who mashes up tweets :(</p>— Melissa (@0xabad1dea) <a href="https://twitter.com/0xabad1dea/statuses/421801912204550144">January 11, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p></p>
+
+<h4 id="thepoliticalintriguesoftonyabotmhr">The political intrigues of TonyAbotMHR</h4>
+
+<p>During the last Australian federal election season, someone made a joke about <a href="http://en.wikipedia.org/wiki/Tony_Abbott">Tony Abbott</a> and his propensity for Markov-like meaningless rambling. Thus, <a href="https://twitter.com/TonyAbotMHR">@TonyAbotMHR</a> was born, using a slightly different algorithm that replaces nouns with random other nouns.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>But ladies and gentlemen, it's just got worse since Julia Gillard has become the Prime Minister of this napkin.</p>— Tony A Bot (@TonyAbotMHR) <a href="https://twitter.com/TonyAbotMHR/statuses/370259391783526402">August 21, 2013</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Occasionally, he is mistaken for the real thing, by endearingly optimistic citizens who seemingly believe the denizens of high politics are likely to engage in individual discourse with them.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/TonyAbotMHR">@TonyAbotMHR</a> I voted green it would appreciated if you did take sometime to see what they offered. Especially Mining Co. should pay HTax</p>— Mimi Savy deChermont (@ameliatdales) <a href="https://twitter.com/ameliatdales/statuses/377999629607923712">September 12, 2013</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>There's been at least one truly <em>epic</em> debate, covering everything from genetically modified giraffes to the local entertainment industry.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/TonyAbotMHR">@TonyAbotMHR</a> This is getting a bit cryptic but yep, i need to have no reservations about putting my name to any actions hypothetical or not</p>— Sir Tennly Loverock (@EdHightackle) <a href="https://twitter.com/EdHightackle/statuses/411059179663552513">December 12, 2013</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>This man has since been elected Prime Minister, to our great dismay.</p>
+
+<h4 id="winocm_ebooksandthejailbreakswarm">winocm_ebooks and the jailbreak swarm</h4>
+
+<p><a href="https://twitter.com/winocm">@winocm</a> has the highest follower count of my Twitter friends by a large margin, largely on account of her role in the <a href="http://www.ibtimes.co.uk/ios-7-1-untethered-jailbreak-imminent-winocm-demonstrates-jailbroken-iphone-4-youtube-video-1441258">iOS jailbreaking community</a>. Sadly this means she is <em>constantly</em> pestered by people demanding the release of various things.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/winocm">@winocm</a> plz don't ignore me
+I want to ask about 7.1 JB
+Plz answer 😣😣
+<a href="https://twitter.com/search?q=%23wincom&amp;src=hash">#wincom</a></p>— عبدالله النصر (@abdullahnssr) <a href="https://twitter.com/abdullahnssr/statuses/460529582735503360">April 27, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>  
+
+<blockquote class="twitter-tweet" lang="en"><p>Maybe I should make a Markov chain bot respond to all requests for a 7.1 jailbreak on this account… calling <a href="https://twitter.com/m1sp">@m1sp</a>!</p>— winocm (@winocm) <a href="https://twitter.com/winocm/statuses/460828677568479235">April 28, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Fortunately, this was a trivial extension to make to <a href="https://twitter.com/winocm_ebooks">@winocm_ebooks</a>.</p>
+
+<pre><code class="ruby">  make_bot(bot, "winocm") do |gen|
+    EM.next_tick do
+      bot.stream.track("@winocm") do |tweet|
+        text = tweet[:text].downcase
+        if !tweet[:user][:screen_name].include?("_ebooks") &amp;&amp; (text.include?("7.1") || text.include?("jailbreak") || text.split.include?("jb"))
+          bot.reply(tweet, "@#{tweet[:user][:screen_name]} " + gen.model.make_response(tweet[:text]))
+        end
+      end
+    end
+  end
+</code></pre>
+
+<p>It works really quite surprisingly well. People mention <a href="https://twitter.com/winocm">@winocm</a>, receive a reply from <a href="https://twitter.com/winocm_ebooks">@winocm_ebooks</a>, and proceed to engage with it, seemingly unaware that their jailbreaking deity has been replaced with a robot.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/abdullahnssr">@abdullahnssr</a> oh wait, I broke 7.x by installing 7.1 improperly I think, I should fix that...</p>— winocm_ebooks (@winocm_ebooks) <a href="https://twitter.com/winocm_ebooks/statuses/460839810379579393">April 28, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>These conversations go on for many, many pages. A few bold individuals even requested the bot's hand in marriage:</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>Please will you marry me? <a href="https://twitter.com/winocm_ebooks">@winocm_ebooks</a></p>— Drake Kanjuani (@SecretAgentZ3R0) <a href="https://twitter.com/SecretAgentZ3R0/statuses/461665741633114112">May 1, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>  
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/winocm_ebooks">@winocm_ebooks</a> if I love you will you marry me and find me exploits</p>— Ninty Apple (@nintendoapple_) <a href="https://twitter.com/nintendoapple_/statuses/460941087507357697">April 29, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>I'm fairly sure this isn't legal anywhere yet. Maybe Japan.</p>
+
+<p>Can we draw any interesting conclusions from all of this? Probably not. I do like to think, though, that the readiness with which people engage with the bots speaks well of our capacity to accept that which is fundamentally different from us. Should true non-human intelligence appear, I hope we will be similarly ready to adapt our culture around it.</p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=The%20mysterious%20nature%20of%20bots&amp;url=/the-mysterious-nature-of-bots/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/the-mysterious-nature-of-bots/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/the-mysterious-nature-of-bots/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

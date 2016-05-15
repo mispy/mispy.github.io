@@ -1,0 +1,195 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>Monitoring processes from log output alone</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/monitoring-processes-from-log-output-alone/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Monitoring processes from log output alone">
+    <meta property="og:description" content="I wrote a little Sinatra gem which monitors the log output of the Starbound server and displays it to the web: sbpanel There were a few difficulties involved. I wanted to be able to tell if the process was running...">
+    <meta property="og:url" content="/monitoring-processes-from-log-output-alone/">
+    <meta property="article:published_time" content="2013-12-27T15:04:00.000Z">
+    <meta property="article:modified_time" content="2014-04-26T11:34:26.707Z">
+    <meta property="article:tag" content="ruby">
+    <meta property="article:tag" content="projects">
+    <meta property="article:tag" content="gaming">
+    <meta property="article:tag" content="starbound">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Monitoring processes from log output alone">
+    <meta name="twitter:description" content="I wrote a little Sinatra gem which monitors the log output of the Starbound server and displays it to the web: sbpanel There were a few difficulties involved. I wanted to be able to tell if the process was running...">
+    <meta name="twitter:url" content="/monitoring-processes-from-log-output-alone/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Monitoring processes from log output alone",
+    "url": "/monitoring-processes-from-log-output-alone/",
+    "datePublished": "2013-12-27T15:04:00.000Z",
+    "dateModified": "2014-04-26T11:34:26.707Z",
+    "keywords": "ruby, projects, gaming, starbound",
+    "description": "I wrote a little Sinatra gem which monitors the log output of the Starbound server and displays it to the web: sbpanel There were a few difficulties involved. I wanted to be able to tell if the process was running..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template tag-ruby tag-projects tag-gaming tag-starbound">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post tag-ruby tag-projects tag-gaming tag-starbound">
+
+
+            <span class="post-meta"><time datetime="2013-12-28">28 Dec 2013</time> on <a href="../tag/ruby/">ruby</a> | <a href="../tag/projects/">projects</a> | <a href="../tag/gaming/">gaming</a> | <a href="../tag/starbound/">starbound</a></span>
+
+            <h1 class="post-title">Monitoring processes from log output alone</h1>
+
+            <section class="post-content">
+                <p>I wrote a little Sinatra gem which monitors the log output of the <a href="http://playstarbound.com/">Starbound</a> server and displays it to the web: <a href="https://github.com/mispy/sbpanel">sbpanel</a></p>
+
+<p><a href="http://starbound.mispy.me"><img src="https://mispy.me/images/sbpanel.png"></a></p>
+
+<p>There were a few difficulties involved. I wanted to be able to tell if the process was running or not without relying on it always being able to log a shutdown message first. Fortunately, Starbound maintains an open file descriptor to its log file at all times, so you can reverse-lookup the process from the file by using the UNIX <a href="https://en.wikipedia.org/wiki/Fuser_(Unix)">fuser</a> command.</p>
+
+<pre><code class="language-ruby"># Detect server status
+# Looks for processes which have log file open for writing
+def update_status  
+  status = :offline
+  fuser = `fuser -v #{@log_path} 2&gt;&amp;1`.split("\n")[2..-1]
+
+  if fuser
+    fuser.each do |line|
+      if line.strip.split[2].include?('F')
+        status = :online
+      end
+    end
+  end
+
+  if status != @status
+    time = Time.now
+    if status == :offline
+      puts "Server is currently offline"
+    else
+      puts "Server is currently online"
+    end
+
+    @status = status
+    @last_status_change = time
+    reset!
+  end
+end  
+</code></pre>
+
+<p>The part I found trickiest was getting the timing information right. Since there are no timestamps on the log entries themselves, sbpanel has to produce and store its own in a separate file. There's a bit of edge case handling involved in recovering from situations where either sbpanel or the starbound server crashes. For example, we always have to be prepared to accept nil timestamps in case we're just starting up and reading an existing log file with no timing data.</p>
+
+<p>Finally, I couldn't initially get the gem executable to work. Rubygems produces a wrapper around your own bin file for deployment, which invokes the original via <code>load</code>. Presumably Sinatra uses something like <code>if __FILE__ == $0</code> by default, preventing this from working. The solution is to use the <a href="http://www.sinatrarb.com/intro.html#Sinatra::Base%20-%20Middleware,%20Libraries,%20and%20Modular%20Apps">modular form</a> instead and invoke <code>run!</code> explicitly.</p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Monitoring%20processes%20from%20log%20output%20alone&amp;url=/monitoring-processes-from-log-output-alone/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/monitoring-processes-from-log-output-alone/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/monitoring-processes-from-log-output-alone/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

@@ -1,0 +1,189 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>Archiving the arXiv</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/archiving-the-arxiv/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Archiving the arXiv">
+    <meta property="og:description" content="I released a Ruby gem for mirroring and parsing the arxiv.org database: arxivsync A side project I'm working on at Draftable is expanding SciRate to encompass fields other than quantum physics. SciRate downloads new paper information from the arXiv...">
+    <meta property="og:url" content="/archiving-the-arxiv/">
+    <meta property="article:published_time" content="2013-07-01T02:03:00.000Z">
+    <meta property="article:modified_time" content="2014-06-07T10:34:16.097Z">
+    <meta property="article:tag" content="rails">
+    <meta property="article:tag" content="draftable">
+    <meta property="article:tag" content="scirate">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Archiving the arXiv">
+    <meta name="twitter:description" content="I released a Ruby gem for mirroring and parsing the arxiv.org database: arxivsync A side project I'm working on at Draftable is expanding SciRate to encompass fields other than quantum physics. SciRate downloads new paper information from the arXiv...">
+    <meta name="twitter:url" content="/archiving-the-arxiv/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Archiving the arXiv",
+    "url": "/archiving-the-arxiv/",
+    "datePublished": "2013-07-01T02:03:00.000Z",
+    "dateModified": "2014-06-07T10:34:16.097Z",
+    "keywords": "rails, draftable, scirate",
+    "description": "I released a Ruby gem for mirroring and parsing the arxiv.org database: arxivsync A side project I&#x27;m working on at Draftable is expanding SciRate to encompass fields other than quantum physics. SciRate downloads new paper information from the arXiv..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template tag-rails tag-draftable tag-scirate">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post tag-rails tag-draftable tag-scirate">
+
+
+            <span class="post-meta"><time datetime="2013-07-01">01 Jul 2013</time> on <a href="../tag/rails/">rails</a> | <a href="../tag/draftable/">draftable</a> | <a href="../tag/scirate/">scirate</a></span>
+
+            <h1 class="post-title">Archiving the arXiv</h1>
+
+            <section class="post-content">
+                <p>I released a Ruby gem for mirroring and parsing the <a href="http://arxiv.org/">arxiv.org</a> database: <a href="http://github.com/mispy/arxivsync">arxivsync</a></p>
+
+<p>A side project I'm working on at <a href="https://draftable.com/">Draftable</a> is expanding <a href="https://scirate3.herokuapp.com/">SciRate</a> to encompass fields other than quantum physics. SciRate downloads new paper information from the arXiv RSS feeds each day and sorts them by upvotes (scites), sorta like Hacker News or Reddit. This is fine for daily updates, but we also wanted to add the ability to search back through older papers. Meaning either making a search request to the arXiv every time a user requests it, or mirroring the entire database ourselves.</p>
+
+<p>Delegating to arXiv search proved unwieldy, so I set about the second option. There are about 850k papers, and combinatorially more author-paper and category-paper relations-- not too vast, but larger than anything I've personally tried to construct from scratch before. It took me a while to get the <a href="https://github.com/draftable/scirate3/blob/master/app/models/paper.rb#L53">import code</a> working correctly and efficiently, especially because I wanted to be idempotent so we could use the same code for new updates without risking inconsistencies in the database.</p>
+
+<p>I learned a fair bit about handling bulky data in Rails. <a href="https://github.com/zdennis/activerecord-import/wiki">activerecord-import</a> is useful for building mass insert statements without completely discarding validation. Minimizing the number of queries was essential, as usual; don't do this:</p>
+
+<pre><code class="lang-ruby">models.each do |model|  
+  if Paper.find_by_identifier(model.id).exists?
+    ...
+  end
+end  
+</code></pre>
+
+<p>I gained about an order of magnitude by switching to prepopulated caches:</p>
+
+<pre><code class="lang-ruby">identifiers = models.map(&amp;:id)  
+existing_papers = Paper.find_all_by_identifier(identifiers)  
+existing_by_ident = Hash[existing_papers.map { |paper| [paper.identifier, paper] }]
+
+models.each do |model|  
+  if existing_by_ident.has_key?(model.id)
+    ...
+  end
+end  
+</code></pre>
+
+<p>Since you expect these simple indexed queries to be very fast, I suspect the bottleneck in the first case is more in the Rails wrapping of database communication than in the queries themselves.</p>
+
+<p>Something else to remember when dealing with such broad and historied data is that there are going to be a lot of edge cases, and potentially even outright inconsistencies. I found one paper with a <a href="http://arxiv.org/abs/astro-ph/0502538">372-character title</a>, and another which was somehow updated <a href="http://arxiv.org/abs/math/9712227">several months prior to publication</a> (darn physicists and their time machines). It even managed to <a href="https://github.com/ohler55/ox/issues/66">break the XML parsing library</a>, which thankfully has a nice active maintainer.</p>
+
+<p>If you want to contribute to SciRate, it is <a href="https://github.com/draftable/scirate3">completely OSS</a>. We're planning to take over from the current maintainers of the live site after making the UI a bit friendlier!</p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Archiving%20the%20arXiv&amp;url=/archiving-the-arxiv/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/archiving-the-arxiv/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/archiving-the-arxiv/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

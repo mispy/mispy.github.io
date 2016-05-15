@@ -1,0 +1,163 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>Aligning points along an SVG path in Javascript</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/aligning-points-along-an-svg-path-in-javascript/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Aligning points along an SVG path in Javascript">
+    <meta property="og:description" content="It's possible to create and query a path element without ever attaching it to the DOM, assuming your browser supports SVG. path = document.createElementNS(&quot;http://www.w3.org/2000/svg&quot;, 'path')   path.setAttribute('d', &quot;M150 0 L75 200 L225 200...">
+    <meta property="og:url" content="/aligning-points-along-an-svg-path-in-javascript/">
+    <meta property="article:published_time" content="2013-02-16T22:15:00.000Z">
+    <meta property="article:modified_time" content="2014-04-27T13:05:14.401Z">
+    <meta property="article:tag" content="javascript">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Aligning points along an SVG path in Javascript">
+    <meta name="twitter:description" content="It's possible to create and query a path element without ever attaching it to the DOM, assuming your browser supports SVG. path = document.createElementNS(&quot;http://www.w3.org/2000/svg&quot;, 'path')   path.setAttribute('d', &quot;M150 0 L75 200 L225 200...">
+    <meta name="twitter:url" content="/aligning-points-along-an-svg-path-in-javascript/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Aligning points along an SVG path in Javascript",
+    "url": "/aligning-points-along-an-svg-path-in-javascript/",
+    "datePublished": "2013-02-16T22:15:00.000Z",
+    "dateModified": "2014-04-27T13:05:14.401Z",
+    "keywords": "javascript",
+    "description": "It&#x27;s possible to create and query a path element without ever attaching it to the DOM, assuming your browser supports SVG. path = document.createElementNS(&quot;http://www.w3.org/2000/svg&quot;, &#x27;path&#x27;)   path.setAttribute(&#x27;d&#x27;, &quot;M150 0 L75 200 L225 200..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template tag-javascript">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post tag-javascript">
+
+
+            <span class="post-meta"><time datetime="2013-02-17">17 Feb 2013</time> on <a href="../tag/javascript/">javascript</a></span>
+
+            <h1 class="post-title">Aligning points along an SVG path in Javascript</h1>
+
+            <section class="post-content">
+                <p>It's possible to create and query a path element without ever attaching it to the DOM, assuming your browser supports SVG.</p>
+
+<pre><code class=" lang-javascript">path = document.createElementNS("http://www.w3.org/2000/svg", 'path')  
+path.setAttribute('d', "M150 0 L75 200 L225 200 Z")  
+path.getPointAtLength(path.getTotalLength()/2)  
+=&gt; { x: 150, y: 200 }
+</code></pre>
+
+<p>This means you can use the path specification syntax to engage in all sorts of arbitrary bezier curve shenanigans. For example, I made an extremely silly <a href="http://heart.mispy.me/">Valentine's Day hack</a> (<a href="https://github.com/mispy/heart">source</a>). I suspect you could combine this technique with <a href="http://vectormagic.com/">Vector Magic</a> in pursuit of even sillier ends.</p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Aligning%20points%20along%20an%20SVG%20path%20in%20Javascript&amp;url=/aligning-points-along-an-svg-path-in-javascript/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/aligning-points-along-an-svg-path-in-javascript/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/aligning-points-along-an-svg-path-in-javascript/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

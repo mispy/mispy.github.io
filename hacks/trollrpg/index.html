@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <style>
+      .pregen {
+        text-align: center;
+      }
+
+      #numQualities {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 50px;
+      }
+
+      .character {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row pregen">
+        <div class="span8 offset2">
+          <h1>Homestuck Chargen</h1>
+          <div>
+            Special Qualities:
+            <input id="numQualities" type="number" min="2" max="12" value="2" />
+          </div>
+          <br>
+          <button class="btn btn-success">Generate Character</button>
+        </div>
+      </div>
+      <div class="row character">
+        <h3><span class="klass"></span> of <span class="aspect"></span></h3>
+        <p><strong>Hemospectrum:</strong> <span class="blood"></span></p>
+
+        <h4>Attributes</h4>
+        <ul class="attributes">
+          <li><strong>Athletics:</strong> <span class="athletics"></span></li>
+          <li><strong>Charisma:</strong> <span class="charisma"></span></li>
+          <li><strong>Skill:</strong> <span class="skill"></span></li>
+          <li><strong>Cunning:</strong> <span class="cunning"></span></li>
+          <li><strong>Luck:</strong> <span class="luck"></span></li>
+          <li><strong>Will:</strong> <span class="will"></span></li>
+        </ul>
+
+        <h4>Personality</h4>
+        <ul class="personality">
+        </ul>
+
+        <h4>Special Qualities</h4>
+        <ul class="special">
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,234 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>Linux tips and notes</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/linux-notes/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Linux tips and notes">
+    <meta property="og:description" content="I've been using this silly OS for so long that sometimes I forget why I have things set up the way they are. Best write some of it down! In recent years, I mainly run Linux locally for web development...">
+    <meta property="og:url" content="/linux-notes/">
+    <meta property="article:published_time" content="2016-01-14T19:19:16.548Z">
+    <meta property="article:modified_time" content="2016-01-14T21:31:30.306Z">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Linux tips and notes">
+    <meta name="twitter:description" content="I've been using this silly OS for so long that sometimes I forget why I have things set up the way they are. Best write some of it down! In recent years, I mainly run Linux locally for web development...">
+    <meta name="twitter:url" content="/linux-notes/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Linux tips and notes",
+    "url": "/linux-notes/",
+    "datePublished": "2016-01-14T19:19:16.548Z",
+    "dateModified": "2016-01-14T21:31:30.306Z",
+    "description": "I&#x27;ve been using this silly OS for so long that sometimes I forget why I have things set up the way they are. Best write some of it down! In recent years, I mainly run Linux locally for web development..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post">
+
+
+            <span class="post-meta"><time datetime="2016-01-15">15 Jan 2016</time> </span>
+
+            <h1 class="post-title">Linux tips and notes</h1>
+
+            <section class="post-content">
+                <p>I've been using this silly OS for so long that sometimes I forget <em>why</em> I have things set up the way they are. Best write some of it down!</p>
+
+<p>In recent years, I mainly run Linux locally for web development and general scripting shenanigans with Python, Ruby and/or JS. Since it's also how my stuff gets deployed, I interact with servers running it via ssh a lot.</p>
+
+<ul>
+<li>I use <a href="http://www.vmware.com/au/products/player/playerpro-evaluation.html">VMware Workstation</a> to run Linux under Windows. </li>
+</ul>
+
+<p>For web development purposes, even if you run native Linux it's worth getting a VM environment set up so you can have a fresh system for testing with. VirtualBox (the non-proprietary alternative) is probably fine too, I just happen to have a VMware license and it's what I'm familiar with.</p>
+
+<ul>
+<li>I run the latest <a href="https://wiki.ubuntu.com/LTS">Ubuntu LTS</a> distribution.</li>
+</ul>
+
+<p>I will freely confess this is mostly just because it is very popular, meaning if you hit any issues they're likely to have been encountered and resolved by someone else and thus easy to google.</p>
+
+<ul>
+<li><a href="http://www.vim.org">vim</a> is my main text editor.</li>
+</ul>
+
+<p>But I wouldn't necessarily recommend learning it if you're not already familiar: it's not <em>obviously</em> superior to other stuff in a way that justifies the steep learning curve. There are more approachable alternatives these days like <a href="http://www.sublimetext.com/">Sublime Text</a> or <a href="http://atom.io/">Atom</a>. Perhaps one advantage vim has over these for me is that it's optimized to run in a terminal over ssh, for server-side work.</p>
+
+<p>My approach is pretty focused on shells and terminals rather than editors, which isn't necessarily the best way to do it. I tend to have multiple terminals with multiple vims rather than using features like split panes.</p>
+
+<p>The biggest customization I have is the addition of Sublime Text-like fuzzy file search and grep across a git repo, which runs off <a href="https://github.com/Shougo/unite.vim">unite.vim</a>.</p>
+
+<p>Another <code>.vimrc</code> thing that took me <em>way</em> too many years to discover is that you can get it to interface with the terminal to <a href="https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode">automatically recognize copy/paste</a> without having to type <code>:set paste</code>. You can also just hook the vim clipboard <a href="http://vim.wikia.com/wiki/Accessing_the_system_clipboard">into the system clipboard</a> so operations like <code>d</code> and <code>p</code> work across terminals.</p>
+
+<p>I could probably fill another entire thing with vim notes! The combination of decades of development and extremely poor discoverability means vim is littered with secrets.</p>
+
+<ul>
+<li><a href="http://www.howtogeek.com/112620/how-to-install-use-gnome-shell-on-ubuntu/">GNOME Shell</a> is my window manager.</li>
+</ul>
+
+<p>Though really any WM would do. It's rare that I need to open anything other than terminals-- any browsers I need to test web stuff run in the host Windows.</p>
+
+<ul>
+<li>I use <a href="http://www.zsh.org/">zsh</a> instead of bash. </li>
+</ul>
+
+<p>The most useful feature of zsh I've found is that it does case-insensitive substring tab completion rather than looking for the start of the filename. This means you can tab complete e.g. "Gemfile.lock" by typing "lock\t", instead of "Gem\t" (which would also match a normal "Gemfile" in the same dir). Given just <em>how much</em> time I spend typing in filenames, this is pretty important!</p>
+
+<p>There's a community collection of zsh scripts at <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a>. The script for Python <a href="https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/virtualenvwrapper/virtualenvwrapper.plugin.zsh">virtualenvwrapper integration</a> was originally my doing.</p>
+
+<ul>
+<li>Dotfiles are the main form of terminal-world configuration. </li>
+</ul>
+
+<p>I keep them synced across different systems by putting the canonical files in a Dropbox folder and symlinking them.</p>
+
+<ul>
+<li>History scroll (up arrow) and reverse-search (ctrl+r) are your friends. </li>
+</ul>
+
+<p>They will save you an incredible amount of typing. They're also useful when you need to execute a complex command again but have forgotten the precise arguments you wanted-- sometimes I've sshed into a server just to reverse search because I know the thing I want is there somewhere!</p>
+
+<ul>
+<li><code>ssh</code> is another dear friend. </li>
+</ul>
+
+<p>If you use ssh a lot, make sure to take the time to configure it a bit. When I have multiple terminals open, I often end up sshing to the same target multiple times-- this can be optimized to run off the same connection in <code>~/.ssh/config</code>:</p>
+
+<pre><code>ControlMaster auto  
+ControlPath /tmp/ssh_mux_%h_%p_%r  
+ControlPersist 4h  
+</code></pre>
+
+<p>Don't forget to set up key-based ssh authentication! Even if it weren't for the added security, it just saves a lot of password typing. <code>ssh-copy-id</code> makes this very easy to do.</p>
+
+<p>I have some particular machines I ssh into so frequently that they're aliased to a single letter in my <code>~/.zshrc</code>. e.g. my personal VPS, on which this site runs: <code>alias z="ssh mispy@zinzin"</code></p>
+
+<ul>
+<li><code>rsync</code> is wonderful, and will solve a lot of file transfer problems.</li>
+</ul>
+
+<p>In particular, it is <em>way</em> faster than <code>scp -r</code> for recursive network copying (and it still runs over ssh!). However, it has a bewildering multitude of command line options. I run this alias for general usage:</p>
+
+<p><code>alias rs="rsync --human-readable --archive --verbose --compress --progress"</code></p>
+
+<p>Of course, <code>--archive</code> then expands to <code>-rlptgoD</code>, which is <code>--recursive --links --perms --times --group --owner --devices --specials</code>. Got all that? Don't worry, it mostly Just Works. You use it like this:</p>
+
+<p><code>rs dir mispy@zinzin:/home/mispy/dir</code></p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Linux%20tips%20and%20notes&amp;url=/linux-notes/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/linux-notes/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/linux-notes/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

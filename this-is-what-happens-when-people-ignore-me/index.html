@@ -1,0 +1,210 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>This is what happens when people ignore me!</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/this-is-what-happens-when-people-ignore-me/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="This is what happens when people ignore me!">
+    <meta property="og:description" content="#!/usr/bin/env ruby require 'pony'   require 'base64' def pick_subject     possibles = [&quot;Even bytes get lonely for a little bit.&quot;, &quot;All the lonely users, where do they all come from?&quot;, &quot;Life is very long when you're lonely.&quot;, &quot;Solitude is the...">
+    <meta property="og:url" content="/this-is-what-happens-when-people-ignore-me/">
+    <meta property="article:published_time" content="2011-10-17T19:00:00.000Z">
+    <meta property="article:modified_time" content="2014-04-26T11:47:27.070Z">
+    <meta property="article:tag" content="ruby">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="This is what happens when people ignore me!">
+    <meta name="twitter:description" content="#!/usr/bin/env ruby require 'pony'   require 'base64' def pick_subject     possibles = [&quot;Even bytes get lonely for a little bit.&quot;, &quot;All the lonely users, where do they all come from?&quot;, &quot;Life is very long when you're lonely.&quot;, &quot;Solitude is the...">
+    <meta name="twitter:url" content="/this-is-what-happens-when-people-ignore-me/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "This is what happens when people ignore me!",
+    "url": "/this-is-what-happens-when-people-ignore-me/",
+    "datePublished": "2011-10-17T19:00:00.000Z",
+    "dateModified": "2014-04-26T11:47:27.070Z",
+    "keywords": "ruby",
+    "description": "#!/usr/bin/env ruby require &#x27;pony&#x27;   require &#x27;base64&#x27; def pick_subject     possibles = [&quot;Even bytes get lonely for a little bit.&quot;, &quot;All the lonely users, where do they all come from?&quot;, &quot;Life is very long when you&#x27;re lonely.&quot;, &quot;Solitude is the..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template tag-ruby">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post tag-ruby">
+
+
+            <span class="post-meta"><time datetime="2011-10-18">18 Oct 2011</time> on <a href="../tag/ruby/">ruby</a></span>
+
+            <h1 class="post-title">This is what happens when people ignore me!</h1>
+
+            <section class="post-content">
+                <pre><code class=" lang-ruby">#!/usr/bin/env ruby
+
+require 'pony'  
+require 'base64'
+
+def pick_subject  
+  possibles = ["Even bytes get lonely for a little bit.", "All the lonely users, where do they all come from?", "Life is very long when you're lonely.", "Solitude is the profoundest fact of the human condition.", "Loneliness is a barrier that prevents one from uniting with the inner self.", "Absolute silence leads to sadness. It is the image of death.", "Good humor is the health of the soul, sadness is its poison.", "I don't need to manufacture trauma in my life to be creative.", "In deep sadness there is no place for sentimentality.", "It's the poignancy and sadness in things that gets to me.", "Sadness is also a kind of defence.", "Sadness is but a wall between two gardens.", "The sadness of the incomplete, the sadness that is often Life, but should never be Art.", "The walls we build around us to keep sadness out also keeps out the joy.", "You get used to sadness, growing up in the mountains, I guess.", "The surest cure for vanity is loneliness.", "There is no loneliness greater than the loneliness of a failure.", "When friendship disappears then there is a space left open to that awful loneliness of the outside world.", "What makes loneliness an anguish is not that I have no one to share my burden, but this: I have only my own burden to bear.", "The sky is one whole, the water another; and between those two infinities the soul of man is in loneliness.", "Loneliness is never more cruel than when it is felt in close propinquity with someone who has ceased to communicate.", "Loneliness is the ultimate poverty.", "Music was invented to confirm human loneliness."]
+
+  possibles.sample
+end
+
+def pick_image_path  
+  Dir.glob('/home/mispy/sadkittens/*').sample
+end
+
+def sad_kitten(target)  
+  imgpath = pick_image_path
+  imgfn = imgpath.split('/')[-1]
+  body = %{
+This is a multi-part message in MIME format.  
+--multipart_related_boundary
+Content-Type: text/html; charset=ISO-8859-1  
+Content-Transfer-Encoding: 7bit
+
+&lt;!DOCTYPE html&gt;  
+&lt;html&gt;  
+&lt;head&gt;  
+&lt;/head&gt;  
+&lt;body&gt;  
+&lt;img src="cid:sadkitten"&gt;  
+&lt;/body&gt;  
+&lt;/html&gt;
+
+--multipart_related_boundary
+Content-Type: image/jpeg; name="#{imgfn}"  
+Content-Transfer-Encoding: base64  
+Content-ID: &lt;sadkitten&gt;  
+Content-Disposition: inline; filename="#{imgfn}"
+
+#{Base64.encode64(File.read(imgpath))}
+  }
+
+  Pony.mail(:to =&gt; target,
+            :from =&gt; 'Sad Kitten Foundation &lt;sadkitten@mispy.me&gt;',
+            :subject =&gt; pick_subject,
+            :headers =&gt; { 'Content-Type' =&gt; 'multipart/related; boundary="multipart_related_boundary"' },
+            :body =&gt; body)
+end
+
+if __FILE__ == $0  
+  sad_kitten(ARGV.first)
+end  
+</code></pre>
+
+<pre><code class=" ">@daily bash -l -c "/home/mispy/scripts/sadkitten target@gmail.com"
+</code></pre>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=This%20is%20what%20happens%20when%20people%20ignore%20me!&amp;url=/this-is-what-happens-when-people-ignore-me/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/this-is-what-happens-when-people-ignore-me/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/this-is-what-happens-when-people-ignore-me/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

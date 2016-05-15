@@ -1,0 +1,179 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>Ruby bindings for the libtcod roguelike library</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/ruby-bindings-for-the-libtcod-roguelike-library/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Ruby bindings for the libtcod roguelike library">
+    <meta property="og:description" content="libtcod is a well-known roguelike gamedev library which handles basic essentials like fast pathfinding, field-of-view calculation and cell-based graphics. It already has bindings to a bunch of languages, and I've added Ruby to the mix: libtcod-ruby I decided to be...">
+    <meta property="og:url" content="/ruby-bindings-for-the-libtcod-roguelike-library/">
+    <meta property="article:published_time" content="2013-07-08T11:42:00.000Z">
+    <meta property="article:modified_time" content="2014-12-31T11:05:29.643Z">
+    <meta property="article:tag" content="ruby">
+    <meta property="article:tag" content="gamedev">
+    <meta property="article:tag" content="games">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Ruby bindings for the libtcod roguelike library">
+    <meta name="twitter:description" content="libtcod is a well-known roguelike gamedev library which handles basic essentials like fast pathfinding, field-of-view calculation and cell-based graphics. It already has bindings to a bunch of languages, and I've added Ruby to the mix: libtcod-ruby I decided to be...">
+    <meta name="twitter:url" content="/ruby-bindings-for-the-libtcod-roguelike-library/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Ruby bindings for the libtcod roguelike library",
+    "url": "/ruby-bindings-for-the-libtcod-roguelike-library/",
+    "datePublished": "2013-07-08T11:42:00.000Z",
+    "dateModified": "2014-12-31T11:05:29.643Z",
+    "keywords": "ruby, gamedev, games",
+    "description": "libtcod is a well-known roguelike gamedev library which handles basic essentials like fast pathfinding, field-of-view calculation and cell-based graphics. It already has bindings to a bunch of languages, and I&#x27;ve added Ruby to the mix: libtcod-ruby I decided to be..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template tag-ruby tag-gamedev tag-games">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post tag-ruby tag-gamedev tag-games">
+
+
+            <span class="post-meta"><time datetime="2013-07-08">08 Jul 2013</time> on <a href="../tag/ruby/">ruby</a> | <a href="../tag/gamedev/">gamedev</a> | <a href="../tag/games/">games</a></span>
+
+            <h1 class="post-title">Ruby bindings for the libtcod roguelike library</h1>
+
+            <section class="post-content">
+                <p><a href="http://doryen.eptalys.net/libtcod/">libtcod</a> is a well-known roguelike gamedev library which handles basic essentials like fast pathfinding, field-of-view calculation and cell-based graphics. It already has bindings to a bunch of languages, and I've added Ruby to the mix: <a href="http://github.com/mispy/libtcod">libtcod-ruby</a></p>
+
+<p>I decided to be conservative and leave all of the C functions directly exposed, so that the existing <a href="http://doryen.eptalys.net/data/libtcod/doc/1.5.1/index2.html?c=true&amp;cpp=true&amp;cs=true&amp;py=true&amp;lua=true">libtcod documentation</a> is easily applicable. There are also some more Rubyish wrapper classes in there, like Map and Console, which I might expand and document at some stage.</p>
+
+<p>Here's a screenshot of a simple Python <a href="http://doryen.eptalys.net/forum/index.php?topic=1468.0">tile demo</a> ported <a href="https://github.com/mispy/libtcod/blob/master/examples/tile_demo/tile_demo.rb">to Ruby</a>:</p>
+
+<p><img src="https://mispy.me/images/libtcod-tiledemo.jpg" alt=""></p>
+
+<p>Before writing this, my conception of what Ruby/C interfaces looked like was a bit nebulous. With the <a href="https://github.com/ffi/ffi/wiki/Basic-Usage">FFI gem</a>, it's actually really straightforward; you just specify a path to an appropriate shared object file for the target platform, and then set about declaring function prototypes. The main <a href="https://github.com/mispy/libtcod/blob/master/lib/libtcod/bindings.rb">bindings file</a> looks a lot like this:</p>
+
+<pre><code class=" lang-ruby">  # Remove redundant namespacing
+  def self.tcod_function(sym, *args)
+    attach_function(sym[5..-1].to_sym, sym, *args)
+  end
+
+  tcod_function :TCOD_console_set_window_title, [ :string ], :void
+  tcod_function :TCOD_console_set_fullscreen, [ :bool ], :void
+  tcod_function :TCOD_console_is_fullscreen, [  ], :bool
+  tcod_function :TCOD_console_is_window_closed, [  ], :bool
+  tcod_function :TCOD_console_set_custom_font, [ :string, :int, :int, :int ], :void
+</code></pre>
+
+<p>Of course, in libtcod's case, there are really quite a lot of function prototypes. I saved a good deal of typing by running <a href="https://github.com/ffi/ffi-swig-generator">ffi-swig-generator</a> over the C header files and tweaking the output instead of doing it all manually!</p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Ruby%20bindings%20for%20the%20libtcod%20roguelike%20library&amp;url=/ruby-bindings-for-the-libtcod-roguelike-library/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/ruby-bindings-for-the-libtcod-roguelike-library/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/ruby-bindings-for-the-libtcod-roguelike-library/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

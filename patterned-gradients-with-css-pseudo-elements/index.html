@@ -1,0 +1,187 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>Patterned gradients with CSS pseudo-elements</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/patterned-gradients-with-css-pseudo-elements/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Patterned gradients with CSS pseudo-elements">
+    <meta property="og:description" content="Neat technique I picked up from Bootstrap's appropriately-named jumbotron element: div {       position: relative;     width: 100%;     height: 300px;     background-color: #1abdbf;     background-repeat: repeat-x;     background-image: -moz-linear-gradient(45deg, #104e73, #1abdbf);     background-image: -webkit-linear-gradient(45deg, #104e73, #1abdbf);     background-image: -o-linear-gradient(45deg, #104e73, #1abdbf);     background-image: linear-gradient(45deg, #104e73,...">
+    <meta property="og:url" content="/patterned-gradients-with-css-pseudo-elements/">
+    <meta property="article:published_time" content="2013-04-23T14:40:00.000Z">
+    <meta property="article:modified_time" content="2014-05-03T10:05:59.085Z">
+    <meta property="article:tag" content="design">
+    <meta property="article:tag" content="css">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Patterned gradients with CSS pseudo-elements">
+    <meta name="twitter:description" content="Neat technique I picked up from Bootstrap's appropriately-named jumbotron element: div {       position: relative;     width: 100%;     height: 300px;     background-color: #1abdbf;     background-repeat: repeat-x;     background-image: -moz-linear-gradient(45deg, #104e73, #1abdbf);     background-image: -webkit-linear-gradient(45deg, #104e73, #1abdbf);     background-image: -o-linear-gradient(45deg, #104e73, #1abdbf);     background-image: linear-gradient(45deg, #104e73,...">
+    <meta name="twitter:url" content="/patterned-gradients-with-css-pseudo-elements/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Patterned gradients with CSS pseudo-elements",
+    "url": "/patterned-gradients-with-css-pseudo-elements/",
+    "datePublished": "2013-04-23T14:40:00.000Z",
+    "dateModified": "2014-05-03T10:05:59.085Z",
+    "keywords": "design, css",
+    "description": "Neat technique I picked up from Bootstrap&#x27;s appropriately-named jumbotron element: div {       position: relative;     width: 100%;     height: 300px;     background-color: #1abdbf;     background-repeat: repeat-x;     background-image: -moz-linear-gradient(45deg, #104e73, #1abdbf);     background-image: -webkit-linear-gradient(45deg, #104e73, #1abdbf);     background-image: -o-linear-gradient(45deg, #104e73, #1abdbf);     background-image: linear-gradient(45deg, #104e73,..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template tag-design tag-css">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post tag-design tag-css">
+
+
+            <span class="post-meta"><time datetime="2013-04-24">24 Apr 2013</time> on <a href="../tag/design/">design</a> | <a href="../tag/css/">css</a></span>
+
+            <h1 class="post-title">Patterned gradients with CSS pseudo-elements</h1>
+
+            <section class="post-content">
+                <p>Neat technique I picked up from <a href="http://twitter.github.io/bootstrap/">Bootstrap</a>'s appropriately-named jumbotron element:</p>
+
+<pre><code class=" lang-css">div {  
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: #1abdbf;
+    background-repeat: repeat-x;
+    background-image: -moz-linear-gradient(45deg, #104e73, #1abdbf);
+    background-image: -webkit-linear-gradient(45deg, #104e73, #1abdbf);
+    background-image: -o-linear-gradient(45deg, #104e73, #1abdbf);
+    background-image: linear-gradient(45deg, #104e73, #1abdbf);
+}
+
+div:after {  
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: url(http://mispy.me/misc/linkypattern.png);
+    opacity: .6;
+}
+</code></pre>
+
+<p>Makes a little div with a gradient, then takes a pseudo-element patterened with a background image and squishes them together. The result is something like this (click for jsfiddle):</p>
+
+<p><a href="http://jsfiddle.net/mispy/GW8QZ/"><img src="https://mispy.me/images/gradientoverlay.png" alt="" title=""></a></p>
+
+<p>Since there's currently no equivalent of a layer blend mode for CSS, you cannot (to my knowledge) separate the hue and lightness effects, which limits utility a bit. It helps if you start with a high-contrast image to offset the reduction in opacity. Sort of exchanges visual versatility for technical: you can apply it to arbitrary dimensions and user content, like <a href="http://subtlepatterns.com">Subtle Patterns</a> does with its lovely green hover highlights.</p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Patterned%20gradients%20with%20CSS%20pseudo-elements&amp;url=/patterned-gradients-with-css-pseudo-elements/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/patterned-gradients-with-css-pseudo-elements/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/patterned-gradients-with-css-pseudo-elements/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

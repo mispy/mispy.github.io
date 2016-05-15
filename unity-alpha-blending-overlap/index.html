@@ -1,0 +1,256 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>Preventing additive blending of transparent Unity sprites</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/unity-alpha-blending-overlap/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Preventing additive blending of transparent Unity sprites">
+    <meta property="og:description" content="Let's say you have two overlapping circles. Instead of making something Venn diagram-esque, you'd rather they just marked out a continuous area. In my particular case, I want the power node supply radius indicators on this hollow-asteroid-turned-into-a-spaceship not to obscure...">
+    <meta property="og:url" content="/unity-alpha-blending-overlap/">
+    <meta property="article:published_time" content="2015-08-19T01:11:08.665Z">
+    <meta property="article:modified_time" content="2015-08-19T02:35:35.293Z">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Preventing additive blending of transparent Unity sprites">
+    <meta name="twitter:description" content="Let's say you have two overlapping circles. Instead of making something Venn diagram-esque, you'd rather they just marked out a continuous area. In my particular case, I want the power node supply radius indicators on this hollow-asteroid-turned-into-a-spaceship not to obscure...">
+    <meta name="twitter:url" content="/unity-alpha-blending-overlap/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Preventing additive blending of transparent Unity sprites",
+    "url": "/unity-alpha-blending-overlap/",
+    "datePublished": "2015-08-19T01:11:08.665Z",
+    "dateModified": "2015-08-19T02:35:35.293Z",
+    "description": "Let&#x27;s say you have two overlapping circles. Instead of making something Venn diagram-esque, you&#x27;d rather they just marked out a continuous area. In my particular case, I want the power node supply radius indicators on this hollow-asteroid-turned-into-a-spaceship not to obscure..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post">
+
+
+            <span class="post-meta"><time datetime="2015-08-19">19 Aug 2015</time> </span>
+
+            <h1 class="post-title">Preventing additive blending of transparent Unity sprites</h1>
+
+            <section class="post-content">
+                <p>Let's say you have two overlapping circles. Instead of making something Venn diagram-esque, you'd rather they just marked out a continuous area.</p>
+
+<p><img src="../content/images/2015/08/circles.png" alt=""></p>
+
+<p>In my particular case, I want the power node supply radius indicators on this hollow-asteroid-turned-into-a-spaceship not to obscure everything underneath them by being too intense at the overlap points: <br>
+<img src="../content/images/2015/08/spaceship.png" alt=""></p>
+
+<p>This turns out to be <em>surprisingly difficult</em>. If it were just a matter of blending the two circles, you might accomplish it by using a Min shader <a href="http://docs.unity3d.com/Manual/SL-Blend.html">BlendOp</a>. However, what you want is to blend the circles one way and <em>then</em> blend the result of that blend in another way onto the screen. Since the rendering engine draws back-to-front, by the time you get to blending one circle onto another the first circle has already been blended with the scene and the necessary information lost.</p>
+
+<h2 id="usingstenciltests">Using stencil tests</h2>
+
+<p>One method to avoid overlap is to tell the circle shader to just not do anything if another circle has already claimed a given pixel. This is where the <a href="http://docs.unity3d.com/Manual/SL-Stencil.html">stencil buffer</a> comes in handy.</p>
+
+<pre><code class="language-cg"> Shader "Custom/PowerCircle" {
+     Properties {
+         _MainTex ("Base (RGB)", 2D) = "white" {}
+     }
+
+     SubShader {
+        Tags { "Queue"="Transparent" }
+
+        Pass {
+            Stencil {
+                Ref 2
+                Comp NotEqual
+                Pass Replace
+            }
+
+             Blend SrcAlpha OneMinusSrcAlpha     
+
+             CGPROGRAM
+             #pragma vertex vert
+             #pragma fragment frag
+             #include "UnityCG.cginc"
+
+             uniform sampler2D _MainTex;
+
+             struct v2f {
+                 half4 pos : POSITION;
+                 half2 uv : TEXCOORD0;
+             };
+
+             v2f vert(appdata_img v) {
+                 v2f o;
+                 o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+                 half2 uv = MultiplyUV( UNITY_MATRIX_TEXTURE0, v.texcoord );
+                 o.uv = uv;
+                 return o;
+             }
+
+             half4 frag (v2f i) : COLOR {
+                 half4 color = tex2D(_MainTex, i.uv);
+                 return color;
+             }
+             ENDCG
+        }
+
+    }
+
+    Fallback off
+}
+</code></pre>
+
+<p>The key here is the <code>Stencil</code> bit. <code>Comp NotEqual</code> means it will only run if the stencil buffer is not already equal to the number given by <code>Ref 2</code>, and <code>Pass Replace</code> means it will set it to 2 afterwards. So any number of this shader will only run once for a given pixel. Does it work? Well...</p>
+
+<p><img src="../content/images/2015/08/stencil.png" alt=""></p>
+
+<p>Not exactly, no. The problem is that each of the circles is actually a square sprite, and whoever renders first hogs all the pixels with useless completely transparent bits. We can fix this by telling the shader to discard any pixels with 0 alpha:</p>
+
+<pre><code class="language-cg">half4 frag (v2f i) : COLOR {  
+    half4 color = tex2D(_MainTex, i.uv);
+    if (color.a == 0.0)
+        discard;
+    return color;
+}
+</code></pre>
+
+<p><img src="../content/images/2015/08/alpha.png" alt=""></p>
+
+<p>That's a little better! But we still have weird things going on around the edges. That would be because in this particular texture, the edges are soft and gradually fade out with decreasing alpha values. Since they're not <em>zero</em> alpha they don't get discarded, and can prevent higher-alpha pixels from other circles from being rendered.</p>
+
+<p>We can eliminate the soft edges by editing the texture, and by ensuring the filter mode is set to <code>Point</code> rather than <code>Bilinear</code>:</p>
+
+<p><img src="../content/images/2015/08/aliased.png" alt=""></p>
+
+<p>Success! A continuous bubble of power.</p>
+
+<p>Those soft edges were kinda nice to have, though. It's possible the result could be postprocessed somehow to add them back in, or a different strategy could retain them. For the moment, I've opted for a compromise of keeping the soft edges on the image and just discarding a bunch more low alpha pixels:</p>
+
+<pre><code class="language-cg">half4 frag (v2f i) : COLOR {  
+    half4 color = tex2D(_MainTex, i.uv);
+    if (color.a &lt; 0.3)
+        discard;
+    return color;
+}
+</code></pre>
+
+<p><img src="../content/images/2015/08/gotit.png" alt=""></p>
+
+<p>I think that looks kinda nice (for placeholder developer art). If anyone has any other ideas please let me know!</p>
+
+<h2 id="alternatives">Alternatives</h2>
+
+<p>From poking around the Unity forums it sounds like there may be a way to do this by making clever use of <a href="http://docs.unity3d.com/Manual/SL-CullAndDepth.html">ZTest and ZWrite</a> that I didn't manage to puzzle out. The definitive solution is probably to use <a href="http://docs.unity3d.com/ScriptReference/RenderTexture.html">RenderTexture</a> to blend the circles in advance and then drop them all in at once as a big sprite, but that requires adding more moving parts than I'd like.</p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Preventing%20additive%20blending%20of%20transparent%20Unity%20sprites&amp;url=/unity-alpha-blending-overlap/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/unity-alpha-blending-overlap/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/unity-alpha-blending-overlap/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

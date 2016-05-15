@@ -1,0 +1,275 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>Ideas</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/ideas/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Ideas">
+    <meta property="og:description" content="An idea dump for stuff I'd like to try doing someday. This is periodically updated. Not filtered for plausibility! AI Write a bot which plays Spelunky and tweets about it From this conversation. Writing a bot which successfully plays Spelunky...">
+    <meta property="og:url" content="/ideas/">
+    <meta property="article:published_time" content="2014-11-12T09:13:55.523Z">
+    <meta property="article:modified_time" content="2015-01-14T13:56:49.306Z">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Ideas">
+    <meta name="twitter:description" content="An idea dump for stuff I'd like to try doing someday. This is periodically updated. Not filtered for plausibility! AI Write a bot which plays Spelunky and tweets about it From this conversation. Writing a bot which successfully plays Spelunky...">
+    <meta name="twitter:url" content="/ideas/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Ideas",
+    "url": "/ideas/",
+    "datePublished": "2014-11-12T09:13:55.523Z",
+    "dateModified": "2015-01-14T13:56:49.306Z",
+    "description": "An idea dump for stuff I&#x27;d like to try doing someday. This is periodically updated. Not filtered for plausibility! AI Write a bot which plays Spelunky and tweets about it From this conversation. Writing a bot which successfully plays Spelunky..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post">
+
+
+            <span class="post-meta"><time datetime="2014-11-12">12 Nov 2014</time> </span>
+
+            <h1 class="post-title">Ideas</h1>
+
+            <section class="post-content">
+                <p>An idea dump for stuff I'd like to try doing someday. This is periodically updated. Not filtered for plausibility!</p>
+
+<h2 id="ai">AI</h2>
+
+<p><a id="Write_a_bot_which_plays_Spelunky_and_tweets_about_it"></a></p>
+
+<ul>
+<li>Write a bot which plays Spelunky and tweets about it</li>
+</ul>
+
+<p>From <a href="https://twitter.com/m1sp/status/531682414456631296">this conversation</a>. Writing a bot which successfully plays Spelunky at all is hard, since it is a complex game which requires navigating a destructable environment and punishes mistakes very harshly. There is a <a href="https://t2thompson.files.wordpress.com/2013/08/paper_38.pdf">paper</a> discussing this and providing an API; bots are written in C++ or GML.</p>
+
+<p>Once you have a bot, making it describe its experiences could range from simple to tremendously complex. You could fake it with some pregenerated lines ("I defeated a snake on level [x]!") and have it be perfectly entertaining, but translating a variable sequence of events into a natural language narrative is a deep general problem.</p>
+
+<p><a id="Train_a_deep_neural_network_or_other_machine_learning_model_to_classify_cute_images"></a></p>
+
+<ul>
+<li>Train a <a href="http://en.wikipedia.org/wiki/Deep_learning#Deep_neural_networks">deep neural network</a> or other machine learning model to classify cute images</li>
+</ul>
+
+<p>Recent years have seen some cool developments in machine learning, particularly image recognition. Google <a href="http://static.googleusercontent.com/media/research.google.com/en//archive/unsupervised_icml2012.pdf">created a model</a> which was able to discover the notion of image generalities like "cats" and "human faces" without even being told to look for these. I think it would be a fun learning experience to train a classifier using data labeled for an ambiguous concept like <em>cuteness</em>, which is a human-assigned property associated with an image that can be quantified but not really associated with one specific set of image features.</p>
+
+<p>To quantify cuteness, use a side-by-side comparison system where users are presented with two semi-randomly selected images and asked to select which is cuter. I think Randall Munroe did this at one point, there's an algorithm somewhere. By only requiring them to select the cuter image, users make binary choices at any given step but you still end up with a sorted hierarchy of images.</p>
+
+<p>(n.b. I feel I should disclaim that cuteness is a subjective quality and what you would be measuring is "consensus cuteness" or the common denominator of what people find cute, there is no true total ordering of cuteness independent of individual experience)</p>
+
+<p>I suspect you would have lots of overfitting problems with the model-- it'd be very easy to train something that only recognizes kittens and gets stuck at a local optimum because kittens are reliably cute.</p>
+
+<h2 id="games">Games</h2>
+
+<p><a id="Procedural_generation_of_underlying_game_mechanics"></a></p>
+
+<ul>
+<li>Procedural generation of underlying game mechanics</li>
+</ul>
+
+<p>I remember a persistent myth about Pokémon games involving Mew and trucks. It's hard to imagine this forming with modern games unless they are <em>truly</em> obscure, because only one person needs to understand an aspect of the mechanics and write about it somewhere searchable for everyone to know.<sup id="fnref:1"><a href="index.html#fn:1" rel="footnote">1</a></sup></p>
+
+<p>Procedural generation tackles this by making everyone's game different, so that the past experience of others is not as solid a guide and you have to explore for yourself. However, even games that make heavy use of procgen only really use it for the <em>surface</em> world, the part that is visible to the player. A dragon in nethack always behaves predictably like a dragon, even if the dungeon in which it appears is configured slightly differently.</p>
+
+<p>I think a game which applied randomization even to invisible aspects of the game model would be especially interesting, because it would encourage players to do their own research and uncover things about the universe for themselves.</p>
+
+<p>Important consideration: the variation has to <em>matter</em>. For example, Starbound does procedural generation of enemies but you don't really pay much attention to it because you're mostly just going to shoot at them either way. You have to reward the player for learning things by allowing their optimal strategy to be dramatically changed by new information.</p>
+
+<p><a id="A_creature_breeding_game_inspired_by_real_genetics"></a></p>
+
+<ul>
+<li>A creature breeding game inspired by real genetics</li>
+</ul>
+
+<p>An idea from years ago when I was studying biology. Ties into the above idea about uncovering hidden game mechanics. The obvious point of comparison is the <a href="http://en.wikipedia.org/wiki/Creatures_(artificial_life_series)">Creatures</a> series, which did a nice job of <a href="http://www.gamewaredevelopment.com/images/uploads/biochem.htm">implementing basic biochemistry</a> by modelling organs as bags which both produced and contained a certain quantity of chemicals.</p>
+
+<p>How could you improve upon Creatures? Well, it'd be nice if there was more <em>game</em> to it. Creatures was a sandbox simulation in the truest sense, and didn't provide much in the way of goals to pursue. There are a few ways you could solve this; the two that come to mind are a multiplayer competitive element like Pokémon or a dynamic, hostile environment like Dwarf Fortress. Creatures would make very interesting elements in a trading game.</p>
+
+<p>Another example of this kind of game is Sonic Adventure 2, in the form of the <a href="http://sonic.wikia.com/wiki/Chao">Chao</a>. Chao are particularly cool because they have subtle gradients of morphological variation based on a combination of genetics and environment, which solves the other issue I had: Creatures just don't <em>look</em> very interesting. Breeding is much more fun when it produces distinct visual forms.</p>
+
+<p>In practice, you'd probably have simplified chromosomes as linear collections of "genes" which produce "proteins" at a given rate in particular parts of the body. The rates could be subject to mutation, and perhaps the protein properties; there's a lot of room for varying how simple or complex the proteins and their interactions are. Abstract physiology is actually pretty straightforward to implement compared to the messy work of producing a game world and graphics.</p>
+
+<p><a id="A_deterministic_tactical_RPG_in_the_spirit_of_Fire_Emblem"></a></p>
+
+<ul>
+<li>A deterministic tactical RPG in the spirit of Fire Emblem</li>
+</ul>
+
+<p>Some of my fondest memories are of JRPGs which involve teams of characters moving on a 2D grid, a system which ultimately derives from chess. Unlike chess, these games always include a pseudorandom element, like probability of an attack missing or variation in damage. I find this encourages less depth of thought, because no matter how well-considered your plan is there's always some chance of it just failing at any given step for unfair reasons.</p>
+
+<p>Chess shows that it is possible to make an enjoyable game like this without including random elements during gameplay. I think it would be an interesting challenge to design a more complex game along similar lines.</p>
+
+<p>This is one of the ideas I made a start on: <a href="https://github.com/mispy/tactics">https://github.com/mispy/tactics</a> I have lots of other thoughts about fun variations and story settings for TRPGs so  might come back to this one, especially since a basic Fire Emblem-like system is fairly easy to implement.</p>
+
+<p><a id="Make_a_small_game_based_on_this_HaxeFlixel_demo"></a></p>
+
+<ul>
+<li>Make a small game based on this <a href="http://haxeflixel.com/demos/Mode/">HaxeFlixel demo</a></li>
+</ul>
+
+<p>HaxeFlixel is sorta a spiritual successor to Flash for game development. I like C# as a language a bit better than Haxe, but it's still pretty nice and the environment is much friendlier than Monogame. (i.e. actual documentation!)</p>
+
+<p><a id="Make_a_Non-Lethal_Combat_mod_for_Starbound"></a></p>
+
+<ul>
+<li>Make a Non-Lethal Combat mod for Starbound</li>
+</ul>
+
+<p>Starbound exploration kinda mostly involves beating up native animals and taking people's stuff, which is weird for a game otherwise about cute fuzzy space animal people building things in space. I think adding more variety to combat aside from damaging attacks would also make it more fun!</p>
+
+<p><em>Immobilizing weapons</em></p>
+
+<p>Most obvious kind! There's a great tractor beam weapon on the Rho mech in the XS Corporation Mechs mod, could use similar bubble-y effects to hold a creature in place, send it flying away, etc. A weapon which force-activates the gravity techs on enemies would be very amusing, now that I think about it.</p>
+
+<p><em>Better defenses</em></p>
+
+<p>Bubble techs which cause attacks/enemies to bounce off! Maybe placeable obstacle type ones as well. Could perhaps use something like the existing "slow" effect on oil to make time distortion fields, or abilities which rearrange blocks around you automatically to make physical cover. </p>
+
+<p><em>Stealthy things</em></p>
+
+<p>Might be tricky to implement proper stealth platformer mechanics, but even just a basic energy-draining cloaking tech that just drops you out of combat while it's active would be great.</p>
+
+<p><em>How to reward player?</em></p>
+
+<p>The game incentivizes killing stuff with pixel rewards, hunting drops etc. One way we could encourage pacifism is by making the non-lethal weapons just more <em>effective</em> e.g. a stasis field gun that removes smaller enemies from combat quickly so you can get back to exploring. I found myself using paralysis in Skyrim for this a lot.</p>
+
+<p>If possible, it'd be neat if monster types you're consistently peaceful towards become consistently peaceful towards you as well, and perhaps ally with you against hostile enemies or otherwise behave in obviously friendly ways. And enemies you kill a lot of could get tougher and more numerous and start ganging up on you :3</p>
+
+<h2 id="webdevelopment">Web Development</h2>
+
+<p><a id="Add_search_functionality_to_the_Ghost_admin_panel"></a></p>
+
+<ul>
+<li>Add search functionality to the Ghost admin panel</li>
+</ul>
+
+<p>The way I use Ghost is closer to a semi-public Evernote than a blogging engine, and it would be extremely useful to be able to quickly search through posts from the admin panel. I expect this would be handy for normal blogs with a significant number of entries as well, since you do need to edit stuff in the distant past on occasion.</p>
+
+<p><a id="A_file_syncing_service_which_supports_image_tagging_and_source_annotation"></a></p>
+
+<ul>
+<li>A file syncing service which supports image tagging and source annotation</li>
+</ul>
+
+<p>There's lots of lovely artwork and interesting information in the form of image files on the internet. I like to collect these and share them with people. My current solution is just saving stuff <a href="http://cute.mispy.me/">to Dropbox</a>, which is fast because saving a file to a folder from a browser is fast and I do not have to wait for the Dropbox servers to do anything. However, Dropbox is not optimized for the purpose of image collections unlike systems like <a href="http://zerochan.net/">Zerochan</a>, so it's difficult to sort through them later and provide attribution to the creators.</p>
+
+<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>Melissa <a href="https://twitter.com/0xabad1dea/status/532552272874852353">rightly points out</a> that this may be more a consequence of us having been small children than how little access to the internet we had. A modern example is <a href="http://minecraft.gamepedia.com/Herobrine">Herobrine</a>. Still, it'd be nice to be able to create the same sense of mystery in adults, extelligence and all. <a href="index.html#fnref:1" title="return to article">↩</a></p></li></ol></div>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Ideas&amp;url=/ideas/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/ideas/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/ideas/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

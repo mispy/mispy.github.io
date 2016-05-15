@@ -1,0 +1,538 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>~mispy</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/">
+    <meta name="referrer" content="origin">
+    <link rel="next" href="/page/2/">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="~mispy">
+    <meta property="og:url" content="/">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="~mispy">
+    <meta name="twitter:url" content="/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Website",
+    "publisher": "~mispy",
+    "url": "/"
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="home-template">
+
+    
+<header class="site-head">
+
+    <img class="star" id="starO" src="content/images/O.png" style="display: none;">
+    <img class="star" id="starB" src="content/images/B.png" style="display: none;">
+    <img class="star" id="starA" src="content/images/A.png" style="display: none;">
+    <img class="star" id="starF" src="content/images/F.png" style="display: none;">
+    <img class="star" id="starG" src="content/images/G.png" style="display: none;">
+    <img class="star" id="starK" src="content/images/K.png" style="display: none;">
+    <img class="star" id="starM" src="content/images/M.png" style="display: none;">
+    <canvas id="canvas" style="position: absolute; left: 0; width: 100%; height: 100%;"></canvas>
+
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <a class="blog-logo" href="index.html"><img src="content/images/2016/03/sweatervest.png" alt="Blog Logo"></a>
+            <h1 class="blog-title"><a href="https://mispy.me/yes">~</a><a href="index.html">mispy</a></h1>
+            <h2 class="blog-description"></h2>
+            <ul class="site-nav">
+              <li><a href="index.html">Blog</a></li>
+              <li><a href="projects">Projects</a></li>
+              <li><a href="https://github.com/mispy">GitHub</a></li>
+              <li><a href="https://twitter.com/m1sp">Twitter</a></li>
+              <!--<li><a href="/hireme" class="hireme">Hire Me!</a></li>-->
+            </ul>
+        </div>
+    </div>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2016-02-24">24 Feb 2016</time> </span>
+          <h2 class="post-title"><a href="svg-cross-browser-compatibility/">SVG cross-browser compatibility notes</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>I just wrote a scaling resize handler for the <a href="http://ourworldindata.org/grapher/view/147">Our World In Data maps</a>. It worked wonderfully in Chrome. It didn't work in Firefox or Safari. Why?</p>
+
+<ul>
+<li><p>Firefox: getBoundingClientRect(), which I relied upon for getting the map and container dimensions, accounts for SVG transforms in Chrome but not Firefox. I switched it out for a calculation based on getBBox, which always returns the untransformed user space coordinates.</p></li>
+<li><p>Safari: I missed the end parenthesis on the matrix transform string. Chrome and Firefox will parse it anyway and won't bother telling you. Safari will silently fail to apply the matrix at all. Goodness!</p></li>
+</ul>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2016-01-15">15 Jan 2016</time> </span>
+          <h2 class="post-title"><a href="linux-notes/">Linux tips and notes</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>I've been using this silly OS for so long that sometimes I forget <em>why</em> I have things set up the way they are. Best write some of it down!</p>
+
+<p>In recent years, I mainly run Linux locally for web development and general scripting shenanigans with Python, Ruby and/or JS. Since it's also how my stuff gets deployed, I interact with servers running it via ssh a lot.</p>
+
+<ul>
+<li>I use <a href="http://www.vmware.com/au/products/player/playerpro-evaluation.html">VMware Workstation</a> to run Linux under Windows. </li>
+</ul>
+
+<p>For web development purposes, even if you run native Linux it's worth getting a VM environment set up so you can have a fresh system for testing with. VirtualBox (the non-proprietary alternative) is probably fine too, I just happen to have a VMware license and it's what I'm familiar with.</p>
+
+<ul>
+<li>I run the latest <a href="https://wiki.ubuntu.com/LTS">Ubuntu LTS</a> distribution.</li>
+</ul>
+
+<p>I will freely confess this is mostly just because it is very popular, meaning if you hit any issues they're likely to have been encountered and resolved by someone else and thus easy to google.</p>
+
+<ul>
+<li><a href="http://www.vim.org">vim</a> is my main text editor.</li>
+</ul>
+
+<p>But I wouldn't necessarily recommend learning it if you're not already familiar: it's not <em>obviously</em> superior to other stuff in a way that justifies the steep learning curve. There are more approachable alternatives these days like <a href="http://www.sublimetext.com/">Sublime Text</a> or <a href="http://atom.io/">Atom</a>. Perhaps one advantage vim has over these for me is that it's optimized to run in a terminal over ssh, for server-side work.</p>
+
+<p>My approach is pretty focused on shells and terminals rather than editors, which isn't necessarily the best way to do it. I tend to have multiple terminals with multiple vims rather than using features like split panes.</p>
+
+<p>The biggest customization I have is the addition of Sublime Text-like fuzzy file search and grep across a git repo, which runs off <a href="https://github.com/Shougo/unite.vim">unite.vim</a>.</p>
+
+<p>Another <code>.vimrc</code> thing that took me <em>way</em> too many years to discover is that you can get it to interface with the terminal to <a href="https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode">automatically recognize copy/paste</a> without having to type <code>:set paste</code>. You can also just hook the vim clipboard <a href="http://vim.wikia.com/wiki/Accessing_the_system_clipboard">into the system clipboard</a> so operations like <code>d</code> and <code>p</code> work across terminals.</p>
+
+<p>I could probably fill another entire thing with vim notes! The combination of decades of development and extremely poor discoverability means vim is littered with secrets.</p>
+
+<ul>
+<li><a href="http://www.howtogeek.com/112620/how-to-install-use-gnome-shell-on-ubuntu/">GNOME Shell</a> is my window manager.</li>
+</ul>
+
+<p>Though really any WM would do. It's rare that I need to open anything other than terminals-- any browsers I need to test web stuff run in the host Windows.</p>
+
+<ul>
+<li>I use <a href="http://www.zsh.org/">zsh</a> instead of bash. </li>
+</ul>
+
+<p>The most useful feature of zsh I've found is that it does case-insensitive substring tab completion rather than looking for the start of the filename. This means you can tab complete e.g. "Gemfile.lock" by typing "lock\t", instead of "Gem\t" (which would also match a normal "Gemfile" in the same dir). Given just <em>how much</em> time I spend typing in filenames, this is pretty important!</p>
+
+<p>There's a community collection of zsh scripts at <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a>. The script for Python <a href="https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/virtualenvwrapper/virtualenvwrapper.plugin.zsh">virtualenvwrapper integration</a> was originally my doing.</p>
+
+<ul>
+<li>Dotfiles are the main form of terminal-world configuration. </li>
+</ul>
+
+<p>I keep them synced across different systems by putting the canonical files in a Dropbox folder and symlinking them.</p>
+
+<ul>
+<li>History scroll (up arrow) and reverse-search (ctrl+r) are your friends. </li>
+</ul>
+
+<p>They will save you an incredible amount of typing. They're also useful when you need to execute a complex command again but have forgotten the precise arguments you wanted-- sometimes I've sshed into a server just to reverse search because I know the thing I want is there somewhere!</p>
+
+<ul>
+<li><code>ssh</code> is another dear friend. </li>
+</ul>
+
+<p>If you use ssh a lot, make sure to take the time to configure it a bit. When I have multiple terminals open, I often end up sshing to the same target multiple times-- this can be optimized to run off the same connection in <code>~/.ssh/config</code>:</p>
+
+<pre><code>ControlMaster auto  
+ControlPath /tmp/ssh_mux_%h_%p_%r  
+ControlPersist 4h  
+</code></pre>
+
+<p>Don't forget to set up key-based ssh authentication! Even if it weren't for the added security, it just saves a lot of password typing. <code>ssh-copy-id</code> makes this very easy to do.</p>
+
+<p>I have some particular machines I ssh into so frequently that they're aliased to a single letter in my <code>~/.zshrc</code>. e.g. my personal VPS, on which this site runs: <code>alias z="ssh mispy@zinzin"</code></p>
+
+<ul>
+<li><code>rsync</code> is wonderful, and will solve a lot of file transfer problems.</li>
+</ul>
+
+<p>In particular, it is <em>way</em> faster than <code>scp -r</code> for recursive network copying (and it still runs over ssh!). However, it has a bewildering multitude of command line options. I run this alias for general usage:</p>
+
+<p><code>alias rs="rsync --human-readable --archive --verbose --compress --progress"</code></p>
+
+<p>Of course, <code>--archive</code> then expands to <code>-rlptgoD</code>, which is <code>--recursive --links --perms --times --group --owner --devices --specials</code>. Got all that? Don't worry, it mostly Just Works. You use it like this:</p>
+
+<p><code>rs dir mispy@zinzin:/home/mispy/dir</code></p>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2015-11-30">30 Nov 2015</time> </span>
+          <h2 class="post-title"><a href="unity-runtime-instantiation-and-event-execution-order/">Unity runtime instantiation and event execution order</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>The Unity manual has a fairly <a href="http://docs.unity3d.com/Manual/ExecutionOrder.html">comprehensive overview</a> of how MonoBehaviour event handlers are called in relation to each other. What it doesn't really tell you, though, is when they run relative to the code that created the object in the first place. The important points that are missing:</p>
+
+<ul>
+<li>Awake and OnEnable are called <em>in the same stack as the line that activates the object</em></li>
+<li>Start is called <em>after</em> whatever code activated the object finishes</li>
+<li>This leaves a good space to do custom init in between OnEnable and Start</li>
+</ul>
+
+<p>Here's a block of code to illustrate:</p>
+
+<pre><code class="language-csharp">using UnityEngine;  
+using System.Collections;
+
+public static class ThingMaker {  
+    public static void MakeThing(GameObject prefab) {
+        Debug.Log("Before Instantiate");
+        var obj = Object.Instantiate(prefab).GetComponent&lt;Thing&gt;();
+        Debug.Log("After Instantiate");
+        // If the prefab was active, at this point Awake and OnEnable have been called but *not* Start
+        obj.Init(10);
+        // Start runs at some point after this
+    }
+}
+
+public class Thing : MonoBehaviour {  
+    Rigidbody rigidbody;
+    int boop = 0;
+
+    void Awake() {
+        // This is called immediately as soon as the object is first activated
+
+        // At this point, you wouldn't have had a chance to call Init, so your
+        // boop is still zero
+
+        rigidbody = GetComponent&lt;Rigidbody&gt;();
+        Debug.LogFormat("Awake {0}", boop);
+    }
+
+    void OnEnable() {
+        // This is called immediately after Awake
+        // However, if you disable and re-enable this object, it will get invoked
+        // a second time while Awake won't
+        Debug.LogFormat("OnEnable {0}", boop);
+    }
+
+    public void Init(int boop) {
+        this.boop = boop;
+    }
+
+    void Start() {
+        // This is called once, but it happens *after* whatever code activated the object
+        // finishes running, meaning in this case after Init
+
+        // We now have an appropriate level of boop to work with
+        Debug.LogFormat("Start {0}", boop);
+    }
+}
+</code></pre>
+
+<p>And the output:</p>
+
+<p><img src="content/images/2015/11/unity.png" alt=""></p>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2015-11-24">24 Nov 2015</time> </span>
+          <h2 class="post-title"><a href="social-networks-and-individualism/">Social networks and individualism</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>Twitter is pretty important to me. I'm a very quiet person, and it provides a pleasantly low-expectation way of interacting with a bunch of interesting humans (and robots?) that I wouldn't really have otherwise. Over the years, I have seen troubled people find acceptance, the formation of strong friendships and romances, and the activist power of many voices in unison. I have had opportunities to help others solve interesting problems and many people have helped me. Also there are a lot of puns. So many puns.</p>
+
+<p>The social architecture of Twitter is flat and centers around individuals. Anyone can follow anyone; the largest corporation account and the shyest of teens are all mechanically more-or-less identical. Twitter has no real concept of a <em>group</em> or a <em>topic</em>, just a whole bunch of people and a few searching functions like hashtags and mutes.</p>
+
+<p>While this flatness can be very empowering, especially in a political context, I have found it also makes certain kinds of social behavior difficult. When you follow someone on Twitter you are committing to see <em>everything</em> they say unless it is specifically directed to another account that you don't follow. For example, if I follow some brilliant programmer with obnoxious political views I must spend an awful lot of time rolling my eyes as they wax lyrical about the wonders of Ayn Rand and the horrors of millenial entitlement in order to read about interesting experiences with type systems. (I don't actually follow anyone like this, fortunately.)</p>
+
+<p>The way I tweet about stuff myself is also affected. I mostly discuss programming, video games and sometimes ethics or demography. People who follow me do so under the expectation that there will be more of such things. Sometimes, however, I find I am really interested in something else! What if I am reading a book on the <a href="https://twitter.com/m1sp/status/622773586504212480">history of the Byzantine Empire</a> and want to talk lots about the theological controversy of the Council of Chalcedon? Or just squee about cute anime boys? I end up self-censoring a lot, because at least one of those 2000 or so people is going to be bored by <em>one</em> of those things and there isn't really a way for them to opt out aside from opting out of <em>me</em> entirely.</p>
+
+<p>So I find myself wanting a place on the internet aside from just Twitter, one which has something closer to a traditional forum architecture where the focus is more on particular groups or topics than individuals. In a network based on threads or channels nobody has to look at the contents of any particular topic, so they can be as deep or niche as they like without bothering anyone else. Maybe freenode, or even Reddit?</p>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2015-08-19">19 Aug 2015</time> </span>
+          <h2 class="post-title"><a href="unity-alpha-blending-overlap/">Preventing additive blending of transparent Unity sprites</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>Let's say you have two overlapping circles. Instead of making something Venn diagram-esque, you'd rather they just marked out a continuous area.</p>
+
+<p><img src="content/images/2015/08/circles.png" alt=""></p>
+
+<p>In my particular case, I want the power node supply radius indicators on this hollow-asteroid-turned-into-a-spaceship not to obscure everything underneath them by being too intense at the overlap points: <br>
+<img src="content/images/2015/08/spaceship.png" alt=""></p>
+
+<p>This turns out to be <em>surprisingly difficult</em>. If it were just a matter of blending the two circles, you might accomplish it by using a Min shader <a href="http://docs.unity3d.com/Manual/SL-Blend.html">BlendOp</a>. However, what you want is to blend the circles one way and <em>then</em> blend the result of that blend in another way onto the screen. Since the rendering engine draws back-to-front, by the time you get to blending one circle onto another the first circle has already been blended with the scene and the necessary information lost.</p>
+
+<h2 id="usingstenciltests">Using stencil tests</h2>
+
+<p>One method to avoid overlap is to tell the circle shader to just not do anything if another circle has already claimed a given pixel. This is where the <a href="http://docs.unity3d.com/Manual/SL-Stencil.html">stencil buffer</a> comes in handy.</p>
+
+<pre><code class="language-cg"> Shader "Custom/PowerCircle" {
+     Properties {
+         _MainTex ("Base (RGB)", 2D) = "white" {}
+     }
+
+     SubShader {
+        Tags { "Queue"="Transparent" }
+
+        Pass {
+            Stencil {
+                Ref 2
+                Comp NotEqual
+                Pass Replace
+            }
+
+             Blend SrcAlpha OneMinusSrcAlpha     
+
+             CGPROGRAM
+             #pragma vertex vert
+             #pragma fragment frag
+             #include "UnityCG.cginc"
+
+             uniform sampler2D _MainTex;
+
+             struct v2f {
+                 half4 pos : POSITION;
+                 half2 uv : TEXCOORD0;
+             };
+
+             v2f vert(appdata_img v) {
+                 v2f o;
+                 o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+                 half2 uv = MultiplyUV( UNITY_MATRIX_TEXTURE0, v.texcoord );
+                 o.uv = uv;
+                 return o;
+             }
+
+             half4 frag (v2f i) : COLOR {
+                 half4 color = tex2D(_MainTex, i.uv);
+                 return color;
+             }
+             ENDCG
+        }
+
+    }
+
+    Fallback off
+}
+</code></pre>
+
+<p>The key here is the <code>Stencil</code> bit. <code>Comp NotEqual</code> means it will only run if the stencil buffer is not already equal to the number given by <code>Ref 2</code>, and <code>Pass Replace</code> means it will set it to 2 afterwards. So any number of this shader will only run once for a given pixel. Does it work? Well...</p>
+
+<p><img src="content/images/2015/08/stencil.png" alt=""></p>
+
+<p>Not exactly, no. The problem is that each of the circles is actually a square sprite, and whoever renders first hogs all the pixels with useless completely transparent bits. We can fix this by telling the shader to discard any pixels with 0 alpha:</p>
+
+<pre><code class="language-cg">half4 frag (v2f i) : COLOR {  
+    half4 color = tex2D(_MainTex, i.uv);
+    if (color.a == 0.0)
+        discard;
+    return color;
+}
+</code></pre>
+
+<p><img src="content/images/2015/08/alpha.png" alt=""></p>
+
+<p>That's a little better! But we still have weird things going on around the edges. That would be because in this particular texture, the edges are soft and gradually fade out with decreasing alpha values. Since they're not <em>zero</em> alpha they don't get discarded, and can prevent higher-alpha pixels from other circles from being rendered.</p>
+
+<p>We can eliminate the soft edges by editing the texture, and by ensuring the filter mode is set to <code>Point</code> rather than <code>Bilinear</code>:</p>
+
+<p><img src="content/images/2015/08/aliased.png" alt=""></p>
+
+<p>Success! A continuous bubble of power.</p>
+
+<p>Those soft edges were kinda nice to have, though. It's possible the result could be postprocessed somehow to add them back in, or a different strategy could retain them. For the moment, I've opted for a compromise of keeping the soft edges on the image and just discarding a bunch more low alpha pixels:</p>
+
+<pre><code class="language-cg">half4 frag (v2f i) : COLOR {  
+    half4 color = tex2D(_MainTex, i.uv);
+    if (color.a &lt; 0.3)
+        discard;
+    return color;
+}
+</code></pre>
+
+<p><img src="content/images/2015/08/gotit.png" alt=""></p>
+
+<p>I think that looks kinda nice (for placeholder developer art). If anyone has any other ideas please let me know!</p>
+
+<h2 id="alternatives">Alternatives</h2>
+
+<p>From poking around the Unity forums it sounds like there may be a way to do this by making clever use of <a href="http://docs.unity3d.com/Manual/SL-CullAndDepth.html">ZTest and ZWrite</a> that I didn't manage to puzzle out. The definitive solution is probably to use <a href="http://docs.unity3d.com/ScriptReference/RenderTexture.html">RenderTexture</a> to blend the circles in advance and then drop them all in at once as a big sprite, but that requires adding more moving parts than I'd like.</p>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2015-08-15">15 Aug 2015</time> </span>
+          <h2 class="post-title"><a href="wander-networking/">Distributed networking in a multiplayer game</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>A few months ago, I was tasked with porting the networking code of <a href="http://www.wanderthegame.com/">Wander</a> to the PS4, and ended up writing some bits of it from scratch. I've been programming for years, but this was my first foray into C++ and serious gamedev, so I had to learn a lot!</p>
+
+<h3 id="theproblem">The problem</h3>
+
+<p><img src="content/images/2015/08/griffin_landing.jpg" alt=""></p>
+
+<p>Wander was designed to be an open world, massively multiplayer<sup id="fnref:1"><a href="index.html#fn:1" rel="footnote">1</a></sup> exploration game. Players occupy the same universe and should be visible to one another as soon as they, uh, wander into range. Crucially, Wander is non-competitive, meaning clients can be trusted: there's not much to be gained from cheating, unless you get a kick out of teleporting yourself into odd places.</p>
+
+<p>The game is based on <a href="http://cryengine.com/">CRYENGINE</a><sup id="fnref:2"><a href="index.html#fn:2" rel="footnote">2</a></sup> and written in C++ and Lua. The engine has its own conception of networking, but it's based around matchmaking and lobbies and was generally a bit tangential to our requirements. So we needed an alternative that could connect nearby players, push state to the Cryengine objects, and work on both PC and PS4.</p>
+
+<p>When I joined the project, it was already sorta functional on PC. We were using a C# library called Badumna, invoked from C++ via a C++/CLI wrapper. Badumna was a University of Melbourne project turned startup turned bankrupt turned open source. The website no longer exists, so I had to go find the documentation <a href="https://web.archive.org/web/20131124073148/http://www.scalify.com/documentation/Manual/index.php">on archive.org</a>. Not... not terribly promising.</p>
+
+<h3 id="whatwetried">What we tried</h3>
+
+<p>Loki gave me two alternatives to pursue: port Badumna to C++, or get Mono working on the PS4.</p>
+
+<p>A quick look through the Badumna code made it clear the first option was waaay beyond my abilities. The library has around 72,000 lines of code, making heavy use of custom attributes and other C# features which aren't directly translatable to C++. Lots of fiddly meta stuff like this:</p>
+
+<p><img src="https://pbs.twimg.com/media/B7c83J3CEAA6Cwl.png:large" alt=""></p>
+
+<p>Much of the code is security features we didn't need, but separating that out from the critical network stuff is non-trivial. And while I had decent experience with C# and some prior knowledge of C, my C++ was not going to be good enough to port an entire networking library from scratch.</p>
+
+<p>So I looked at the second option. <a href="http://tirania.org/blog/archive/2014/Apr-14.html">Mono on PS4</a> is pretty experimental and requires <a href="http://www.mono-project.com/docs/advanced/aot/">AOT compilation</a>, but Badumna was designed to run on mobile devices so I did make some headway and eventually got it to compile. Unfortunately, I ran into a NOT IMPLEMENTED runtime error from the stdlibs: there was no System.Security.Cryptography. And I was <em>not</em> going to try and homebrew <em>a cryptography stdlib</em>, so...</p>
+
+<p>Having hit a dead end and feeling a bit frustrated, we went hunting for alternatives. Loki found a C++ library called <a href="http://vastlib.wikispaces.com/">VAST</a> which looked promising: spatial P2P for virtual worlds! Exactly what we wanted, and it didn't matter very much that it was based on a 2D instead of 3D coordinate space. Even if we do have a floating island.</p>
+
+<p>I set about trying to get the VAST code working on PS4. The library itself is small, but it has ... a dependency. Namely, The A Dynamically Assembled Protocol Transformation, Integration, and eValuation Environment Communication Environment™:</p>
+
+<p><img src="content/images/2015/07/ace.png" alt=""></p>
+
+<p>Yes, that is the actual expansion of that acronym. But wait, it gets better! You can do real-time Common Object Request Broker Architecture® Component Model with Component Integrated A Dynamically Assembled Protocol Transformation, Integration, and eValuation Environment Communication Environment™ Object Request Broker™</p>
+
+<p><img src="content/images/2015/07/ccm.png" alt=""></p>
+
+<p><em>what is happening</em></p>
+
+<p><img src="content/images/2015/07/new_yellow.gif"></p>
+
+<p><img src="content/images/2015/07/new_yellow.gif" width="150"></p>
+
+<p><img src="content/images/2015/07/new_yellow.gif" width="300"></p>
+
+<p><img src="content/images/2015/07/lastmodified.png"></p>
+
+<p><em>oh my gods</em></p>
+
+<p>So, a now-wiser Mispy would read all this as "FLEE, MORTAL" and seek greener pastures, but I was intrigued. This monstrosity <a href="http://www.dre.vanderbilt.edu/versions.html">runs on freakin' OpenVMS</a> so surely I could get it working on PS4. And after lots of tinkering with preprocessor conditionals and tearing my hair out over the threading API, I succeeded! My VAST prototype successfully established a connection.</p>
+
+<p>Of course at this point I discover that VAST doesn't really do any of the things we wanted it to in the first place.</p>
+
+<p>I am still to this day not entirely clear on what exactly VAST <em>is</em> supposed to do. It might be useful if you're trying to load balance a series of servers attached to a spatial responsibility zone? Maybe? At any rate, what it definitely <em>doesn't</em> do is any of the actual networking part of P2P-- there's no <a href="https://en.wikipedia.org/wiki/NAT_traversal">NAT punching</a>, <a href="https://en.wikipedia.org/wiki/STUN">STUN</a> or <a href="https://en.wikipedia.org/wiki/Traversal_Using_Relays_around_NAT">TURN</a> or what have you.</p>
+
+<p>The key mistake I'd been making here was assuming that since we started with a complex system (Badumna), some approximation of that complexity was needed if I wanted to replace it. Given the task "port Badumna", instead of trying to solve the surface-level problem I should've thought more carefully about <em>why</em> it was needed and if there was another way to tackle the underlying issue. </p>
+
+<p>Similarly, I should have analyzed VAST more carefully before getting too invested in the interesting technical process of getting it to work. Tinker mentality can be dangerous when what you need is careful design!</p>
+
+<h3 id="whatweactuallywentwith">What we actually went with</h3>
+
+<p>Badumna does decentralized peer discovery using <a href="https://mispy.me/distributed%20hash%20tables">distributed hash tables</a> to avoid single-point-of-failure issues. This is huge technological overkill for a small indie game, and it eventually dawned on me that all the peer discovery could just be done by polling some Python script. That left the core "talk to given peer" networking problem, which falls well within the purview of <a href="https://partner.steamgames.com/documentation/api">SteamNetworking</a> (based on libjingle) and the PS4 libraries.</p>
+
+<p>I would like to take a moment to express my great fondness for Steam's P2P networking API, by the way! It's super no-nonsense: you don't even need to worry about the current connection state, you just give it a packet and a destination id and off it goes, idempotently setting up whatever it needs to along the way. If the libjingle NAT-punching stuff isn't enough, it'll even go through Steam's own relay servers for you.</p>
+
+<p>So the networking flow now looks like this:</p>
+
+<ul>
+<li>every few seconds, the game sends a POST request to a <a href="http://www.cherrypy.org/">cherrypy</a> server with the player's id (either Steam or PSN) and current world coordinates</li>
+<li>the server stores this information in Redis and does a <a href="http://redis.io/commands/ZRANGEBYSCORE">zrangebyscore</a> query to return a json array of other player ids within a certain radius</li>
+<li>the player ids are fed into a platform-agnostic networking layer wrapped around the Steam and PS4 APIs</li>
+<li>connections are established and players start pushing state to each other directly (using <a href="https://developer.valvesoftware.com/wiki/Source_Multiplayer_Networking#Entity_interpolation">interpolation</a> to avoid jerkiness)</li>
+</ul>
+
+<p>Player logouts are handled by expiring ids from the Redis cache if the server doesn't hear from them for a while, which means it can be out of sync but that's fine since there's little harm in trying and failing to connect to the occasional offline player.</p>
+
+<p>Loki worked out the Redis stuff and tied Cryengine into Steam, while I wrote a wrapper for the (rather lower-level) PS4 API to act as a drop-in replacement for SteamNetworking. This was reasonably non-trivial and the kind of thing I would love to open source, but <span style="background-color: black; color: black;">grumble grumble Sony mutter NDAs grumble</span></p>
+
+<p>Anyway, it worked! The first moment I saw another little Azertash<sup id="fnref:3"><a href="index.html#fn:3" rel="footnote">3</a></sup> swimming around on a TV was very satisfying indeed. </p>
+
+<h2 id="improvements">Improvements</h2>
+
+<p>There is one feature of Badumna it would be useful to replicate: relay messaging between peers. Currently, a player only sees another player if the two are directly connected to each other. This means the network topology is <a href="https://en.wikipedia.org/wiki/Network_topology#Mesh">fully connected</a> and the number of connections grows quadratically with the number of players:</p>
+
+<p><img src="https://upload.wikimedia.org/math/3/e/8/3e86e867a928d394c6e126bd725883de.png" alt="c = n(n-1)/2"></p>
+
+<p>So if you have 10 players in the same local area each of them is connected to 9 other people and there are 45 connections in total. For a small game like Wander this is fine, but if you wanted to handle high population density, you could instead organize players into <a href="https://en.wikipedia.org/wiki/Star_network">star topologies</a> where a single player relays information between two or more others. Much less overhead!</p>
+
+<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>In the technical sense of "there are lots of players in the same world". Wander has little in common with traditional MMORPGs. <a href="index.html#fnref:1" title="return to article">↩</a></p></li>
+<li class="footnote" id="fn:2"><p>Considered aptly named by frustrated devs. <a href="index.html#fnref:2" title="return to article">↩</a></p></li>
+<li class="footnote" id="fn:3"><p>A squat, colorful, fast-swimming gender-ambiguous lizard creature. By far my favorite of the four player forms. <a href="index.html#fnref:3" title="return to article">↩</a></p></li></ol></div>
+        </section>
+    </article>
+
+
+    <nav class="pagination" role="navigation">
+    <span class="page-number">Page 1 of 8</span>
+        <a class="older-posts" href="page/2/">Older Posts <span aria-hidden="true">→</span></a>
+</nav>
+
+
+</main>
+
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="index.html">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="assets/js/stars.js?v=0717475246"></script>
+</body>

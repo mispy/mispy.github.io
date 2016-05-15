@@ -1,0 +1,16 @@
+Kinds of properties
+
+Triggers:
+
+n-in-a-row
+adjacency to particular tile
+
+Effects:
+
+remove tiles
+convert tiles
+add tiles
+
+What order do tile actions resolve in?
+
+ - Have to guarantee that any chain effects will actually come to a halt

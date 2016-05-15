@@ -1,0 +1,519 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>~mispy - Page 2</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/page/2/">
+    <meta name="referrer" content="origin">
+    <link rel="prev" href="/">
+    <link rel="next" href="/page/3/">
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="paged archive-template">
+
+    
+<header class="site-head">
+
+    <img class="star" id="starO" src="../../content/images/O.png" style="display: none;">
+    <img class="star" id="starB" src="../../content/images/B.png" style="display: none;">
+    <img class="star" id="starA" src="../../content/images/A.png" style="display: none;">
+    <img class="star" id="starF" src="../../content/images/F.png" style="display: none;">
+    <img class="star" id="starG" src="../../content/images/G.png" style="display: none;">
+    <img class="star" id="starK" src="../../content/images/K.png" style="display: none;">
+    <img class="star" id="starM" src="../../content/images/M.png" style="display: none;">
+    <canvas id="canvas" style="position: absolute; left: 0; width: 100%; height: 100%;"></canvas>
+
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <a class="blog-logo" href="../../"><img src="../../content/images/2016/03/sweatervest.png" alt="Blog Logo"></a>
+            <h1 class="blog-title"><a href="https://mispy.me/yes">~</a><a href="../../">mispy</a></h1>
+            <h2 class="blog-description"></h2>
+            <ul class="site-nav">
+              <li><a href="../../">Blog</a></li>
+              <li><a href="../../projects">Projects</a></li>
+              <li><a href="https://github.com/mispy">GitHub</a></li>
+              <li><a href="https://twitter.com/m1sp">Twitter</a></li>
+              <!--<li><a href="/hireme" class="hireme">Hire Me!</a></li>-->
+            </ul>
+        </div>
+    </div>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+    <article class="post tag-modding tag-games">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2014-12-17">17 Dec 2014</time> on <a href="../../tag/modding/">modding</a>, <a href="../../tag/games/">games</a></span>
+          <h2 class="post-title"><a href="../../extracting-dialogue-from-dragon-age-inquistion/">Extracting dialogue from Dragon Age: Inquistion</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>I thought this was an interesting case of technical problem solving. My friend <a href="https://twitter.com/aeleruil">@aeleruil</a> was trying to dump the dialogue text from DAI so he could make a <a href="https://twitter.com/DragonAgeEbooks">bot</a>. He found an <a href="http://sourceforge.net/projects/daitools/">existing tool</a>, but as you would expect from freshly baked OSS modding software it is not... immediately clear how to use it:</p>
+
+<p><img src="../../content/images/2014/12/dai-tool-1.png" alt=""></p>
+
+<p>He determined that it was definitely <em>capable</em> of doing what he wanted because the feature addition had been <a href="http://daitools.freeforums.org/update-rev-25-talktables-are-now-exportable-to-text-files-t60.html">mentioned</a> as being added in revision 25. After some searching and fiddling I realized I might have better luck just reading the code. What is added in revision 25?</p>
+
+<p><img src="../../content/images/2014/12/Selection_057.png" alt=""></p>
+
+<p>From the filename we can see that we want the <code>Bundle Explorer</code>. This takes an SB file and a CAT file and produces a list of what look like path identifiers. I still don't know exactly what these file formats are, but we worked out by trial and error that providing it with <code>loctext/en.sb</code> and <code>cas.cat</code> made it do a thing.</p>
+
+<p><img src="../../content/images/2014/12/dai-zlich.png" alt=""></p>
+
+<p>From the <code>totalSize</code> field, it seems <code>win32/loctext/en/text</code> is what we want: a big 2.5MB chunk of non-specific text. Unfortunately, just selecting that and running "Export Resource" does a good deal of nothing at all. Not even an error message!</p>
+
+<p>So, back to the code. What could cause it to fail silently?</p>
+
+<pre><code class="language-csharp">private void exportResourceToolStripMenuItem_Click(object sender, EventArgs e)  
+{
+    if (hb1.ByteProvider != null &amp;&amp; hb1.ByteProvider.Length != 0)
+    {
+        int n = listBox1.SelectedIndex;
+        int a = listBox2.SelectedIndex;
+        int b = listBox4.SelectedIndex;
+
+        if (n == -1 &amp;&amp; a == -1 &amp;&amp; b == -1)
+            return;
+
+        MemoryStream m = new MemoryStream();
+        for (int i = 0; i &lt; hb1.ByteProvider.Length; i++)
+            m.WriteByte(hb1.ByteProvider.ReadByte(i));
+        m.Seek(0, SeekOrigin.Begin);
+
+        byte[] buffer = null;
+        string filter = "";
+
+        if (a != -1)
+        {
+            Bundle c = sb.bundles[n];
+            Bundle.ebxtype entry = c.ebx[a];
+
+            buffer = ExtractEbx(m);
+            filter = "*.xml|*.xml";
+        }
+        else if (b != -1)
+        {
+            Bundle c = sb.bundles[n];
+            Bundle.restype entry = c.res[b];
+            string resExt = Tools.GetResType(BitConverter.ToUInt32(entry.rtype, 0));
+
+            if (resExt == ".mesh")
+            {
+                buffer = ExtractMesh(m);
+                filter = "*.obj|*.obj";
+            }
+            else if(resExt == ".itexture")
+            {
+                buffer = ExtractTexture(m);
+                filter = "*.dds|*.dds";
+            }
+            else if (resExt == ".talktable")
+            {
+                buffer = ExtractTalktable(m);
+                filter = "*.txt|*.txt";
+            }
+        }
+
+        if (buffer != null)
+        {
+            /* Write file here */
+            SaveFileDialog d = new SaveFileDialog();
+            d.Filter = filter;
+            if (d.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                BinaryWriter writer = new BinaryWriter(new FileStream(d.FileName, FileMode.Create));
+                writer.Write(buffer);
+                writer.Close();
+
+                MessageBox.Show("Resource saved to " + d.FileName);
+            }
+            else
+                return;
+        }
+    }
+}
+</code></pre>
+
+<p>This function should always create a <code>SaveFileDialog</code> unless <code>buffer</code> is null. <code>buffer</code> will be be null if <code>resExt</code> does not match a defined extension. Hang on-- that ".itexture" looks familiar! </p>
+
+<p><img src="../../content/images/2014/12/dai-talktable.png" alt=""></p>
+
+<p>Sure enough, there's .talktable, lurking in the dropdown. To get the text, you need to select the path immediately above <code>win32/loctext/en/text</code>, click <code>Find Next</code> to get the talktable, and <em>then</em> run <code>Export Resource</code>.</p>
+
+<p><img src="../../content/images/2014/12/dai-allthetext.png" alt=""></p>
+
+<p>Sometimes the code really is just the best available documentation!</p>
+        </section>
+    </article>
+
+
+    <article class="post tag-modding tag-games">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2014-12-09">09 Dec 2014</time> on <a href="../../tag/modding/">modding</a>, <a href="../../tag/games/">games</a></span>
+          <h2 class="post-title"><a href="../../ck2-province-modding/">Modding provinces.bmp in Crusader Kings II</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>CK2 has a game area composed of ~1,435 individual provinces, representing the continent of Europe. Each of these corresponds to a color in a single 3072x2048 bmp:</p>
+
+<p><img src="../../content/images/2014/12/provinces-1.jpg" alt=""></p>
+
+<p>Every province has a color but not every color has a province. White is used for areas outside the game boundaries and black represents mountain ranges used as separators. Not all provinces are playable, either; some represent sea regions or uncolonized areas.</p>
+
+<p>Provinces are linked to gameplay information by their assigned number in <code>definition.csv</code>. This file gives numbers to many more colors than actually appear in <code>provinces.bmp</code>, but the inverse is not true: using a color in <code>provinces.bmp</code> which does not appear in the csv file will cause a CTD on startup.</p>
+
+<p>I couldn't quite get any of the <a href="http://forum.paradoxplaza.com/forum/showthread.php?598974-Tool-Clausewitz-Map-Checker">existing tools</a> to work, so I wrote a quick Python script which will update <code>definition.csv</code> with any changes to the bmp, by commenting out colors that are not present and adding any new ones at the end. This way, the numbering is preserved even if you make many sequential modifications:</p>
+
+<pre><code class="python">#!/usr/bin/env python
+
+MAX_PROVINCES = 10000
+
+from PIL import Image
+
+def province_color(line):  
+    """Gets the RGB tuple from a definition.csv line"""
+    spl = line.strip('#').split(';')
+    return (int(spl[1]), int(spl[2]), int(spl[3]))
+
+def province_num(line):  
+    """Gets the province number from a definition.csv line"""
+    spl = line.strip('#').split(';');
+    if not spl[0]:
+        return 0
+    else:
+        return int(spl[0])
+
+# Track all colors present in provinces.bmp
+# (int, int, int) =&gt; True
+bmp_colors = {}
+
+image = Image.open("provinces.bmp")  
+for tpl in image.getcolors(MAX_PROVINCES):  
+    bmp_colors[tpl[1]] = True
+
+province_defs = file("definition.csv").read().splitlines()[1:-1]
+
+# Track all colors in definition.csv
+# (int, int, int) =&gt; True
+def_colors = {  
+    # Black and white are special and don't need definitions
+    (0, 0, 0): True,
+    (255, 255, 255): True
+}
+
+output_defs = []
+
+# Toggle existing province defs that have been removed/readded
+for line in province_defs:  
+    if not line:
+        continue
+    color = province_color(line)
+    def_colors[color] = True
+
+    if color in bmp_colors and line.startswith("#"):
+        # Inactive but shouldn't be
+        print "Activating {}".format(line)
+        output_defs.append(line[1:-1])
+    elif color not in bmp_colors and not line.startswith("#"):
+        # Active but needs to be removed
+        print "Commenting out {}".format(line)
+        output_defs.append("#"+line)
+    else:
+        # No change needed
+        output_defs.append(line)
+
+# Now add any new colors that aren't in definition.csv at all
+max_num = max([province_num(line) for line in output_defs])  
+for color in bmp_colors.keys():  
+    if color not in def_colors:
+        max_num += 1
+        line = "{};{};{};{};;x".format(
+            max_num, color[0], color[1], color[2])
+        print "Adding new province {}".format(line)
+        output_defs.append(line)
+
+with open("definition.csv", 'w') as f:  
+    f.write("province;red;green;blue;x;x\n" + "\n".join(output_defs))
+</code></pre>
+        </section>
+    </article>
+
+
+    <article class="post tag-modding tag-games tag-art">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2014-12-08">08 Dec 2014</time> on <a href="../../tag/modding/">modding</a>, <a href="../../tag/games/">games</a>, <a href="../../tag/art/">art</a></span>
+          <h2 class="post-title"><a href="../../ck2-topology-glitches/">CK2 topology glitches</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p><a href="http://en.wikipedia.org/wiki/Crusader_Kings_II">Crusader Kings 2</a> defines its 3D game map structure with a set of overlaid bmp files: terrain.bmp, topology.bmp, rivers.bmp etc. I wondered what would happen if you ran them through a <a href="https://twitter.com/badpng">PNG encoding corruptor</a>.</p>
+
+<p><img src="../../content/images/2014/12/ck2-shadowlands.jpg" alt=""></p>
+
+<p>The result: disturbing jagged shadowlands, like a vast intellect had rearranged Europe into impossible circuitry. </p>
+
+<p><img src="../../content/images/2014/12/ck2-serpents.jpg" alt=""></p>
+
+<p>Where the Holy Roman Empire once stood, great winding serpents lurk under disjointed oceans.</p>
+
+<p><img src="../../content/images/2014/12/balticsea.png" alt=""></p>
+
+<p>The depths of the Baltic Sea are raised, to lie contorted and twisted.</p>
+
+<p><img src="../../content/images/2014/12/ck2-forests.jpg" alt=""></p>
+
+<p>The corpses of Norway and Russia are blanketed in lush floating forests, grasping towards what little sunlight remains.</p>
+
+<p><iframe class="vine-embed" src="https://vine.co/v/OriZ7EjeKTI/embed/simple" width="600" height="600" frameborder="0"></iframe><script async src="http://platform.vine.co/static/scripts/embed.js" charset="utf-8"></script></p>
+
+<p>And across the Byzantine Empire, rivers flow in swarms, heeding neither gravity nor obstacle.</p>
+        </section>
+    </article>
+
+
+    <article class="post tag-ruby tag-release tag-twitter">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2014-12-07">07 Dec 2014</time> on <a href="../../tag/ruby/">ruby</a>, <a href="../../tag/release/">release</a>, <a href="../../tag/twitter/">twitter</a></span>
+          <h2 class="post-title"><a href="../../twitter_ebooks-3-0/">twitter_ebooks 3.0</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>Version 3.0 of <a href="https://github.com/mispy/twitter_ebooks">twitter_ebooks</a> is out! New stuff:</p>
+
+<ul>
+<li>About 80% less memory and storage use for models</li>
+<li>Bots run in their own threads (no eventmachine), and startup is parallelized</li>
+<li>Bots start with <code>ebooks start</code>, and no longer die on unhandled exceptions</li>
+<li><code>ebooks auth</code> command will create new access tokens, for running multiple bots</li>
+<li><code>ebooks console</code> starts a ruby interpreter with bots loaded (see Ebooks::Bot.all)</li>
+<li>Replies are slightly rate-limited to prevent infinite bot convos</li>
+<li>Non-participating users in a mention chain will be dropped after a few tweets</li>
+<li><a href="http://rdoc.info/github/mispy/twitter_ebooks">API documentation</a> and tests</li>
+</ul>
+
+<p>This should be the last major version release. I didn't expect to put this much work into a twitterbot library! Since a fair few people use it, though, I figured I owe it to them to make sure it behaves itself.</p>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2014-11-12">12 Nov 2014</time> </span>
+          <h2 class="post-title"><a href="../../ideas/">Ideas</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>An idea dump for stuff I'd like to try doing someday. This is periodically updated. Not filtered for plausibility!</p>
+
+<h2 id="ai">AI</h2>
+
+<p><a id="Write_a_bot_which_plays_Spelunky_and_tweets_about_it"></a></p>
+
+<ul>
+<li>Write a bot which plays Spelunky and tweets about it</li>
+</ul>
+
+<p>From <a href="https://twitter.com/m1sp/status/531682414456631296">this conversation</a>. Writing a bot which successfully plays Spelunky at all is hard, since it is a complex game which requires navigating a destructable environment and punishes mistakes very harshly. There is a <a href="https://t2thompson.files.wordpress.com/2013/08/paper_38.pdf">paper</a> discussing this and providing an API; bots are written in C++ or GML.</p>
+
+<p>Once you have a bot, making it describe its experiences could range from simple to tremendously complex. You could fake it with some pregenerated lines ("I defeated a snake on level [x]!") and have it be perfectly entertaining, but translating a variable sequence of events into a natural language narrative is a deep general problem.</p>
+
+<p><a id="Train_a_deep_neural_network_or_other_machine_learning_model_to_classify_cute_images"></a></p>
+
+<ul>
+<li>Train a <a href="http://en.wikipedia.org/wiki/Deep_learning#Deep_neural_networks">deep neural network</a> or other machine learning model to classify cute images</li>
+</ul>
+
+<p>Recent years have seen some cool developments in machine learning, particularly image recognition. Google <a href="http://static.googleusercontent.com/media/research.google.com/en//archive/unsupervised_icml2012.pdf">created a model</a> which was able to discover the notion of image generalities like "cats" and "human faces" without even being told to look for these. I think it would be a fun learning experience to train a classifier using data labeled for an ambiguous concept like <em>cuteness</em>, which is a human-assigned property associated with an image that can be quantified but not really associated with one specific set of image features.</p>
+
+<p>To quantify cuteness, use a side-by-side comparison system where users are presented with two semi-randomly selected images and asked to select which is cuter. I think Randall Munroe did this at one point, there's an algorithm somewhere. By only requiring them to select the cuter image, users make binary choices at any given step but you still end up with a sorted hierarchy of images.</p>
+
+<p>(n.b. I feel I should disclaim that cuteness is a subjective quality and what you would be measuring is "consensus cuteness" or the common denominator of what people find cute, there is no true total ordering of cuteness independent of individual experience)</p>
+
+<p>I suspect you would have lots of overfitting problems with the model-- it'd be very easy to train something that only recognizes kittens and gets stuck at a local optimum because kittens are reliably cute.</p>
+
+<h2 id="games">Games</h2>
+
+<p><a id="Procedural_generation_of_underlying_game_mechanics"></a></p>
+
+<ul>
+<li>Procedural generation of underlying game mechanics</li>
+</ul>
+
+<p>I remember a persistent myth about Pokémon games involving Mew and trucks. It's hard to imagine this forming with modern games unless they are <em>truly</em> obscure, because only one person needs to understand an aspect of the mechanics and write about it somewhere searchable for everyone to know.<sup id="fnref:1"><a href="index.html#fn:1" rel="footnote">1</a></sup></p>
+
+<p>Procedural generation tackles this by making everyone's game different, so that the past experience of others is not as solid a guide and you have to explore for yourself. However, even games that make heavy use of procgen only really use it for the <em>surface</em> world, the part that is visible to the player. A dragon in nethack always behaves predictably like a dragon, even if the dungeon in which it appears is configured slightly differently.</p>
+
+<p>I think a game which applied randomization even to invisible aspects of the game model would be especially interesting, because it would encourage players to do their own research and uncover things about the universe for themselves.</p>
+
+<p>Important consideration: the variation has to <em>matter</em>. For example, Starbound does procedural generation of enemies but you don't really pay much attention to it because you're mostly just going to shoot at them either way. You have to reward the player for learning things by allowing their optimal strategy to be dramatically changed by new information.</p>
+
+<p><a id="A_creature_breeding_game_inspired_by_real_genetics"></a></p>
+
+<ul>
+<li>A creature breeding game inspired by real genetics</li>
+</ul>
+
+<p>An idea from years ago when I was studying biology. Ties into the above idea about uncovering hidden game mechanics. The obvious point of comparison is the <a href="http://en.wikipedia.org/wiki/Creatures_(artificial_life_series)">Creatures</a> series, which did a nice job of <a href="http://www.gamewaredevelopment.com/images/uploads/biochem.htm">implementing basic biochemistry</a> by modelling organs as bags which both produced and contained a certain quantity of chemicals.</p>
+
+<p>How could you improve upon Creatures? Well, it'd be nice if there was more <em>game</em> to it. Creatures was a sandbox simulation in the truest sense, and didn't provide much in the way of goals to pursue. There are a few ways you could solve this; the two that come to mind are a multiplayer competitive element like Pokémon or a dynamic, hostile environment like Dwarf Fortress. Creatures would make very interesting elements in a trading game.</p>
+
+<p>Another example of this kind of game is Sonic Adventure 2, in the form of the <a href="http://sonic.wikia.com/wiki/Chao">Chao</a>. Chao are particularly cool because they have subtle gradients of morphological variation based on a combination of genetics and environment, which solves the other issue I had: Creatures just don't <em>look</em> very interesting. Breeding is much more fun when it produces distinct visual forms.</p>
+
+<p>In practice, you'd probably have simplified chromosomes as linear collections of "genes" which produce "proteins" at a given rate in particular parts of the body. The rates could be subject to mutation, and perhaps the protein properties; there's a lot of room for varying how simple or complex the proteins and their interactions are. Abstract physiology is actually pretty straightforward to implement compared to the messy work of producing a game world and graphics.</p>
+
+<p><a id="A_deterministic_tactical_RPG_in_the_spirit_of_Fire_Emblem"></a></p>
+
+<ul>
+<li>A deterministic tactical RPG in the spirit of Fire Emblem</li>
+</ul>
+
+<p>Some of my fondest memories are of JRPGs which involve teams of characters moving on a 2D grid, a system which ultimately derives from chess. Unlike chess, these games always include a pseudorandom element, like probability of an attack missing or variation in damage. I find this encourages less depth of thought, because no matter how well-considered your plan is there's always some chance of it just failing at any given step for unfair reasons.</p>
+
+<p>Chess shows that it is possible to make an enjoyable game like this without including random elements during gameplay. I think it would be an interesting challenge to design a more complex game along similar lines.</p>
+
+<p>This is one of the ideas I made a start on: <a href="https://github.com/mispy/tactics">https://github.com/mispy/tactics</a> I have lots of other thoughts about fun variations and story settings for TRPGs so  might come back to this one, especially since a basic Fire Emblem-like system is fairly easy to implement.</p>
+
+<p><a id="Make_a_small_game_based_on_this_HaxeFlixel_demo"></a></p>
+
+<ul>
+<li>Make a small game based on this <a href="http://haxeflixel.com/demos/Mode/">HaxeFlixel demo</a></li>
+</ul>
+
+<p>HaxeFlixel is sorta a spiritual successor to Flash for game development. I like C# as a language a bit better than Haxe, but it's still pretty nice and the environment is much friendlier than Monogame. (i.e. actual documentation!)</p>
+
+<p><a id="Make_a_Non-Lethal_Combat_mod_for_Starbound"></a></p>
+
+<ul>
+<li>Make a Non-Lethal Combat mod for Starbound</li>
+</ul>
+
+<p>Starbound exploration kinda mostly involves beating up native animals and taking people's stuff, which is weird for a game otherwise about cute fuzzy space animal people building things in space. I think adding more variety to combat aside from damaging attacks would also make it more fun!</p>
+
+<p><em>Immobilizing weapons</em></p>
+
+<p>Most obvious kind! There's a great tractor beam weapon on the Rho mech in the XS Corporation Mechs mod, could use similar bubble-y effects to hold a creature in place, send it flying away, etc. A weapon which force-activates the gravity techs on enemies would be very amusing, now that I think about it.</p>
+
+<p><em>Better defenses</em></p>
+
+<p>Bubble techs which cause attacks/enemies to bounce off! Maybe placeable obstacle type ones as well. Could perhaps use something like the existing "slow" effect on oil to make time distortion fields, or abilities which rearrange blocks around you automatically to make physical cover. </p>
+
+<p><em>Stealthy things</em></p>
+
+<p>Might be tricky to implement proper stealth platformer mechanics, but even just a basic energy-draining cloaking tech that just drops you out of combat while it's active would be great.</p>
+
+<p><em>How to reward player?</em></p>
+
+<p>The game incentivizes killing stuff with pixel rewards, hunting drops etc. One way we could encourage pacifism is by making the non-lethal weapons just more <em>effective</em> e.g. a stasis field gun that removes smaller enemies from combat quickly so you can get back to exploring. I found myself using paralysis in Skyrim for this a lot.</p>
+
+<p>If possible, it'd be neat if monster types you're consistently peaceful towards become consistently peaceful towards you as well, and perhaps ally with you against hostile enemies or otherwise behave in obviously friendly ways. And enemies you kill a lot of could get tougher and more numerous and start ganging up on you :3</p>
+
+<h2 id="webdevelopment">Web Development</h2>
+
+<p><a id="Add_search_functionality_to_the_Ghost_admin_panel"></a></p>
+
+<ul>
+<li>Add search functionality to the Ghost admin panel</li>
+</ul>
+
+<p>The way I use Ghost is closer to a semi-public Evernote than a blogging engine, and it would be extremely useful to be able to quickly search through posts from the admin panel. I expect this would be handy for normal blogs with a significant number of entries as well, since you do need to edit stuff in the distant past on occasion.</p>
+
+<p><a id="A_file_syncing_service_which_supports_image_tagging_and_source_annotation"></a></p>
+
+<ul>
+<li>A file syncing service which supports image tagging and source annotation</li>
+</ul>
+
+<p>There's lots of lovely artwork and interesting information in the form of image files on the internet. I like to collect these and share them with people. My current solution is just saving stuff <a href="http://cute.mispy.me/">to Dropbox</a>, which is fast because saving a file to a folder from a browser is fast and I do not have to wait for the Dropbox servers to do anything. However, Dropbox is not optimized for the purpose of image collections unlike systems like <a href="http://zerochan.net/">Zerochan</a>, so it's difficult to sort through them later and provide attribution to the creators.</p>
+
+<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>Melissa <a href="https://twitter.com/0xabad1dea/status/532552272874852353">rightly points out</a> that this may be more a consequence of us having been small children than how little access to the internet we had. A modern example is <a href="http://minecraft.gamepedia.com/Herobrine">Herobrine</a>. Still, it'd be nice to be able to create the same sense of mystery in adults, extelligence and all. <a href="index.html#fnref:1" title="return to article">↩</a></p></li></ol></div>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2014-10-29">29 Oct 2014</time> </span>
+          <h2 class="post-title"><a href="../../frivolous-things/">Frivolous things</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>Reading this article about the <a href="http://www.theguardian.com/higher-education-network/blog/2014/oct/26/-sp-female-academics-dont-power-dress-forget-heels-and-no-flowing-hair-allowed">limited scope of dress for female academics</a> made me think a bit about what it means for something to be <em>frivolous</em>.</p>
+
+<p>When I was 13, I felt very sure that I knew what frivolous was. It was <a href="https://en.wikipedia.org/wiki/Final_Fantasy_X-2">Final Fantasy X-2</a>, to my teenage mind an irredeemable sacrilege of a sequel to the bestest and most amazingest game of all time. Final Fantasy X was a game about love, dreams and the cultural consequences of giant invincible flying doom monsters. X-2 seemed to involve a lot of pop singing and girls in fancy dresses.</p>
+
+<p>Shortly thereafter I discovered my sexuality and spent a few years semi-closeted trying to be more bi than I was. I had no direct objection to being attracted to guys, or even much of an interest in masculinity. I just really didn't want to be seen as <em>frivolous</em>, and I associated that with being openly gay.</p>
+
+<p>You might notice that what we're calling frivolous is really just cultural femininity. The google dictionary definition will even use it in a sentence for you, denouncing the evils of ribbons and frills:</p>
+
+<p><img src="../../content/images/2014/10/frivolity.png" alt=""></p>
+
+<p>At some point I realized how <em>extremely selective and specific</em> this is. It just so happens that <em>frills</em> are frivolous and not, say, neckties? No impartial analysis of the distribution of human attention would ever come to the conclusion that the most serious distraction is how much effort they put into wearing ribbons!</p>
+
+<p>The true waste was all that worrying about whether things were frivolous or not and whether I might be perceived as such. If a woman wears a bright blue top instead of a grey one, she has expended nobody's time and energy in doing so. When a potential employer lowers their estimations of her professional ability as a result, and fails to hire her into a position for which she is ideal? A huge amount of everyone's time and energy has been wasted! It's absurdly inefficient!</p>
+
+<p>In this sense, people who engage in unusual and colorful self-expression are doing something extremely socially important. They're challenging norms and standards of behavior which are <em>distractingly frivolous</em>. Perhaps once they are dispensed with we can all get on with doing fun and interesting stuff!</p>
+        </section>
+    </article>
+
+
+    <nav class="pagination" role="navigation">
+        <a class="newer-posts" href="../../"><span aria-hidden="true">←</span> Newer Posts</a>
+    <span class="page-number">Page 2 of 8</span>
+        <a class="older-posts" href="../3/">Older Posts <span aria-hidden="true">→</span></a>
+</nav>
+
+
+</main>
+
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/stars.js?v=0717475246"></script>
+</body>

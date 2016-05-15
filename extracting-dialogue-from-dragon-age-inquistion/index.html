@@ -1,0 +1,250 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>Extracting dialogue from Dragon Age: Inquistion</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/extracting-dialogue-from-dragon-age-inquistion/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Extracting dialogue from Dragon Age: Inquistion">
+    <meta property="og:description" content="I thought this was an interesting case of technical problem solving. My friend @aeleruil was trying to dump the dialogue text from DAI so he could make a bot. He found an existing tool, but as you would expect from...">
+    <meta property="og:url" content="/extracting-dialogue-from-dragon-age-inquistion/">
+    <meta property="article:published_time" content="2014-12-16T18:34:03.427Z">
+    <meta property="article:modified_time" content="2015-11-29T21:51:21.305Z">
+    <meta property="article:tag" content="modding">
+    <meta property="article:tag" content="games">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Extracting dialogue from Dragon Age: Inquistion">
+    <meta name="twitter:description" content="I thought this was an interesting case of technical problem solving. My friend @aeleruil was trying to dump the dialogue text from DAI so he could make a bot. He found an existing tool, but as you would expect from...">
+    <meta name="twitter:url" content="/extracting-dialogue-from-dragon-age-inquistion/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Extracting dialogue from Dragon Age: Inquistion",
+    "url": "/extracting-dialogue-from-dragon-age-inquistion/",
+    "datePublished": "2014-12-16T18:34:03.427Z",
+    "dateModified": "2015-11-29T21:51:21.305Z",
+    "keywords": "modding, games",
+    "description": "I thought this was an interesting case of technical problem solving. My friend @aeleruil was trying to dump the dialogue text from DAI so he could make a bot. He found an existing tool, but as you would expect from..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template tag-modding tag-games">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post tag-modding tag-games">
+
+
+            <span class="post-meta"><time datetime="2014-12-17">17 Dec 2014</time> on <a href="../tag/modding/">modding</a> | <a href="../tag/games/">games</a></span>
+
+            <h1 class="post-title">Extracting dialogue from Dragon Age: Inquistion</h1>
+
+            <section class="post-content">
+                <p>I thought this was an interesting case of technical problem solving. My friend <a href="https://twitter.com/aeleruil">@aeleruil</a> was trying to dump the dialogue text from DAI so he could make a <a href="https://twitter.com/DragonAgeEbooks">bot</a>. He found an <a href="http://sourceforge.net/projects/daitools/">existing tool</a>, but as you would expect from freshly baked OSS modding software it is not... immediately clear how to use it:</p>
+
+<p><img src="../content/images/2014/12/dai-tool-1.png" alt=""></p>
+
+<p>He determined that it was definitely <em>capable</em> of doing what he wanted because the feature addition had been <a href="http://daitools.freeforums.org/update-rev-25-talktables-are-now-exportable-to-text-files-t60.html">mentioned</a> as being added in revision 25. After some searching and fiddling I realized I might have better luck just reading the code. What is added in revision 25?</p>
+
+<p><img src="../content/images/2014/12/Selection_057.png" alt=""></p>
+
+<p>From the filename we can see that we want the <code>Bundle Explorer</code>. This takes an SB file and a CAT file and produces a list of what look like path identifiers. I still don't know exactly what these file formats are, but we worked out by trial and error that providing it with <code>loctext/en.sb</code> and <code>cas.cat</code> made it do a thing.</p>
+
+<p><img src="../content/images/2014/12/dai-zlich.png" alt=""></p>
+
+<p>From the <code>totalSize</code> field, it seems <code>win32/loctext/en/text</code> is what we want: a big 2.5MB chunk of non-specific text. Unfortunately, just selecting that and running "Export Resource" does a good deal of nothing at all. Not even an error message!</p>
+
+<p>So, back to the code. What could cause it to fail silently?</p>
+
+<pre><code class="language-csharp">private void exportResourceToolStripMenuItem_Click(object sender, EventArgs e)  
+{
+    if (hb1.ByteProvider != null &amp;&amp; hb1.ByteProvider.Length != 0)
+    {
+        int n = listBox1.SelectedIndex;
+        int a = listBox2.SelectedIndex;
+        int b = listBox4.SelectedIndex;
+
+        if (n == -1 &amp;&amp; a == -1 &amp;&amp; b == -1)
+            return;
+
+        MemoryStream m = new MemoryStream();
+        for (int i = 0; i &lt; hb1.ByteProvider.Length; i++)
+            m.WriteByte(hb1.ByteProvider.ReadByte(i));
+        m.Seek(0, SeekOrigin.Begin);
+
+        byte[] buffer = null;
+        string filter = "";
+
+        if (a != -1)
+        {
+            Bundle c = sb.bundles[n];
+            Bundle.ebxtype entry = c.ebx[a];
+
+            buffer = ExtractEbx(m);
+            filter = "*.xml|*.xml";
+        }
+        else if (b != -1)
+        {
+            Bundle c = sb.bundles[n];
+            Bundle.restype entry = c.res[b];
+            string resExt = Tools.GetResType(BitConverter.ToUInt32(entry.rtype, 0));
+
+            if (resExt == ".mesh")
+            {
+                buffer = ExtractMesh(m);
+                filter = "*.obj|*.obj";
+            }
+            else if(resExt == ".itexture")
+            {
+                buffer = ExtractTexture(m);
+                filter = "*.dds|*.dds";
+            }
+            else if (resExt == ".talktable")
+            {
+                buffer = ExtractTalktable(m);
+                filter = "*.txt|*.txt";
+            }
+        }
+
+        if (buffer != null)
+        {
+            /* Write file here */
+            SaveFileDialog d = new SaveFileDialog();
+            d.Filter = filter;
+            if (d.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                BinaryWriter writer = new BinaryWriter(new FileStream(d.FileName, FileMode.Create));
+                writer.Write(buffer);
+                writer.Close();
+
+                MessageBox.Show("Resource saved to " + d.FileName);
+            }
+            else
+                return;
+        }
+    }
+}
+</code></pre>
+
+<p>This function should always create a <code>SaveFileDialog</code> unless <code>buffer</code> is null. <code>buffer</code> will be be null if <code>resExt</code> does not match a defined extension. Hang on-- that ".itexture" looks familiar! </p>
+
+<p><img src="../content/images/2014/12/dai-talktable.png" alt=""></p>
+
+<p>Sure enough, there's .talktable, lurking in the dropdown. To get the text, you need to select the path immediately above <code>win32/loctext/en/text</code>, click <code>Find Next</code> to get the talktable, and <em>then</em> run <code>Export Resource</code>.</p>
+
+<p><img src="../content/images/2014/12/dai-allthetext.png" alt=""></p>
+
+<p>Sometimes the code really is just the best available documentation!</p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Extracting%20dialogue%20from%20Dragon%20Age%3A%20Inquistion&amp;url=/extracting-dialogue-from-dragon-age-inquistion/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/extracting-dialogue-from-dragon-age-inquistion/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/extracting-dialogue-from-dragon-age-inquistion/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

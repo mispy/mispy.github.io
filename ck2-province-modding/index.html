@@ -1,0 +1,236 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>Modding provinces.bmp in Crusader Kings II</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/ck2-province-modding/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Modding provinces.bmp in Crusader Kings II">
+    <meta property="og:description" content="CK2 has a game area composed of ~1,435 individual provinces, representing the continent of Europe. Each of these corresponds to a color in a single 3072x2048 bmp: Every province has a color but not every color has a province....">
+    <meta property="og:url" content="/ck2-province-modding/">
+    <meta property="article:published_time" content="2014-12-08T14:42:15.225Z">
+    <meta property="article:modified_time" content="2014-12-16T19:04:56.137Z">
+    <meta property="article:tag" content="modding">
+    <meta property="article:tag" content="games">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Modding provinces.bmp in Crusader Kings II">
+    <meta name="twitter:description" content="CK2 has a game area composed of ~1,435 individual provinces, representing the continent of Europe. Each of these corresponds to a color in a single 3072x2048 bmp: Every province has a color but not every color has a province....">
+    <meta name="twitter:url" content="/ck2-province-modding/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Modding provinces.bmp in Crusader Kings II",
+    "url": "/ck2-province-modding/",
+    "datePublished": "2014-12-08T14:42:15.225Z",
+    "dateModified": "2014-12-16T19:04:56.137Z",
+    "keywords": "modding, games",
+    "description": "CK2 has a game area composed of ~1,435 individual provinces, representing the continent of Europe. Each of these corresponds to a color in a single 3072x2048 bmp: Every province has a color but not every color has a province...."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template tag-modding tag-games">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post tag-modding tag-games">
+
+
+            <span class="post-meta"><time datetime="2014-12-09">09 Dec 2014</time> on <a href="../tag/modding/">modding</a> | <a href="../tag/games/">games</a></span>
+
+            <h1 class="post-title">Modding provinces.bmp in Crusader Kings II</h1>
+
+            <section class="post-content">
+                <p>CK2 has a game area composed of ~1,435 individual provinces, representing the continent of Europe. Each of these corresponds to a color in a single 3072x2048 bmp:</p>
+
+<p><img src="../content/images/2014/12/provinces-1.jpg" alt=""></p>
+
+<p>Every province has a color but not every color has a province. White is used for areas outside the game boundaries and black represents mountain ranges used as separators. Not all provinces are playable, either; some represent sea regions or uncolonized areas.</p>
+
+<p>Provinces are linked to gameplay information by their assigned number in <code>definition.csv</code>. This file gives numbers to many more colors than actually appear in <code>provinces.bmp</code>, but the inverse is not true: using a color in <code>provinces.bmp</code> which does not appear in the csv file will cause a CTD on startup.</p>
+
+<p>I couldn't quite get any of the <a href="http://forum.paradoxplaza.com/forum/showthread.php?598974-Tool-Clausewitz-Map-Checker">existing tools</a> to work, so I wrote a quick Python script which will update <code>definition.csv</code> with any changes to the bmp, by commenting out colors that are not present and adding any new ones at the end. This way, the numbering is preserved even if you make many sequential modifications:</p>
+
+<pre><code class="python">#!/usr/bin/env python
+
+MAX_PROVINCES = 10000
+
+from PIL import Image
+
+def province_color(line):  
+    """Gets the RGB tuple from a definition.csv line"""
+    spl = line.strip('#').split(';')
+    return (int(spl[1]), int(spl[2]), int(spl[3]))
+
+def province_num(line):  
+    """Gets the province number from a definition.csv line"""
+    spl = line.strip('#').split(';');
+    if not spl[0]:
+        return 0
+    else:
+        return int(spl[0])
+
+# Track all colors present in provinces.bmp
+# (int, int, int) =&gt; True
+bmp_colors = {}
+
+image = Image.open("provinces.bmp")  
+for tpl in image.getcolors(MAX_PROVINCES):  
+    bmp_colors[tpl[1]] = True
+
+province_defs = file("definition.csv").read().splitlines()[1:-1]
+
+# Track all colors in definition.csv
+# (int, int, int) =&gt; True
+def_colors = {  
+    # Black and white are special and don't need definitions
+    (0, 0, 0): True,
+    (255, 255, 255): True
+}
+
+output_defs = []
+
+# Toggle existing province defs that have been removed/readded
+for line in province_defs:  
+    if not line:
+        continue
+    color = province_color(line)
+    def_colors[color] = True
+
+    if color in bmp_colors and line.startswith("#"):
+        # Inactive but shouldn't be
+        print "Activating {}".format(line)
+        output_defs.append(line[1:-1])
+    elif color not in bmp_colors and not line.startswith("#"):
+        # Active but needs to be removed
+        print "Commenting out {}".format(line)
+        output_defs.append("#"+line)
+    else:
+        # No change needed
+        output_defs.append(line)
+
+# Now add any new colors that aren't in definition.csv at all
+max_num = max([province_num(line) for line in output_defs])  
+for color in bmp_colors.keys():  
+    if color not in def_colors:
+        max_num += 1
+        line = "{};{};{};{};;x".format(
+            max_num, color[0], color[1], color[2])
+        print "Adding new province {}".format(line)
+        output_defs.append(line)
+
+with open("definition.csv", 'w') as f:  
+    f.write("province;red;green;blue;x;x\n" + "\n".join(output_defs))
+</code></pre>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Modding%20provinces.bmp%20in%20Crusader%20Kings%20II&amp;url=/ck2-province-modding/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/ck2-province-modding/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/ck2-province-modding/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html style="width: 100%;">
+  <head>
+    <script type="text/javascript" src="../misc/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        function yay() {
+          var dw = $(window).width();
+          var dh = $(window).height();
+          $('body').css('font-size', dh+'px');
+        }
+        $(window).resize(yay);
+        yay();
+      });
+    </script>
+    <style>
+      body {
+        color: #f5aa44;
+        text-align: center;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body style="background-color: black; margin-top: -10px;">
+    ❤
+  </body>
+</html>

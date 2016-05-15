@@ -1,0 +1,189 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>Chromium over a persistent SSH proxy</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/chromium-over-a-persistent-ssh-proxy/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Chromium over a persistent SSH proxy">
+    <meta property="og:description" content="I often find I need to remotely access web services on ports that can be neither exposed to the outside world nor reverse-proxied to a convenient single location. Fortunately, complex VPN setups are not required here, as the venerable ssh...">
+    <meta property="og:url" content="/chromium-over-a-persistent-ssh-proxy/">
+    <meta property="article:published_time" content="2012-07-06T03:09:00.000Z">
+    <meta property="article:modified_time" content="2014-04-02T09:33:04.616Z">
+    <meta property="article:tag" content="security">
+    <meta property="article:tag" content="chromium">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Chromium over a persistent SSH proxy">
+    <meta name="twitter:description" content="I often find I need to remotely access web services on ports that can be neither exposed to the outside world nor reverse-proxied to a convenient single location. Fortunately, complex VPN setups are not required here, as the venerable ssh...">
+    <meta name="twitter:url" content="/chromium-over-a-persistent-ssh-proxy/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Chromium over a persistent SSH proxy",
+    "url": "/chromium-over-a-persistent-ssh-proxy/",
+    "datePublished": "2012-07-06T03:09:00.000Z",
+    "dateModified": "2014-04-02T09:33:04.616Z",
+    "keywords": "security, chromium",
+    "description": "I often find I need to remotely access web services on ports that can be neither exposed to the outside world nor reverse-proxied to a convenient single location. Fortunately, complex VPN setups are not required here, as the venerable ssh..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template tag-security tag-chromium">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post tag-security tag-chromium">
+
+
+            <span class="post-meta"><time datetime="2012-07-06">06 Jul 2012</time> on <a href="../tag/security/">security</a> | <a href="../tag/chromium/">chromium</a></span>
+
+            <h1 class="post-title">Chromium over a persistent SSH proxy</h1>
+
+            <section class="post-content">
+                <p>I often find I need to remotely access web services on ports that can be neither exposed to the outside world nor reverse-proxied to a convenient single location. Fortunately, complex VPN setups are not required here, as the venerable <strong>ssh</strong> suffices!</p>
+
+<pre><code>-D [bind_address:]port
+    Specifies a local “dynamic” application-level port forwarding.  This works by allocating a
+    socket to listen to port on the local side, optionally bound to the specified
+    bind_address.  Whenever a connection is made to this port, the connection is forwarded
+    over the secure channel, and the application protocol is then used to determine where to
+    connect to from the remote machine.  Currently the SOCKS4 and SOCKS5 protocols are sup‐
+    ported, and ssh will act as a SOCKS server.  Only root can forward privileged ports.
+    Dynamic port forwardings can also be specified in the configuration file.
+
+    IPv6 addresses can be specified by enclosing the address in square brackets.  Only the
+    superuser can forward privileged ports.  By default, the local port is bound in accordance
+    with the GatewayPorts setting.  However, an explicit bind_address may be used to bind the
+    connection to a specific address.  The bind_address of “localhost” indicates that the lis‐
+    tening port be bound for local use only, while an empty address or ‘*’ indicates that the
+    port should be available from all interfaces.
+</code></pre>
+
+<p>Applying it like so:</p>
+
+<pre><code>ssh -D 11733 some.cool.host  
+</code></pre>
+
+<p>Will give you a SOCKS proxy on local port 11733 for accessing the network environment of <strong>some.cool.host</strong>. You can persist this proxy by installing <a href="http://www.harding.motd.ca/autossh/">autossh</a> alongside <a href="http://www.gnu.org/software/screen/">screen</a> and adding the following line to your crontab (depending on your authentication method, you might need something fancier):</p>
+
+<pre><code>@reboot screen -S cool_host_proxy -d -m autossh -D 11733 some.cool.host
+</code></pre>
+
+<p>Since Chromium's settings are somewhat minimalist, you will want an extension to make proxy use more manageable. <a href="https://chrome.google.com/webstore/detail/dpplabbmogkhghncfbfdeeokoefdjegm">Proxy SwitchySharp</a> seems to work best under GNOME.</p>
+
+<p><img src="../content/images/2014/Apr/switchysharp_options.jpg" alt=""></p>
+
+<p>Keep in mind that this will only secure traffic between you and the some.cool.host server. Other means are necessary to prevent snooping between the server and the outside world or by the server itself!</p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Chromium%20over%20a%20persistent%20SSH%20proxy&amp;url=/chromium-over-a-persistent-ssh-proxy/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/chromium-over-a-persistent-ssh-proxy/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/chromium-over-a-persistent-ssh-proxy/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

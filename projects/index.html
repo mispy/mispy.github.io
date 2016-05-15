@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ" />
+
+    <title>Projects</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="http://mispy.me/projects/" />
+    <meta name="referrer" content="origin" />
+    <meta name="generator" content="Ghost 0.7" />
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/" />
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template page-template page tag-ruby tag-projects tag-javascript tag-modding tag-games tag-web tag-csharp">
+
+    
+
+<header class="post-header">
+    <a class="blog-logo" href="index.html">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo" />
+    </a>
+</header>
+
+<main class="content" role="main">
+  <article class="post tag-ruby tag-projects tag-javascript tag-modding tag-games tag-web tag-csharp page">
+      <h1 class="post-title">Projects</h1>
+
+      <section class="post-content">
+        <p>Stuff I've made or helped make. Levels of seriousness and silliness may vary wildly!</p>
+
+<h3 id="collaborative">Collaborative</h3>
+
+<p><a href="https://scirate.com/"><img src="../content/images/2014/12/scirate.png" alt="" title="" /></a></p>
+
+<ul>
+<li><a href="https://scirate.com/">SciRate</a> - <a href="http://github.com/scirate/scirate">http://github.com/scirate/scirate</a></li>
+</ul>
+
+<p>Ranking and commenting system for <a href="http://arxiv.org/">arXiv</a> papers which I maintain. Originally created by <a href="http://dabacon.org/pontiff/">Dave Bacon</a> and the quant-ph community, who are the primary users. A Rails site, using a combination of postgres and <a href="http://www.elasticsearch.org/">elasticsearch</a> for the storage backend. I gave a <a href="https://docs.google.com/presentation/d/1QMTtk2nDo_ldDcGUVIc5AuFs2Mx84n0KaYgDsoI93xw/edit#slide=id.p">talk</a> about SciRate at an open science workshop.</p>
+
+<ul>
+<li><a href="http://jsil.org/">JSIL</a> - <a href="https://github.com/sq/JSIL">https://github.com/sq/JSIL</a></li>
+</ul>
+
+<p>JSIL is a C# to JavaScript transpiler, primarily used for porting games to the web. <a href="http://www.luminance.org/">Katelyn</a> contracted me to help work on getting JSIL to compile <a href="https://github.com/flibitijibibo/FNA">FNA</a>, the end result of which was the ability to use <a href="https://github.com/sq/JSIL/wiki/PInvoke-in-the-browser-via-Emscripten">P/Invoke to call Emscripten-compiled code</a>. That is, you can compile C/C++ native libraries to JavaScript and then call them from C# also compiled to JavaScript. It's about as mad as it sounds!</p>
+
+<ul>
+<li><a href="http://www.wanderthegame.com/">Wander</a></li>
+</ul>
+
+<p>A very pretty non-competitive multiplayer exploration game, written in C++/Lua and based on CRYENGINE. Loki hired me to help port this from PC to PS4, and I ended up delving into a lot of <a href="https://mispy.me/wander-networking/">game networking concepts</a> in the process.  </p>
+
+<h3 id="libraries">Libraries</h3>
+
+<p><a href="https://github.com/mispy/libtcod"><img src="../content/images/2014/12/libtcod.png" alt="" title="" /></a></p>
+
+<ul>
+<li>twitter_ebooks - <a href="https://github.com/mispy/twitter_ebooks">https://github.com/mispy/twitter_ebooks</a></li>
+</ul>
+
+<p>A Ruby framework for making interactive twitterbots. My bots play up the <a href="http://en.wikipedia.org/wiki/ELIZA_effect">ELIZA effect</a> by applying keyword statistics, simulated delays and other strategies for mimicing humans. The results are often <a href="https://mispy.me/the-mysterious-nature-of-bots/">very amusing</a>. </p>
+
+<ul>
+<li>libtcod-ruby - <a href="https://github.com/mispy/libtcod">https://github.com/mispy/libtcod</a></li>
+</ul>
+
+<p>Ruby FFI bindings for <a href="http://roguecentral.org/doryen/libtcod/">libtcod</a>, a library which provides a bunch of tools like fast tile-based pathfinding and lighting for creating old-school roguelike games.</p>
+
+<ul>
+<li>arxivsync - <a href="https://github.com/mispy/arxivsync">https://github.com/mispy/arxivsync</a></li>
+</ul>
+
+<p>Ruby OAI interface for harvesting the arXiv, which powers SciRate. Can be used to store, update and parse a full mirror of the paper metadata in XML.</p>
+
+<h3 id="chromeextensions">Chrome Extensions</h3>
+
+<p><a href="https://chrome.google.com/webstore/detail/dotsies/lcelhifbbkanihndkglcfepchfdhblal"><img src="../content/images/2014/12/dotsies.png" alt="" title="" /></a></p>
+
+<ul>
+<li><a href="https://chrome.google.com/webstore/detail/deviantart-collector/lnkcindnhhbgclaofjjogmajedglkcdg">DeviantART Collector</a> - <a href="https://github.com/mispy/devicollect">https://github.com/mispy/devicollect</a></li>
+</ul>
+
+<p>Chrome extension which checks for new deviations and opens them all in individual tabs. I think this is actually the best software I've ever written, because it does exactly one little thing and does it well, and I've used it all the time for years.</p>
+
+<ul>
+<li><a href="https://chrome.google.com/webstore/detail/dotsies/lcelhifbbkanihndkglcfepchfdhblal">Dotsies Chrome</a> - <a href="https://github.com/mispy/dotsies_chrome">https://github.com/mispy/dotsies_chrome</a></li>
+</ul>
+
+<p>Chrome extension for learning the <a href="http://dotsies.org/">Dotsies</a> alphabet, which is the typograhical equivalent of a conlang. Much easier to install and toggle than changing your entire system font.</p>
+
+<h3 id="toysexperiments">Toys &amp; Experiments</h3>
+
+<p><a href="https://mispy.me/hacks/spdgrid"><img src="../content/images/2014/12/spdgrid.png" alt="" title="" /></a></p>
+
+<ul>
+<li><a href="https://mispy.me/hacks/spdgrid">spdgrid</a> - <a href="https://github.com/mispy/spdgrid">https://github.com/mispy/spdgrid</a></li>
+</ul>
+
+<p>An HTML5 implementation of the <a href="http://en.wikipedia.org/wiki/Prisoner's_dilemma">prisoner's dilemma</a> applied to a spatial grid, based on a paper by <a href="http://www.ped.fas.harvard.edu/people/faculty/publications_nowak/Nature92.pdf">Nowak and May</a>. I also added a mode which allows each cell to build up score across generations, which creates really alien-looking emergent structures.</p>
+
+<ul>
+<li><a href="http://heart.mispy.me/">♥</a> - <a href="https://github.com/mispy/heart">https://github.com/mispy/heart</a></li>
+</ul>
+
+<p>A cute <a href="http://heart.mispy.me/">bookmarklet</a> I made for Valentine's Day. Uses an SVG element which isn't attached to the DOM to calculate path coordinates.</p>
+
+<h3 id="gamemods">Game Mods</h3>
+
+<p><a href="https://mispy.me/ck2-topology-glitches/"><img src="../content/images/2014/12/ck2-shadowlands-1.jpg" alt="" title="" /></a></p>
+
+<ul>
+<li><a href="https://ludeon.com/forums/index.php?topic=3957.0">Mechatronics</a> - <a href="https://github.com/mispy/Mechatronics">https://github.com/mispy/Mechatronics</a></li>
+</ul>
+
+<p><strong>[needs update]</strong> A mod for <a href="http://rimworldgame.com">RimWorld</a> which adds friendly constructable versions of the game's rogue mechanoid enemies. RimWorld's modding system is interesting in that it involves writing C# and hooking dlls straight into the existing game code, instead of operating in a sandbox with a limited scripting language.</p>
+
+<ul>
+<li><a href="http://www.nexusmods.com/skyrim/mods/41894/?tab=1&amp;navtag=http%3A%2F%2Fwww.nexusmods.com%2Fskyrim%2Fajax%2Fmoddescription%2F%3Fid%3D41894%26preview%3D&amp;pUp=1">Civil War Followers</a></li>
+</ul>
+
+<p>A mod for Skyrim which makes the Imperial Legion and Stormcloak titles more useful by allowing you to order your poor subordinates about. The Elder Scrolls series has a really amazing modding community and it was nice to give something back to them!</p>
+      </section>
+  </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="index.html">~mispy</a> &copy; 2016 &bull; All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="assets/js/stars.js?v=0717475246"></script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>~mispy - Page 4</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/page/4/">
+    <meta name="referrer" content="origin">
+    <link rel="prev" href="/page/3/">
+    <link rel="next" href="/page/5/">
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="paged archive-template">
+
+    
+<header class="site-head">
+
+    <img class="star" id="starO" src="../../content/images/O.png" style="display: none;">
+    <img class="star" id="starB" src="../../content/images/B.png" style="display: none;">
+    <img class="star" id="starA" src="../../content/images/A.png" style="display: none;">
+    <img class="star" id="starF" src="../../content/images/F.png" style="display: none;">
+    <img class="star" id="starG" src="../../content/images/G.png" style="display: none;">
+    <img class="star" id="starK" src="../../content/images/K.png" style="display: none;">
+    <img class="star" id="starM" src="../../content/images/M.png" style="display: none;">
+    <canvas id="canvas" style="position: absolute; left: 0; width: 100%; height: 100%;"></canvas>
+
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <a class="blog-logo" href="../../"><img src="../../content/images/2016/03/sweatervest.png" alt="Blog Logo"></a>
+            <h1 class="blog-title"><a href="https://mispy.me/yes">~</a><a href="../../">mispy</a></h1>
+            <h2 class="blog-description"></h2>
+            <ul class="site-nav">
+              <li><a href="../../">Blog</a></li>
+              <li><a href="../../projects">Projects</a></li>
+              <li><a href="https://github.com/mispy">GitHub</a></li>
+              <li><a href="https://twitter.com/m1sp">Twitter</a></li>
+              <!--<li><a href="/hireme" class="hireme">Hire Me!</a></li>-->
+            </ul>
+        </div>
+    </div>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+    <article class="post tag-ruby tag-projects tag-gaming tag-starbound">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2013-12-28">28 Dec 2013</time> on <a href="../../tag/ruby/">ruby</a>, <a href="../../tag/projects/">projects</a>, <a href="../../tag/gaming/">gaming</a>, <a href="../../tag/starbound/">starbound</a></span>
+          <h2 class="post-title"><a href="../../monitoring-processes-from-log-output-alone/">Monitoring processes from log output alone</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>I wrote a little Sinatra gem which monitors the log output of the <a href="http://playstarbound.com/">Starbound</a> server and displays it to the web: <a href="https://github.com/mispy/sbpanel">sbpanel</a></p>
+
+<p><a href="http://starbound.mispy.me"><img src="https://mispy.me/images/sbpanel.png"></a></p>
+
+<p>There were a few difficulties involved. I wanted to be able to tell if the process was running or not without relying on it always being able to log a shutdown message first. Fortunately, Starbound maintains an open file descriptor to its log file at all times, so you can reverse-lookup the process from the file by using the UNIX <a href="https://en.wikipedia.org/wiki/Fuser_(Unix)">fuser</a> command.</p>
+
+<pre><code class="language-ruby"># Detect server status
+# Looks for processes which have log file open for writing
+def update_status  
+  status = :offline
+  fuser = `fuser -v #{@log_path} 2&gt;&amp;1`.split("\n")[2..-1]
+
+  if fuser
+    fuser.each do |line|
+      if line.strip.split[2].include?('F')
+        status = :online
+      end
+    end
+  end
+
+  if status != @status
+    time = Time.now
+    if status == :offline
+      puts "Server is currently offline"
+    else
+      puts "Server is currently online"
+    end
+
+    @status = status
+    @last_status_change = time
+    reset!
+  end
+end  
+</code></pre>
+
+<p>The part I found trickiest was getting the timing information right. Since there are no timestamps on the log entries themselves, sbpanel has to produce and store its own in a separate file. There's a bit of edge case handling involved in recovering from situations where either sbpanel or the starbound server crashes. For example, we always have to be prepared to accept nil timestamps in case we're just starting up and reading an existing log file with no timing data.</p>
+
+<p>Finally, I couldn't initially get the gem executable to work. Rubygems produces a wrapper around your own bin file for deployment, which invokes the original via <code>load</code>. Presumably Sinatra uses something like <code>if __FILE__ == $0</code> by default, preventing this from working. The solution is to use the <a href="http://www.sinatrarb.com/intro.html#Sinatra::Base%20-%20Middleware,%20Libraries,%20and%20Modular%20Apps">modular form</a> instead and invoke <code>run!</code> explicitly.</p>
+        </section>
+    </article>
+
+
+    <article class="post tag-draftable tag-python tag-django">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2013-11-26">26 Nov 2013</time> on <a href="../../tag/draftable/">draftable</a>, <a href="../../tag/python/">python</a>, <a href="../../tag/django/">django</a></span>
+          <h2 class="post-title"><a href="../../long-polling-in-django-with-gevent-and-amqp/">Long-polling in Django with gevent and AMQP</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>The asynchronous web is very trendy at the moment, associated with the rise of <a href="http://nodejs.org/">node.js</a>. Django doesn't inherently support asynchronicity the way node does, but it's not hard to enable by switching to a gevent-backed gunicorn webserver:</p>
+
+<pre><code class=" lang-bash">gunicorn app.wsgi:application --worker-class gunicorn.workers.ggevent.GeventWorker  
+</code></pre>
+
+<p>This causes requests to be processed inside <a href="http://www.gevent.org/intro.html#lightweight-pseudothreads">greenlets</a>, micro-threads which can run in large numbers concurrently. gevent <a href="http://www.gevent.org/intro.html#monkey-patching">monkey patches</a> the Python standard library such that common blocking IO operations instead relinquish control to allow other greenlets to proceed. So unless you're doing something CPU-bound, you can usually just write synchronous code and let gevent handle the async parts.</p>
+
+<p>Here's an example combining Django, gevent and <a href="http://www.rabbitmq.com/tutorials/amqp-concepts.html">AMQP</a> to proxy an <a href="http://www.rabbitmq.com/tutorials/tutorial-six-python.html">RPC call</a> for the browser, holding the socket open while waiting for a response:  </p>
+
+<pre><code class=" lang-python">from django.http import HttpResponse  
+from amqp.connection import Connection  
+from amqp.channel import Channel  
+from amqp.basic_message import Message  
+import json  
+import socket
+
+class RpcClient(object):  
+    def __init__(self):
+        self.response = None
+
+        self.connection = Connection()
+        self.channel = Channel(self.connection)
+
+        (self.queue, _, _) = self.channel.queue_declare(exclusive=True)
+        self.channel.queue_bind(self.queue, exchange='django_amqp_example')
+
+    def request(self, body):
+        message = Message(
+            body=json.dumps(body),
+            reply_to=self.queue,
+            content_type='application/json')
+
+        self.channel.basic_publish(
+            message,
+            exchange='django_amqp_example',
+            routing_key='task_queue')
+
+        print "Task submitted:", json.dumps(body)
+        def callback(msg):
+            self.response = json.loads(msg.body)
+
+        self.channel.basic_consume(
+            callback=callback,
+            queue=self.queue,
+            no_ack=True)
+
+        while True:
+            self.connection.drain_events(timeout=60)
+            if self.response is not None:
+                break
+
+        self.connection.close()
+        return self.response
+
+def rpc(request):  
+    content = request.GET['msg']
+    interface = RpcClient()
+
+    try:
+        response = interface.request({'content': content})
+    except socket.timeout:
+        return HttpResponse("Request to backend RPC server timed out", status=500)
+
+    return HttpResponse(response['rot13'])
+</code></pre>
+
+<p>And a corresponding example worker which handles the request:</p>
+
+<pre><code class=" lang-python">from amqp.connection import Connection  
+from amqp.channel import Channel  
+from amqp.basic_message import Message  
+import json
+
+connection = Connection()  
+channel = Channel(connection)
+
+channel.exchange_declare('django_amqp_example', 'topic', auto_delete=False)  
+channel.queue_declare(queue='task_queue', durable=True)  
+channel.queue_bind('task_queue', 'django_amqp_example', 'task_queue')
+
+def callback(msg):  
+    print "Received request:", msg.body
+    content = json.loads(msg.body)['content']
+    response = {
+        'rot13': content.encode('rot13')
+    }
+
+    response_msg = Message(
+        body=json.dumps(response),
+        exchange='django_amqp_example')
+
+    print "Sending response:", json.dumps(response)
+    channel.basic_publish(
+        response_msg,
+        routing_key=msg.reply_to)
+
+channel.basic_consume(callback=callback, queue='task_queue')
+
+print "Worker is waiting for requests"  
+while True:  
+    connection.drain_events()
+</code></pre>
+
+<p>The full example application can be found on github: <a href="https://github.com/mispy/django_amqp_example">django_amqp_example</a></p>
+
+<p>At <a href="https://draftable.com/">Draftable</a> we use Django as a web frontend which manages user requests, while separate Windows servers handle the computationally intensive diff calculation part. Originally, the communication between components of our architecture relied upon a somewhat fragile arrangement of back-and-forth HTTP requests combined with polling on the browser end. We've been migrating to AMQP, which is specifically designed for this kind of scenario, and it is a fair bit nicer!</p>
+        </section>
+    </article>
+
+
+    <article class="post tag-ruby tag-gamedev tag-games">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2013-07-08">08 Jul 2013</time> on <a href="../../tag/ruby/">ruby</a>, <a href="../../tag/gamedev/">gamedev</a>, <a href="../../tag/games/">games</a></span>
+          <h2 class="post-title"><a href="../../ruby-bindings-for-the-libtcod-roguelike-library/">Ruby bindings for the libtcod roguelike library</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p><a href="http://doryen.eptalys.net/libtcod/">libtcod</a> is a well-known roguelike gamedev library which handles basic essentials like fast pathfinding, field-of-view calculation and cell-based graphics. It already has bindings to a bunch of languages, and I've added Ruby to the mix: <a href="http://github.com/mispy/libtcod">libtcod-ruby</a></p>
+
+<p>I decided to be conservative and leave all of the C functions directly exposed, so that the existing <a href="http://doryen.eptalys.net/data/libtcod/doc/1.5.1/index2.html?c=true&amp;cpp=true&amp;cs=true&amp;py=true&amp;lua=true">libtcod documentation</a> is easily applicable. There are also some more Rubyish wrapper classes in there, like Map and Console, which I might expand and document at some stage.</p>
+
+<p>Here's a screenshot of a simple Python <a href="http://doryen.eptalys.net/forum/index.php?topic=1468.0">tile demo</a> ported <a href="https://github.com/mispy/libtcod/blob/master/examples/tile_demo/tile_demo.rb">to Ruby</a>:</p>
+
+<p><img src="https://mispy.me/images/libtcod-tiledemo.jpg" alt=""></p>
+
+<p>Before writing this, my conception of what Ruby/C interfaces looked like was a bit nebulous. With the <a href="https://github.com/ffi/ffi/wiki/Basic-Usage">FFI gem</a>, it's actually really straightforward; you just specify a path to an appropriate shared object file for the target platform, and then set about declaring function prototypes. The main <a href="https://github.com/mispy/libtcod/blob/master/lib/libtcod/bindings.rb">bindings file</a> looks a lot like this:</p>
+
+<pre><code class=" lang-ruby">  # Remove redundant namespacing
+  def self.tcod_function(sym, *args)
+    attach_function(sym[5..-1].to_sym, sym, *args)
+  end
+
+  tcod_function :TCOD_console_set_window_title, [ :string ], :void
+  tcod_function :TCOD_console_set_fullscreen, [ :bool ], :void
+  tcod_function :TCOD_console_is_fullscreen, [  ], :bool
+  tcod_function :TCOD_console_is_window_closed, [  ], :bool
+  tcod_function :TCOD_console_set_custom_font, [ :string, :int, :int, :int ], :void
+</code></pre>
+
+<p>Of course, in libtcod's case, there are really quite a lot of function prototypes. I saved a good deal of typing by running <a href="https://github.com/ffi/ffi-swig-generator">ffi-swig-generator</a> over the C header files and tweaking the output instead of doing it all manually!</p>
+        </section>
+    </article>
+
+
+    <article class="post tag-rails tag-draftable tag-scirate">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2013-07-01">01 Jul 2013</time> on <a href="../../tag/rails/">rails</a>, <a href="../../tag/draftable/">draftable</a>, <a href="../../tag/scirate/">scirate</a></span>
+          <h2 class="post-title"><a href="../../archiving-the-arxiv/">Archiving the arXiv</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>I released a Ruby gem for mirroring and parsing the <a href="http://arxiv.org/">arxiv.org</a> database: <a href="http://github.com/mispy/arxivsync">arxivsync</a></p>
+
+<p>A side project I'm working on at <a href="https://draftable.com/">Draftable</a> is expanding <a href="https://scirate3.herokuapp.com/">SciRate</a> to encompass fields other than quantum physics. SciRate downloads new paper information from the arXiv RSS feeds each day and sorts them by upvotes (scites), sorta like Hacker News or Reddit. This is fine for daily updates, but we also wanted to add the ability to search back through older papers. Meaning either making a search request to the arXiv every time a user requests it, or mirroring the entire database ourselves.</p>
+
+<p>Delegating to arXiv search proved unwieldy, so I set about the second option. There are about 850k papers, and combinatorially more author-paper and category-paper relations-- not too vast, but larger than anything I've personally tried to construct from scratch before. It took me a while to get the <a href="https://github.com/draftable/scirate3/blob/master/app/models/paper.rb#L53">import code</a> working correctly and efficiently, especially because I wanted to be idempotent so we could use the same code for new updates without risking inconsistencies in the database.</p>
+
+<p>I learned a fair bit about handling bulky data in Rails. <a href="https://github.com/zdennis/activerecord-import/wiki">activerecord-import</a> is useful for building mass insert statements without completely discarding validation. Minimizing the number of queries was essential, as usual; don't do this:</p>
+
+<pre><code class="lang-ruby">models.each do |model|  
+  if Paper.find_by_identifier(model.id).exists?
+    ...
+  end
+end  
+</code></pre>
+
+<p>I gained about an order of magnitude by switching to prepopulated caches:</p>
+
+<pre><code class="lang-ruby">identifiers = models.map(&amp;:id)  
+existing_papers = Paper.find_all_by_identifier(identifiers)  
+existing_by_ident = Hash[existing_papers.map { |paper| [paper.identifier, paper] }]
+
+models.each do |model|  
+  if existing_by_ident.has_key?(model.id)
+    ...
+  end
+end  
+</code></pre>
+
+<p>Since you expect these simple indexed queries to be very fast, I suspect the bottleneck in the first case is more in the Rails wrapping of database communication than in the queries themselves.</p>
+
+<p>Something else to remember when dealing with such broad and historied data is that there are going to be a lot of edge cases, and potentially even outright inconsistencies. I found one paper with a <a href="http://arxiv.org/abs/astro-ph/0502538">372-character title</a>, and another which was somehow updated <a href="http://arxiv.org/abs/math/9712227">several months prior to publication</a> (darn physicists and their time machines). It even managed to <a href="https://github.com/ohler55/ox/issues/66">break the XML parsing library</a>, which thankfully has a nice active maintainer.</p>
+
+<p>If you want to contribute to SciRate, it is <a href="https://github.com/draftable/scirate3">completely OSS</a>. We're planning to take over from the current maintainers of the live site after making the UI a bit friendlier!</p>
+        </section>
+    </article>
+
+
+    <article class="post tag-ruby tag-cute">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2013-05-27">27 May 2013</time> on <a href="../../tag/ruby/">ruby</a>, <a href="../../tag/cute/">cute</a></span>
+          <h2 class="post-title"><a href="../../pinterest-and-the-liberation-of-cloud-data/">Pinterest and the liberation of cloud data</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><blockquote>
+  <p>Note: this has since become obsolete! Pinterest made their system more inscrutable. I've moved to Dropbox for everything, since it's more inherently supportive of data freedom by design.</p>
+</blockquote>
+
+<pre><code class=" lang-bash">gem install pinarchive  
+pinarchive pinterest.com/m1sp  
+</code></pre>
+
+<p>Deployed my little Pinterest scraper as a <a href="https://rubygems.org/gems/pinarchive">gem</a>. While I'm not nearly as much of a privacy zealot as many of the people I know, I do like to at least keep backups of data in cloud services I use regularly. What would I do if I lost all those cute Pokémon images?!</p>
+
+<p>I think this nearly completes my redundancy in case of mysterious Internet disasters. <a href="http://dropbox.com">Dropbox</a> and <a href="http://github.com">GitHub</a> are inherently distributed by nature, I route <a href="http://mail.google.com">Gmail</a> through my own Postfix install first and keep copies, and <a href="http://twitter.com">Twitter</a> is conveniently archived by my silly <a href="http://github.com/mispy/twitter_ebooks">ngram bots</a>. Feels nice!</p>
+        </section>
+    </article>
+
+
+    <article class="post tag-ruby">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2013-05-27">27 May 2013</time> on <a href="../../tag/ruby/">ruby</a></span>
+          <h2 class="post-title"><a href="../../why-arent-my-gem-executables-installing/">Why aren't my gem executables installing?</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>If you use <code>bundle gem</code> to initialize a gem file structure, you may be momentarily baffled by why anything you put in <code>bin</code> isn't picked up by <code>rake install</code>. It's likely because you haven't committed it yet, and the default bundler gemspec looks at <code>git ls-files</code> to determine what to build into the gem:</p>
+
+<pre><code class=" lang-ruby">gem.files         = `git ls-files`.split($\)  
+gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }  
+gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})  
+</code></pre>
+
+<p>I was amused by the psychology-- confusing to me because you normally treat the VCS as an overlay to your code rather than a two-way interaction. Like the little rake task is rising way above its station and meddling in affairs beyond its ken.</p>
+        </section>
+    </article>
+
+
+    <nav class="pagination" role="navigation">
+        <a class="newer-posts" href="../3/"><span aria-hidden="true">←</span> Newer Posts</a>
+    <span class="page-number">Page 4 of 8</span>
+        <a class="older-posts" href="../5/">Older Posts <span aria-hidden="true">→</span></a>
+</nav>
+
+
+</main>
+
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/stars.js?v=0717475246"></script>
+</body>

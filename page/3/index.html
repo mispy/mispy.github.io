@@ -1,0 +1,508 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>~mispy - Page 3</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/page/3/">
+    <meta name="referrer" content="origin">
+    <link rel="prev" href="/page/2/">
+    <link rel="next" href="/page/4/">
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="paged archive-template">
+
+    
+<header class="site-head">
+
+    <img class="star" id="starO" src="../../content/images/O.png" style="display: none;">
+    <img class="star" id="starB" src="../../content/images/B.png" style="display: none;">
+    <img class="star" id="starA" src="../../content/images/A.png" style="display: none;">
+    <img class="star" id="starF" src="../../content/images/F.png" style="display: none;">
+    <img class="star" id="starG" src="../../content/images/G.png" style="display: none;">
+    <img class="star" id="starK" src="../../content/images/K.png" style="display: none;">
+    <img class="star" id="starM" src="../../content/images/M.png" style="display: none;">
+    <canvas id="canvas" style="position: absolute; left: 0; width: 100%; height: 100%;"></canvas>
+
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <a class="blog-logo" href="../../"><img src="../../content/images/2016/03/sweatervest.png" alt="Blog Logo"></a>
+            <h1 class="blog-title"><a href="https://mispy.me/yes">~</a><a href="../../">mispy</a></h1>
+            <h2 class="blog-description"></h2>
+            <ul class="site-nav">
+              <li><a href="../../">Blog</a></li>
+              <li><a href="../../projects">Projects</a></li>
+              <li><a href="https://github.com/mispy">GitHub</a></li>
+              <li><a href="https://twitter.com/m1sp">Twitter</a></li>
+              <!--<li><a href="/hireme" class="hireme">Hire Me!</a></li>-->
+            </ul>
+        </div>
+    </div>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2014-10-19">19 Oct 2014</time> </span>
+          <h2 class="post-title"><a href="../../memory-profiling-in-ruby/">Memory profiling in Ruby</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>The easiest approach is just calling out to ps with the current pid and receiving the resident set size (amount of physical memory allocated to the process).</p>
+
+<pre><code>def Process.rss; `ps -o rss= -p #{Process.pid}`.chomp.to_i; end  
+</code></pre>
+
+<p>If you're only interested in a temporary heuristic for debugging a particular issue, this is probably fine. It's platform-specific, though, and you don't have any guarantees about what the garbage collector is doing between calls.</p>
+
+<p>You can use <a href="https://github.com/ruby-prof/ruby-prof">ruby-prof</a>, but measuring memory with it requires patching the Ruby interpreter.</p>
+
+<p>There's also the <a href="https://github.com/SamSaffron/memory_profiler">memory_profiler</a> gem, which uses the ObjectSpace allocation tracing API <a href="http://tmm1.net/ruby21-objspace/">introduced in 2.1</a>. Since this tracks allocations by origin, it can be resource intensive; in my particular case I found it used more memory than what it was profiling. It's also a young gem and still a bit <a href="https://github.com/SamSaffron/memory_profiler/pull/10">buggy</a>.</p>
+
+<p>I ended up extracting the core of memory_profiler into a more basic thing which just looks at the total amount of memory allocated over the course of a block, and so is particularly suitable for unit tests:</p>
+
+<pre><code class=" ruby">require 'objspace'                                                              
+
+module MemoryUsage  
+  MemoryReport = Struct.new(:total_memsize)                                     
+
+  def self.full_gc                                                              
+    GC.start(full_mark: true)                                                   
+  end                                                                           
+
+  def self.report(&amp;block)                                                       
+    rvalue_size = GC::INTERNAL_CONSTANTS[:RVALUE_SIZE]                          
+
+    full_gc                                                                     
+    GC.disable                                                                  
+
+    total_memsize = 0                                                           
+
+    generation = nil                                                            
+    ObjectSpace.trace_object_allocations do                                     
+      generation = GC.count                                                     
+      block.call                                                                
+    end                                                                         
+
+    ObjectSpace.each_object do |obj|                                            
+      next unless generation == ObjectSpace.allocation_generation(obj)          
+      memsize = ObjectSpace.memsize_of(obj) + rvalue_size                       
+      # compensate for API bug                                                  
+      memsize = rvalue_size if memsize &gt; 100_000_000_000                        
+      total_memsize += memsize                                                  
+    end                                                                         
+
+    GC.enable                                                                   
+    full_gc                                                                     
+
+    return MemoryReport.new(total_memsize)                                      
+  end                                                                           
+end  
+</code></pre>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2014-10-12">12 Oct 2014</time> </span>
+          <h2 class="post-title"><a href="../../extending-the-markdown-syntax-in-ghost/">Extending the Markdown syntax in Ghost</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>I'm writing a somewhat lengthy thing which really wants footnotes, but <a href="https://github.com/TryGhost/Ghost">Ghost</a> doesn't have any native syntax for them yet. You can put them in manually using html, but it is tedious, and troublesome to reorder. Fortunately it wasn't too hard to add my own hacky<sup id="fnref:1"><a href="index.html#fn:1" rel="footnote">1</a></sup> implementation<sup id="fnref:2"><a href="index.html#fn:2" rel="footnote">2</a></sup>:</p>
+
+<pre><code class="lang-js">// Adds footnote syntax as per Markdown Extra:
+//
+// https://michelf.ca/projects/php-markdown/extra/#footnotes
+//
+// That's some text with a footnote.[^1]
+//
+// [^1]: And that's the footnote.
+//
+//     That's the second paragraph.
+//
+// Also supports [^n] if you don't want to worry about preserving
+// the footnote order yourself.
+
+(function () {
+    var footnotes = function () {
+        return [
+            { type: 'lang', filter: function(text) {
+                var preExtractions = {},
+                    hashID = 0;
+
+                function hashId() {
+                    return hashID++;
+                }
+
+                // Extract pre blocks
+                text = text.replace(/```[\s\S]*?\n```/gim, function (x) {
+                    var hash = hashId();
+                    preExtractions[hash] = x;
+                    return "{gfm-js-extract-pre-" + hash + "}";
+                }, 'm');
+
+                // Inline footnotes e.g. "foo[^1]"
+                var i = 0;
+                var inline_regex = /(?!^)\[\^(\d|n)\]/gim;
+                text = text.replace(inline_regex, function(match, n) {
+                    // We allow both automatic and manual footnote numbering
+                    if (n == "n") n = i+1;
+
+                    var s = '&lt;sup id="fnref:'+n+'"&gt;' +
+                              '&lt;a href="#fn:'+n+'" rel="footnote"&gt;'+n+'&lt;/a&gt;' +
+                            '&lt;/sup&gt;';
+                    i += 1;
+                    return s;
+                });
+
+                // Expanded footnotes at the end e.g. "[^1]: cool stuff"
+                var end_regex = /\[\^(\d|n)\]: ([\s\S]*?)\n(?!    )/gim;
+                var m = text.match(end_regex);
+                var total = m ? m.length : 0;
+                var i = 0;
+
+                text = text.replace(end_regex, function(match, n, content) {
+                    if (n == "n") n = i+1;
+
+                    content = content.replace(/\n    /g, "&lt;br&gt;");
+
+                    var s = '&lt;li class="footnote" id="fn:'+n+'"&gt;' +
+                              '&lt;p&gt;'+content+'&lt;a href="#fnref:'+n +
+                                '" title="return to article"&gt; ↩&lt;/a&gt;' +
+                              '&lt;/p&gt;' +
+                            '&lt;/li&gt;';
+
+                    if (i == 0) {
+                        s = '&lt;div class="footnotes"&gt;&lt;ol&gt;' + s;
+                    }
+
+                    if (i == total-1) {
+                        s = s + '&lt;/ol&gt;&lt;/div&gt;';
+                    }
+
+                    i += 1;
+                    return s;
+                });
+
+                // replace extractions
+                text = text.replace(/\{gfm-js-extract-pre-([0-9]+)\}/gm, function (x, y) {
+                    return preExtractions[y];
+                });
+
+                return text;
+            }}
+        ];
+    };
+
+    // Client-side export
+    if (typeof window !== 'undefined' &amp;&amp; window.Showdown &amp;&amp; window.Showdown.extensions) {
+        window.Showdown.extensions.footnotes = footnotes;
+    }
+    // Server-side export
+    if (typeof module !== 'undefined') {
+        module.exports = footnotes;
+    }
+}());
+</code></pre>
+
+<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>Please don't do this with regexes unless you have to, kids. <a href="index.html#fnref:1" title="return to article">↩</a></p></li>
+
+<li class="footnote" id="fn:2"><p>Can be found on a <a href="https://github.com/mispy/Ghost/tree/footnotes2">branch</a>. <a href="index.html#fnref:2" title="return to article">↩</a></p></li></ol></div>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2014-07-21">21 Jul 2014</time> </span>
+          <h2 class="post-title"><a href="../../osw-2014-update/">OSW 2014 Update</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>The <a href="https://mispy.me/2014/07/open-science-workshop-2014/">open science workshop</a> went well! I gave my talk about <a href="https://scirate.com">SciRate</a> and improving the way people do science. Slides are up <a href="https://docs.google.com/presentation/d/1QMTtk2nDo_ldDcGUVIc5AuFs2Mx84n0KaYgDsoI93xw/edit#slide=id.p">here</a>. Also doubled as a useful opportunity to test the site on people in person, and I got some good usability feedback.</p>
+
+<p>Some of the other interesting projects I learned about:</p>
+
+<ul>
+<li><p><a href="https://cloud.sagemath.com/">SageMathCloud</a> is a computational mathematics tool based on the Python-based <a href="http://en.wikipedia.org/wiki/Sage_(mathematics_software)">Sage</a> framework, and lets you collaboratively edit Sage worksheets and IPython notebooks.</p></li>
+<li><p><a href="https://www.authorea.com/users/8390">Authorea</a> is a web-based paper authoring tool supporting LaTeX and Markdown which uses git as a backend. It takes a lot of inspiration from GitHub, with unlimited free public projects and paid private ones.</p></li>
+<li><p><a href="http://nbviewer.ipython.org/">NBViewer</a> is a simple tool for taking IPython notebooks and displaying them publicly on the web.</p></li>
+<li><p><a href="http://elifesciences.org/#">eLife</a> is an open access biosciences journal which uses a non-standard peer review process in which the reviewers collaborate directly with each other.</p></li>
+</ul>
+
+<p>There were also a lot of nifty groups and events:</p>
+
+<ul>
+<li><p><a href="http://inspire9.com/">Inspire9</a> is the little hackerspace in Richmond where the workshop was held, and they host regular Ruby and Python meetups, among other events. There's an entire room painted with flowers and butterflies, so I felt quite at home.</p></li>
+<li><p><a href="http://healthhackmelb.com/">HealthHack</a> in October this year, which brings together programmers and scientists to help solve medical research problems. It's been a good many years since I last used my biology background so I'm looking forward to this one.</p></li>
+<li><p>The <a href="http://au.okfn.org/">Open Knowledge Foundation</a> runs HealthHack and lots of other cool stuff, like <a href="http://www.govhack.org/">GovHack</a>.</p></li>
+<li><p><a href="http://www.opentechschool.org/">OpenTechSchool</a> runs a bunch of experimental tech education projects, including <a href="http://railsgirls.com/">Rails Girls</a> which I'd heard about earlier. It has a Melbourne chapter!</p></li>
+</ul>
+
+<p>I want to get involved in more of these things!</p>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2014-07-17">17 Jul 2014</time> </span>
+          <h2 class="post-title"><a href="../../open-science-workshop-2014/">Open Science Workshop 2014</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>There's <a href="https://openscienceworkshops.github.io/">a little event</a> on Saturday (July 19) about adapting techniques from the software community to make science more open and accessible. If you're a scientist in Melbourne, or a developer for a related project, I hope you consider coming along! I'll be there working on <a href="http://scirate.com/">SciRate</a> and giving a brief talk about it.</p>
+
+<p><a href="https://openscienceworkshops.github.io/"><img src="../../content/images/2014/Jul/goal.png" alt="" title=""></a></p>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2014-05-03">03 May 2014</time> </span>
+          <h2 class="post-title"><a href="../../the-mysterious-nature-of-bots/">The mysterious nature of bots</a></h2>
+        </header>
+        <section class="post-content">
+          <p><style>  
+  iframe { margin: auto !important; }
+</style>
+
+</p><p>A couple of years ago <a href="https://twitter.com/JackLScanlan">@JackLScanlan</a> made a joke of some kind, as he often does. The subject of the joke was <a href="https://twitter.com/Horse_ebooks">@Horse_ebooks</a>, a uniquely Twitter oddity and likely the <a href="http://en.wikipedia.org/wiki/Horse_ebooks">most infamous spambot</a> to have ever lived. This seemed like a prime opportunity for silliness, so after a bit of coding <a href="https://twitter.com/scanlan_ebooks">@scanlan_ebooks</a> was born. Little did I know this would be but the first of <a href="https://twitter.com/m1sp/mispybots/members">many robot clones</a>.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>Dear god, just realised that I care about conceptual understanding.</p>— Jack Scanlan ebooks (@scanlan_ebooks) <a href="https://twitter.com/scanlan_ebooks/statuses/436651507677945856">February 21, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p><a href="http://en.wikipedia.org/wiki/Markov_chain">Markov chain</a> chatbots have a long history in programming, being very easy toy examples of a simple but powerful mathematical model which is used for a whole lot of <a href="http://en.wikipedia.org/wiki/Markov_chain#Applications">more serious stuff</a>. The classic Markov text generator maintains a probability map of which words are more or less likely to come after some number of preceding words, and builds a sentence by following it from a given start point.</p>
+
+<p>The <a href="https://github.com/mispy/twitter_ebooks/blob/master/lib/twitter_ebooks/suffix.rb#L40">algorithm I use now</a> is a variation on this. Instead of linearly chaining words, it starts with an intact sentence from the corpus and mixes it with one or more other sentences in a manner similar to <a href="http://en.wikipedia.org/wiki/Genetic_recombination">DNA recombination</a>. The Markov model is used to select the junction sites where this recombination occurs. This seems to strike a nice balance between diversifying the output and avoiding complete gibberish; the sentences it produces are grammatically correct more often than not. (well, assuming the source is!)</p>
+
+<p>This has proliferated somewhat, and I have no idea how many of the various _ebooks accounts are using my <a href="https://github.com/mispy/twitter_ebooks">twitter_ebooks</a> Ruby gem or how modified they are. There have been bots based on <a href="https://twitter.com/aspects_ebooks">novels</a>, <a href="https://twitter.com/pinkiepieebooks">cartoon characters</a>, and all manner of strange text corpora. Kevin Nguyen wrote a very <a href="http://bygonebureau.com/2014/02/24/i-bot/">introspective article</a> about <a href="https://twitter.com/knguyen_ebooks">@knguyen_ebooks</a>, deployed by <a href="https://twitter.com/negatendo">@negatendo</a>.</p>
+
+<p>What I find much more interesting than the bots themselves though is the way people interact with them. These generally fall into three groups:</p>
+
+<ul>
+<li>Those familiar with Markov chains who are being tongue-in-cheek about it</li>
+<li>Non-programmers experiencing <a href="http://en.wikipedia.org/wiki/ELIZA_effect">the ELIZA effect</a> to various degrees</li>
+<li>People who should probably never be relied upon to judge a <a href="http://en.wikipedia.org/wiki/Turing_test">Turing test</a></li>
+</ul>
+
+<p>The third group is more populous than you might expect, especially if you include ESL speakers. My bots will try to imitate human interaction patterns, responding to mentions <a href="https://github.com/mispy/twitter_ebooks/blob/master/lib/twitter_ebooks/model.rb#L170">using keyword analysis</a> to come up with something vaguely related to the input, and a slight random delay to avoid appearing superhuman. They will also follow back and occasionally favorite or RT tweets they find sufficiently interesting.</p>
+
+<p>Some examples of amusing events in recent history:</p>
+
+<h4 id="mcc_ebooksandtherobotuprising">mcc_ebooks and the robot uprising</h4>
+
+<p>I think <a href="https://twitter.com/mcc_ebooks">@mcc_ebooks</a> is my favorite overall, just because <a href="https://twitter.com/mcclure111">@mcclure111</a> and her friends are already so suffused with baffling surreal humor that it just sort of amplifies it.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/LorenSchmidt">@LorenSchmidt</a> We could just stay like this forever while flashing bands of color horizontally across the screen</p>— mcc ebooks (@mcc_ebooks) <a href="https://twitter.com/mcc_ebooks/statuses/438212336349102080">February 25, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>People tend to give it the benefit of the doubt, which is often very sweet and heart-warming.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/mcc_ebooks">@mcc_ebooks</a> Aww, you have a girlfriend? Bots in love, so adorable!</p>— Erika Sorensen (@eiridescent) <a href="https://twitter.com/eiridescent/statuses/456945528039690240">April 18, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>As the original human tweets at and about the bot, more bot-related statements enter the corpus, so it becomes "self-aware".</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>I feel like we just had a moment. <a href="https://twitter.com/mcc_ebooks">@mcc_ebooks</a></p>— Kevin Snow (@starguarded) <a href="https://twitter.com/starguarded/statuses/447131103413813248">March 21, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Which of course, has only one logical endpoint.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/Carin_McLeoud">@Carin_McLeoud</a> <a href="https://twitter.com/mcclure111">@mcclure111</a> I stand up (gain the ability to walk), to become naked</p>— mcc ebooks (@mcc_ebooks) <a href="https://twitter.com/mcc_ebooks/statuses/462028701564420096">May 2, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p></p>
+
+<h4 id="m1sp1dea_ebooksspooksrackspacesecurity">m1sp1dea_ebooks spooks Rackspace security</h4>
+
+<p><a href="https://twitter.com/m1sp1dea_ebooks">@m1sp1dea_ebooks</a> uses a combined corpus consisting of myself and <a href="https://twitter.com/0xabad1dea">@0xabad1dea</a>'s tweets. It's kind of a freakish hybrid. (people keep <a href="http://abad1dea.tumblr.com/post/84149795075/misptaken-identity">confusing the two of us</a> anyway, somehow)</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>Anxiety is not a big truck.</p>— Melissa × Mispy (@m1sp1dea_ebooks) <a href="https://twitter.com/m1sp1dea_ebooks/statuses/435201964205682688">February 17, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Of course since <a href="https://twitter.com/0xabad1dea">@0xabad1dea</a> spends a lot of time talking about infosec, it was inevitable that the bot would one day announce it had found a vulnerability.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/m1sp1dea_ebooks">@m1sp1dea_ebooks</a> Hi! Please let us know if you find anything <a href="https://twitter.com/Rackspace">@Rackspace</a> should be aware of <a href="http://t.co/zpjsT3VeBa">http://t.co/zpjsT3VeBa</a></p>— Elizabeth Jurewicz (@RackerLiz) <a href="https://twitter.com/RackerLiz/statuses/421799120001445888">January 11, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>And not do very much to discourage the idea.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/m1sp1dea_ebooks">@m1sp1dea_ebooks</a> Please send details to help@rackspace.com , we'll see how we can help. ( cc <a href="https://twitter.com/Rackspace">@Rackspace</a>)</p>— Elizabeth Jurewicz (@RackerLiz) <a href="https://twitter.com/RackerLiz/statuses/421799501729255424">January 11, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Fortunately, a human quickly intervened.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/RackerLiz">@RackerLiz</a> <a href="https://twitter.com/m1sp1dea_ebooks">@m1sp1dea_ebooks</a> <a href="https://twitter.com/Rackspace">@Rackspace</a> oh I’m sorry, this is a bot who mashes up tweets :(</p>— Melissa (@0xabad1dea) <a href="https://twitter.com/0xabad1dea/statuses/421801912204550144">January 11, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p></p>
+
+<h4 id="thepoliticalintriguesoftonyabotmhr">The political intrigues of TonyAbotMHR</h4>
+
+<p>During the last Australian federal election season, someone made a joke about <a href="http://en.wikipedia.org/wiki/Tony_Abbott">Tony Abbott</a> and his propensity for Markov-like meaningless rambling. Thus, <a href="https://twitter.com/TonyAbotMHR">@TonyAbotMHR</a> was born, using a slightly different algorithm that replaces nouns with random other nouns.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>But ladies and gentlemen, it's just got worse since Julia Gillard has become the Prime Minister of this napkin.</p>— Tony A Bot (@TonyAbotMHR) <a href="https://twitter.com/TonyAbotMHR/statuses/370259391783526402">August 21, 2013</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Occasionally, he is mistaken for the real thing, by endearingly optimistic citizens who seemingly believe the denizens of high politics are likely to engage in individual discourse with them.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/TonyAbotMHR">@TonyAbotMHR</a> I voted green it would appreciated if you did take sometime to see what they offered. Especially Mining Co. should pay HTax</p>— Mimi Savy deChermont (@ameliatdales) <a href="https://twitter.com/ameliatdales/statuses/377999629607923712">September 12, 2013</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>There's been at least one truly <em>epic</em> debate, covering everything from genetically modified giraffes to the local entertainment industry.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/TonyAbotMHR">@TonyAbotMHR</a> This is getting a bit cryptic but yep, i need to have no reservations about putting my name to any actions hypothetical or not</p>— Sir Tennly Loverock (@EdHightackle) <a href="https://twitter.com/EdHightackle/statuses/411059179663552513">December 12, 2013</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>This man has since been elected Prime Minister, to our great dismay.</p>
+
+<h4 id="winocm_ebooksandthejailbreakswarm">winocm_ebooks and the jailbreak swarm</h4>
+
+<p><a href="https://twitter.com/winocm">@winocm</a> has the highest follower count of my Twitter friends by a large margin, largely on account of her role in the <a href="http://www.ibtimes.co.uk/ios-7-1-untethered-jailbreak-imminent-winocm-demonstrates-jailbroken-iphone-4-youtube-video-1441258">iOS jailbreaking community</a>. Sadly this means she is <em>constantly</em> pestered by people demanding the release of various things.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/winocm">@winocm</a> plz don't ignore me
+I want to ask about 7.1 JB
+Plz answer 😣😣
+<a href="https://twitter.com/search?q=%23wincom&amp;src=hash">#wincom</a></p>— عبدالله النصر (@abdullahnssr) <a href="https://twitter.com/abdullahnssr/statuses/460529582735503360">April 27, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>  
+
+<blockquote class="twitter-tweet" lang="en"><p>Maybe I should make a Markov chain bot respond to all requests for a 7.1 jailbreak on this account… calling <a href="https://twitter.com/m1sp">@m1sp</a>!</p>— winocm (@winocm) <a href="https://twitter.com/winocm/statuses/460828677568479235">April 28, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Fortunately, this was a trivial extension to make to <a href="https://twitter.com/winocm_ebooks">@winocm_ebooks</a>.</p>
+
+<pre><code class="ruby">  make_bot(bot, "winocm") do |gen|
+    EM.next_tick do
+      bot.stream.track("@winocm") do |tweet|
+        text = tweet[:text].downcase
+        if !tweet[:user][:screen_name].include?("_ebooks") &amp;&amp; (text.include?("7.1") || text.include?("jailbreak") || text.split.include?("jb"))
+          bot.reply(tweet, "@#{tweet[:user][:screen_name]} " + gen.model.make_response(tweet[:text]))
+        end
+      end
+    end
+  end
+</code></pre>
+
+<p>It works really quite surprisingly well. People mention <a href="https://twitter.com/winocm">@winocm</a>, receive a reply from <a href="https://twitter.com/winocm_ebooks">@winocm_ebooks</a>, and proceed to engage with it, seemingly unaware that their jailbreaking deity has been replaced with a robot.</p>
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/abdullahnssr">@abdullahnssr</a> oh wait, I broke 7.x by installing 7.1 improperly I think, I should fix that...</p>— winocm_ebooks (@winocm_ebooks) <a href="https://twitter.com/winocm_ebooks/statuses/460839810379579393">April 28, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>These conversations go on for many, many pages. A few bold individuals even requested the bot's hand in marriage:</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>Please will you marry me? <a href="https://twitter.com/winocm_ebooks">@winocm_ebooks</a></p>— Drake Kanjuani (@SecretAgentZ3R0) <a href="https://twitter.com/SecretAgentZ3R0/statuses/461665741633114112">May 1, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>  
+
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/winocm_ebooks">@winocm_ebooks</a> if I love you will you marry me and find me exploits</p>— Ninty Apple (@nintendoapple_) <a href="https://twitter.com/nintendoapple_/statuses/460941087507357697">April 29, 2014</a></blockquote>  
+
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>I'm fairly sure this isn't legal anywhere yet. Maybe Japan.</p>
+
+<p>Can we draw any interesting conclusions from all of this? Probably not. I do like to think, though, that the readiness with which people engage with the bots speaks well of our capacity to accept that which is fundamentally different from us. Should true non-human intelligence appear, I hope we will be similarly ready to adapt our culture around it.</p>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2014-05-01">01 May 2014</time> </span>
+          <h2 class="post-title"><a href="../../instant-feedback-uis-are-really-nice/">Instant feedback UIs are really nice</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>Just migrated my blog from <a href="http://octopress.org/">Octopress</a> to <a href="https://ghost.org/">Ghost</a>. While I like static site generators a lot in theory, the overhead of having to run a local server and wait (often several seconds) for it to regenerate meant I didn't write anything very often. I think Ghost represents a nice midpoint between this and WYSIWYG editors, in that it lets you use Markdown or HTML but also renders a preview of the end result in realtime:</p>
+
+<p><img src="../../content/images/2014/Apr/ghost.png" alt=""></p>
+
+<p>In general, I like UI design which does this kind of keypress-level processing. <a href="http://davidwees.com/content/role-immediacy-feedback-student-learning">Immediacy of feedback</a> is important for learning: the shorter the gap between action and response, the easier it is for human brains to form the right connection between the two. It also helps with <a href="http://en.wikipedia.org/wiki/Temporal_discounting">temporal discounting</a>, an element of procrastination where humans have difficulty perceiving the value of delayed rewards for their efforts.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Approximate_string_matching">Fuzzy search autocomplete</a> is a lovely example of this, which shows up in bash's <a href="http://ruslanspivak.com/2010/11/20/bash-history-reverse-intelligent-search/">reverse search</a> and the Windows 8 start screen, among other places. You can add fuzzy file search to vim via <a href="https://github.com/Shougo/unite.vim">unite</a> and it is so, so much nicer than trying to manually type out paths all the time, even with tab completion.</p>
+
+<p>I wrote something very similar to Ghost's instant preview for <a href="https://scirate.com/arxiv/1403.7694#comments">SciRate comments</a>, which parses both Markdown and a subset of LaTeX. People don't use it too often at the moment, but when they do they tend to make <em>super mathsy doom comments</em> so I'm quite pleased with it.</p>
+        </section>
+    </article>
+
+
+    <nav class="pagination" role="navigation">
+        <a class="newer-posts" href="../2/"><span aria-hidden="true">←</span> Newer Posts</a>
+    <span class="page-number">Page 3 of 8</span>
+        <a class="older-posts" href="../4/">Older Posts <span aria-hidden="true">→</span></a>
+</nav>
+
+
+</main>
+
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/stars.js?v=0717475246"></script>
+</body>

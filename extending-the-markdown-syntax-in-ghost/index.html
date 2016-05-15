@@ -1,0 +1,252 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>Extending the Markdown syntax in Ghost</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/extending-the-markdown-syntax-in-ghost/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="~mispy">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Extending the Markdown syntax in Ghost">
+    <meta property="og:description" content="I'm writing a somewhat lengthy thing which really wants footnotes, but Ghost doesn't have any native syntax for them yet. You can put them in manually using html, but it is tedious, and troublesome to reorder. Fortunately it wasn't too...">
+    <meta property="og:url" content="/extending-the-markdown-syntax-in-ghost/">
+    <meta property="article:published_time" content="2014-10-12T06:46:19.255Z">
+    <meta property="article:modified_time" content="2014-10-13T09:21:57.954Z">
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Extending the Markdown syntax in Ghost">
+    <meta name="twitter:description" content="I'm writing a somewhat lengthy thing which really wants footnotes, but Ghost doesn't have any native syntax for them yet. You can put them in manually using html, but it is tedious, and troublesome to reorder. Fortunately it wasn't too...">
+    <meta name="twitter:url" content="/extending-the-markdown-syntax-in-ghost/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "/content/images/2014/Mar/mispy5.png",
+        "url": "/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Extending the Markdown syntax in Ghost",
+    "url": "/extending-the-markdown-syntax-in-ghost/",
+    "datePublished": "2014-10-12T06:46:19.255Z",
+    "dateModified": "2014-10-13T09:21:57.954Z",
+    "description": "I&#x27;m writing a somewhat lengthy thing which really wants footnotes, but Ghost doesn&#x27;t have any native syntax for them yet. You can put them in manually using html, but it is tedious, and troublesome to reorder. Fortunately it wasn&#x27;t too..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="../">
+        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post">
+
+
+            <span class="post-meta"><time datetime="2014-10-12">12 Oct 2014</time> </span>
+
+            <h1 class="post-title">Extending the Markdown syntax in Ghost</h1>
+
+            <section class="post-content">
+                <p>I'm writing a somewhat lengthy thing which really wants footnotes, but <a href="https://github.com/TryGhost/Ghost">Ghost</a> doesn't have any native syntax for them yet. You can put them in manually using html, but it is tedious, and troublesome to reorder. Fortunately it wasn't too hard to add my own hacky<sup id="fnref:1"><a href="index.html#fn:1" rel="footnote">1</a></sup> implementation<sup id="fnref:2"><a href="index.html#fn:2" rel="footnote">2</a></sup>:</p>
+
+<pre><code class="lang-js">// Adds footnote syntax as per Markdown Extra:
+//
+// https://michelf.ca/projects/php-markdown/extra/#footnotes
+//
+// That's some text with a footnote.[^1]
+//
+// [^1]: And that's the footnote.
+//
+//     That's the second paragraph.
+//
+// Also supports [^n] if you don't want to worry about preserving
+// the footnote order yourself.
+
+(function () {
+    var footnotes = function () {
+        return [
+            { type: 'lang', filter: function(text) {
+                var preExtractions = {},
+                    hashID = 0;
+
+                function hashId() {
+                    return hashID++;
+                }
+
+                // Extract pre blocks
+                text = text.replace(/```[\s\S]*?\n```/gim, function (x) {
+                    var hash = hashId();
+                    preExtractions[hash] = x;
+                    return "{gfm-js-extract-pre-" + hash + "}";
+                }, 'm');
+
+                // Inline footnotes e.g. "foo[^1]"
+                var i = 0;
+                var inline_regex = /(?!^)\[\^(\d|n)\]/gim;
+                text = text.replace(inline_regex, function(match, n) {
+                    // We allow both automatic and manual footnote numbering
+                    if (n == "n") n = i+1;
+
+                    var s = '&lt;sup id="fnref:'+n+'"&gt;' +
+                              '&lt;a href="#fn:'+n+'" rel="footnote"&gt;'+n+'&lt;/a&gt;' +
+                            '&lt;/sup&gt;';
+                    i += 1;
+                    return s;
+                });
+
+                // Expanded footnotes at the end e.g. "[^1]: cool stuff"
+                var end_regex = /\[\^(\d|n)\]: ([\s\S]*?)\n(?!    )/gim;
+                var m = text.match(end_regex);
+                var total = m ? m.length : 0;
+                var i = 0;
+
+                text = text.replace(end_regex, function(match, n, content) {
+                    if (n == "n") n = i+1;
+
+                    content = content.replace(/\n    /g, "&lt;br&gt;");
+
+                    var s = '&lt;li class="footnote" id="fn:'+n+'"&gt;' +
+                              '&lt;p&gt;'+content+'&lt;a href="#fnref:'+n +
+                                '" title="return to article"&gt; ↩&lt;/a&gt;' +
+                              '&lt;/p&gt;' +
+                            '&lt;/li&gt;';
+
+                    if (i == 0) {
+                        s = '&lt;div class="footnotes"&gt;&lt;ol&gt;' + s;
+                    }
+
+                    if (i == total-1) {
+                        s = s + '&lt;/ol&gt;&lt;/div&gt;';
+                    }
+
+                    i += 1;
+                    return s;
+                });
+
+                // replace extractions
+                text = text.replace(/\{gfm-js-extract-pre-([0-9]+)\}/gm, function (x, y) {
+                    return preExtractions[y];
+                });
+
+                return text;
+            }}
+        ];
+    };
+
+    // Client-side export
+    if (typeof window !== 'undefined' &amp;&amp; window.Showdown &amp;&amp; window.Showdown.extensions) {
+        window.Showdown.extensions.footnotes = footnotes;
+    }
+    // Server-side export
+    if (typeof module !== 'undefined') {
+        module.exports = footnotes;
+    }
+}());
+</code></pre>
+
+<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>Please don't do this with regexes unless you have to, kids. <a href="index.html#fnref:1" title="return to article">↩</a></p></li>
+
+<li class="footnote" id="fn:2"><p>Can be found on a <a href="https://github.com/mispy/Ghost/tree/footnotes2">branch</a>. <a href="index.html#fnref:2" title="return to article">↩</a></p></li></ol></div>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Extending%20the%20Markdown%20syntax%20in%20Ghost&amp;url=/extending-the-markdown-syntax-in-ghost/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/extending-the-markdown-syntax-in-ghost/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/extending-the-markdown-syntax-in-ghost/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+</body>

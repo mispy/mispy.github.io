@@ -1,0 +1,263 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+
+    <title>~mispy - Page 5</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="../../assets/css/screen.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../../assets/css/prettify.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="../../assets/css/mispy.css?v=0717475246">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="/page/5/">
+    <meta name="referrer" content="origin">
+    <link rel="prev" href="/page/4/">
+    <link rel="next" href="/page/6/">
+    <meta name="generator" content="Ghost 0.7">
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="paged archive-template">
+
+    
+<header class="site-head">
+
+    <img class="star" id="starO" src="../../content/images/O.png" style="display: none;">
+    <img class="star" id="starB" src="../../content/images/B.png" style="display: none;">
+    <img class="star" id="starA" src="../../content/images/A.png" style="display: none;">
+    <img class="star" id="starF" src="../../content/images/F.png" style="display: none;">
+    <img class="star" id="starG" src="../../content/images/G.png" style="display: none;">
+    <img class="star" id="starK" src="../../content/images/K.png" style="display: none;">
+    <img class="star" id="starM" src="../../content/images/M.png" style="display: none;">
+    <canvas id="canvas" style="position: absolute; left: 0; width: 100%; height: 100%;"></canvas>
+
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <a class="blog-logo" href="../../"><img src="../../content/images/2016/03/sweatervest.png" alt="Blog Logo"></a>
+            <h1 class="blog-title"><a href="https://mispy.me/yes">~</a><a href="../../">mispy</a></h1>
+            <h2 class="blog-description"></h2>
+            <ul class="site-nav">
+              <li><a href="../../">Blog</a></li>
+              <li><a href="../../projects">Projects</a></li>
+              <li><a href="https://github.com/mispy">GitHub</a></li>
+              <li><a href="https://twitter.com/m1sp">Twitter</a></li>
+              <!--<li><a href="/hireme" class="hireme">Hire Me!</a></li>-->
+            </ul>
+        </div>
+    </div>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+    <article class="post tag-design tag-css">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2013-04-24">24 Apr 2013</time> on <a href="../../tag/design/">design</a>, <a href="../../tag/css/">css</a></span>
+          <h2 class="post-title"><a href="../../patterned-gradients-with-css-pseudo-elements/">Patterned gradients with CSS pseudo-elements</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>Neat technique I picked up from <a href="http://twitter.github.io/bootstrap/">Bootstrap</a>'s appropriately-named jumbotron element:</p>
+
+<pre><code class=" lang-css">div {  
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: #1abdbf;
+    background-repeat: repeat-x;
+    background-image: -moz-linear-gradient(45deg, #104e73, #1abdbf);
+    background-image: -webkit-linear-gradient(45deg, #104e73, #1abdbf);
+    background-image: -o-linear-gradient(45deg, #104e73, #1abdbf);
+    background-image: linear-gradient(45deg, #104e73, #1abdbf);
+}
+
+div:after {  
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: url(http://mispy.me/misc/linkypattern.png);
+    opacity: .6;
+}
+</code></pre>
+
+<p>Makes a little div with a gradient, then takes a pseudo-element patterened with a background image and squishes them together. The result is something like this (click for jsfiddle):</p>
+
+<p><a href="http://jsfiddle.net/mispy/GW8QZ/"><img src="https://mispy.me/images/gradientoverlay.png" alt="" title=""></a></p>
+
+<p>Since there's currently no equivalent of a layer blend mode for CSS, you cannot (to my knowledge) separate the hue and lightness effects, which limits utility a bit. It helps if you start with a high-contrast image to offset the reduction in opacity. Sort of exchanges visual versatility for technical: you can apply it to arbitrary dimensions and user content, like <a href="http://subtlepatterns.com">Subtle Patterns</a> does with its lovely green hover highlights.</p>
+        </section>
+    </article>
+
+
+    <article class="post tag-javascript">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2013-02-17">17 Feb 2013</time> on <a href="../../tag/javascript/">javascript</a></span>
+          <h2 class="post-title"><a href="../../aligning-points-along-an-svg-path-in-javascript/">Aligning points along an SVG path in Javascript</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>It's possible to create and query a path element without ever attaching it to the DOM, assuming your browser supports SVG.</p>
+
+<pre><code class=" lang-javascript">path = document.createElementNS("http://www.w3.org/2000/svg", 'path')  
+path.setAttribute('d', "M150 0 L75 200 L225 200 Z")  
+path.getPointAtLength(path.getTotalLength()/2)  
+=&gt; { x: 150, y: 200 }
+</code></pre>
+
+<p>This means you can use the path specification syntax to engage in all sorts of arbitrary bezier curve shenanigans. For example, I made an extremely silly <a href="http://heart.mispy.me/">Valentine's Day hack</a> (<a href="https://github.com/mispy/heart">source</a>). I suspect you could combine this technique with <a href="http://vectormagic.com/">Vector Magic</a> in pursuit of even sillier ends.</p>
+        </section>
+    </article>
+
+
+    <article class="post tag-hacks">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2012-07-08">08 Jul 2012</time> on <a href="../../tag/hacks/">hacks</a></span>
+          <h2 class="post-title"><a href="../../word/">word</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><pre><code class=" lang-bash">#!/bin/sh
+echo `cat /dev/urandom | od -N4 -An -i `' % '`wc -l &lt; /usr/share/dict/words` | bc | sed 's/-//g' | xargs -I % head -n % /usr/share/dict/words | tail -n 1  
+</code></pre>
+
+<pre><code class=" lang-bash">[~]$ word
+smashing  
+</code></pre>
+        </section>
+    </article>
+
+
+    <article class="post tag-security tag-chromium">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2012-07-06">06 Jul 2012</time> on <a href="../../tag/security/">security</a>, <a href="../../tag/chromium/">chromium</a></span>
+          <h2 class="post-title"><a href="../../chromium-over-a-persistent-ssh-proxy/">Chromium over a persistent SSH proxy</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>I often find I need to remotely access web services on ports that can be neither exposed to the outside world nor reverse-proxied to a convenient single location. Fortunately, complex VPN setups are not required here, as the venerable <strong>ssh</strong> suffices!</p>
+
+<pre><code>-D [bind_address:]port
+    Specifies a local “dynamic” application-level port forwarding.  This works by allocating a
+    socket to listen to port on the local side, optionally bound to the specified
+    bind_address.  Whenever a connection is made to this port, the connection is forwarded
+    over the secure channel, and the application protocol is then used to determine where to
+    connect to from the remote machine.  Currently the SOCKS4 and SOCKS5 protocols are sup‐
+    ported, and ssh will act as a SOCKS server.  Only root can forward privileged ports.
+    Dynamic port forwardings can also be specified in the configuration file.
+
+    IPv6 addresses can be specified by enclosing the address in square brackets.  Only the
+    superuser can forward privileged ports.  By default, the local port is bound in accordance
+    with the GatewayPorts setting.  However, an explicit bind_address may be used to bind the
+    connection to a specific address.  The bind_address of “localhost” indicates that the lis‐
+    tening port be bound for local use only, while an empty address or ‘*’ indicates that the
+    port should be available from all interfaces.
+</code></pre>
+
+<p>Applying it like so:</p>
+
+<pre><code>ssh -D 11733 some.cool.host  
+</code></pre>
+
+<p>Will give you a SOCKS proxy on local port 11733 for accessing the network environment of <strong>some.cool.host</strong>. You can persist this proxy by installing <a href="http://www.harding.motd.ca/autossh/">autossh</a> alongside <a href="http://www.gnu.org/software/screen/">screen</a> and adding the following line to your crontab (depending on your authentication method, you might need something fancier):</p>
+
+<pre><code>@reboot screen -S cool_host_proxy -d -m autossh -D 11733 some.cool.host
+</code></pre>
+
+<p>Since Chromium's settings are somewhat minimalist, you will want an extension to make proxy use more manageable. <a href="https://chrome.google.com/webstore/detail/dpplabbmogkhghncfbfdeeokoefdjegm">Proxy SwitchySharp</a> seems to work best under GNOME.</p>
+
+<p><img src="../../content/images/2014/Apr/switchysharp_options.jpg" alt=""></p>
+
+<p>Keep in mind that this will only secure traffic between you and the some.cool.host server. Other means are necessary to prevent snooping between the server and the outside world or by the server itself!</p>
+        </section>
+    </article>
+
+
+    <article class="post tag-politics tag-privacy">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2012-06-09">09 Jun 2012</time> on <a href="../../tag/politics/">politics</a>, <a href="../../tag/privacy/">privacy</a></span>
+          <h2 class="post-title"><a href="../../the-dhs-reads-2-of-all-your-tweets/">The DHS reads ~2% of all your tweets</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>The U.S. Department of Homeland Security recently released under the FOIA a <a href="http://www.animalnewyork.com/2012/the-department-of-homeland-security-is-searching-your-facebook-and-twitter-for-these-words/">set of keywords</a> they use for monitoring of social media. I have compiled this list into a single regex:</p>
+
+<pre><code class=" ruby">/(^|\s)(department of homeland security|dhs|federal emergency management agency|fema|coast guard|uscg|customs|border protection|cbp|border patrol|secret service|usss|national operations center|noc|homeland defense|immigration customs enforcement|ice|agent|task force|central intelligence agency|cia|fusion center|drug enforcement agency|dea|secure border initiative|sbi|federal bureau of investigation|fbi|alcohol|tobacco|firearms|atf|u.s. citizenship|immigration services|cis|federal air marshal service|fams|transportation security administration|tsa|air marshal|federal aviation administration|faa|national guard|red cross|united nations|un|assassination|attack|domestic security|drill|exercise|cops|law enforcement|authorities|disaster assistance|disaster management|dndo|domestic nuclear detection office|national preparedness|mitigation|prevention|response|recovery|dirty bomb|domestic nuclear detection|emergency management|emergency response|first responder|homeland security|maritime domain awareness|mda|national preparedness initiative|militia|shooting|shots fired|evacuation|deaths|hostage|explosion|explosive|police|disaster medical assistance team|dmat|organized crime|gangs|national security|state of emergency|security|breach|threat|standoff|swat|screening|lockdown|bomb|squad|threat|crash|looting|riot|emergency landing|pipe bomb|incident|facility|hazmat|nuclear|chemical spill|suspicious package|device|toxic|national laboratory|nuclear facility|nuclear threat|cloud|plume|radiation|radioactive|leak|biological infection|biological event|chemical|chemical burn|biological|epidemic|hazardous|hazardous material incident|industrial spill|infection|powder|gas|spillover|anthrax|blister agent|exposure|burn|nerve agent|ricin|sarin|north korea|outbreak|contamination|exposure|virus|evacuation|bacteria|recall|ebola|food poisoning|foot and mouth|fmd|h5n1|avian|flu|salmonella|small pox|plague|human to human|human to animal|influenza|center for disease control|cdc|drug administration|fda|public health|toxic|agro terror|tuberculosis|tb|agriculture|listeria|symptoms|mutation|resistant|antiviral|wave|pandemic|infection|water|air borne|sick|swine|pork|strain|quarantine|h1n1|vaccine|tamiflu|norvo virus|epidemic|world health organization|viral hemorrhagic fever|e. coli|infrastructure security|airport|cikr|critical infrastructure|key resources|amtrak|collapse|computer infrastructure|communications infrastructure|telecommunications|critical infrastructure|national infrastructure|metro|wmata|airplane|plane|aeroplane|chemical fire|subway|bart|marta|port authority|nbic|national biosurveillance integration center|transportation security|grid|power|smart|body scanner|electric|failure|outage|black out|brown out|port|dock|bridge|canceled|delays|service disruption|power lines|drug cartel|violence|gang|drug|narcotics|cocaine|marijuana|heroin|border|mexico|cartel|southwest|juarez|sinaloa|tijuana|torreon|yuma|tucson|decapitated|u.s. consulate|consular|el paso|fort hancock|san diego|ciudad juarez|nogales|sonora|colombia|mara salvatrucha|ms13|ms-13|drug war|mexican army|methamphetamine|cartel de golfo|gulf cartel|la familia|reynose|nuevo leon|narcos|narco banner|los zetas|shootout|execution|gunfight|trafficking|kidnap|calderon|reyosa|bust|tamaulipas|meth lab|drug trade|illegal immigrants|smuggling|smugglers|matamoros|michoacana|guzman|arellano-felix|beltran-leyva|barrio azteca|artistics assassins|mexicles|new federation|terrorism|al queda|al qaeda|al-qaeda|terror|attack|iraq|afghanistan|iran|pakistan|agro|environmental terrorist|eco terrorism|conventional weapon|target|weapons grade|dirty bomb|enriched|nuclear|chemical weapon|biological weapon|ammonium nitrate|improvised explosive device|ied|improvised explosive device|abu sayyaf|hamas|farc|armed revolutionary forces colombia|ira|irish republican army|eta|euskadi ta askatasuna|basque separatists|hezbollah|tamil tiger|plf|palestine liberation front|plo|palestine libration organization|car bomb|jihad|taliban|weapons cache|suicide bomber|suicide attack|suspicious substance|aqap|al qaeda arabian peninsula|aqim|al qaeda in the islamic maghreb|ttp|tehrik-i-taliban pakistan|yemen|pirates|extremism|somalia|nigeria|radicals|al-shabaab|home grown|plot|nationalist|recruitment|fundamentalism|islamist|emergency|hurricane|tornado|twister|tsunami|earthquake|tremor|flood|storm|crest|temblor|extreme weather|forest fire|brush fire|ice|stranded|stuck|help|hail|wildfire|tsunami warning center|magnitude|avalanche|typhoon|shelter-in-place|disaster|snow|blizzard|sleet|mud slide|mudslide|erosion|power outage|brown out|warning|watch|lightening|aid|relief|closure|interstate|burst|emergency broadcast system|cyber security|botnet|ddos|dedicated denial of service|denial of service|malware|virus|trojan|keylogger|cyber command|2600|spammer|phishing|rootkit|phreaking|cain and abel|brute forcing|mysql injection|cyber attack|cyber terror|hacker|china|conficker|worm|scammers|social media)(\s|$)/
+</code></pre>
+
+<p>From a <a href="https://dev.twitter.com/docs/api/1/get/statuses/sample">semi-random sample</a> of 5000 English tweets, the regex matches 114. Statistical caveats aside, this means that on average the DHS is reading <strong>1 out of every 50 tweets you post</strong>.</p>
+
+<p>There are some necessary assumptions made about use of the data here, notably case insensitivity and acknowledgement of word boundaries. I split terms like "Airplane (and derivatives)" into multiple keywords ("airplane", "aeroplane" and "plane") and separated out acronyms. Given the implication that the DHS <a href="http://www.forbes.com/sites/reuvencohen/2012/05/26/department-of-homeland-security-forced-to-release-list-of-keywords-used-to-monitor-social-networking-sites/">uses TweetDeck</a> for monitoring, I believe these assumptions are reasonable.</p>
+        </section>
+    </article>
+
+
+    <article class="post tag-linode tag-sysadmin">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2011-11-19">19 Nov 2011</time> on <a href="../../tag/linode/">linode</a>, <a href="../../tag/sysadmin/">sysadmin</a></span>
+          <h2 class="post-title"><a href="../../connection-issues-with-linodes-tokyo-datacenter-and-verizon-fios/">Connection issues with Linode's Tokyo datacenter and Verizon FiOS</a></h2>
+        </header>
+        <section class="post-content">
+          <p></p><p>Since this didn't seem immediately Googleable for me, here's a screenshot of my support ticket exchange:</p>
+
+<p><img src="../../content/images/2014/Apr/fiosticket.jpg" alt="mispy: I have a friend in the US under the Verizon FiOS ISP who has been curiously unable to connect to 106.187.34.177 for some time now. Here's her traceroute: [redacted] deaton: Hello, Thank you for contacting us. Unfortunately this is an issue that we're aware of and is affecting some customers using Verizon. We have been in contact with Verizon and are working to get the issue resolved, however we don't currently have an ETA for resolution. Sorry for any inconvenience this may be causing you in the interim, however we hope to get this problem resolved in short order. Regards, Dave" title=""></p>
+        </section>
+    </article>
+
+
+    <nav class="pagination" role="navigation">
+        <a class="newer-posts" href="../4/"><span aria-hidden="true">←</span> Newer Posts</a>
+    <span class="page-number">Page 5 of 8</span>
+        <a class="older-posts" href="../6/">Older Posts <span aria-hidden="true">→</span></a>
+</nav>
+
+
+</main>
+
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="../../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="../../assets/js/jquery.fitvids.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/index.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/prettify.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/footnotes.js?v=0717475246"></script>
+    <script type="text/javascript" src="../../assets/js/stars.js?v=0717475246"></script>
+</body>
