@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ" />
+
+    <title>Quixotic symbolism of Lisps</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/prettify.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/mispy.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="http://192.168.1.11:2368/post/" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="~mispy" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Quixotic symbolism of Lisps" />
+    <meta property="og:description" content="I ported the Emacs psychotherapist from Emacs Lisp to Common Lisp just now, as a means of learning more about each language. This one particular discrepancy took an unreasonable amount of time for me to notice: ELISP&amp;gt; (eq &#x27;foo..." />
+    <meta property="og:url" content="http://192.168.1.11:2368/post/" />
+    <meta property="article:published_time" content="2011-07-20T19:00:00.000Z" />
+    <meta property="article:modified_time" content="2014-04-02T09:16:56.433Z" />
+    <meta property="article:tag" content="lisp" />
+    <meta property="article:tag" content="emacs" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Quixotic symbolism of Lisps" />
+    <meta name="twitter:description" content="I ported the Emacs psychotherapist from Emacs Lisp to Common Lisp just now, as a means of learning more about each language. This one particular discrepancy took an unreasonable amount of time for me to notice: ELISP&amp;gt; (eq &#x27;foo..." />
+    <meta name="twitter:url" content="http://192.168.1.11:2368/post/" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "http://192.168.1.11:2368/content/images/2014/Mar/mispy5.png",
+        "url": "http://192.168.1.11:2368/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "Quixotic symbolism of Lisps",
+    "url": "http://192.168.1.11:2368/post/",
+    "datePublished": "2011-07-20T19:00:00.000Z",
+    "dateModified": "2014-04-02T09:16:56.433Z",
+    "keywords": "lisp, emacs",
+    "description": "I ported the Emacs psychotherapist from Emacs Lisp to Common Lisp just now, as a means of learning more about each language. This one particular discrepancy took an unreasonable amount of time for me to notice: ELISP&amp;gt; (eq &#x27;foo..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7" />
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="http://192.168.1.11:2368/rss/" />
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template tag-lisp tag-emacs">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="/">
+        <img src="/content/images/2016/03/sweatervest.png" alt="Blog Logo" />
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post tag-lisp tag-emacs">
+
+
+            <span class="post-meta"><time datetime="2011-07-21">21 Jul 2011</time> on <a href="/tag/lisp/">lisp</a> | <a href="/tag/emacs/">emacs</a></span>
+
+            <h1 class="post-title">Quixotic symbolism of Lisps</h1>
+
+            <section class="post-content">
+                <p>I <a href="https://github.com/mispy/doctor">ported</a> the <a href="http://www.gnu.org/software/libtool/manual/emacs/Total-Frustration.html">Emacs psychotherapist</a> from Emacs Lisp to Common Lisp just now, as a means of learning more about each language. This one particular discrepancy took an unreasonable amount of time for me to notice:</p>
+
+<pre><code class=" cl">ELISP&gt; (eq 'foo (intern "foo"))  
+t  
+</code></pre>
+
+<pre><code class=" cl">CL-USER&gt; (eq 'foo (intern "foo"))  
+NIL  
+</code></pre>
+
+<p>The cause of this madness? Observe:</p>
+
+<pre><code class=" cl">ELISP&gt; (intern "foo")  
+foo  
+ELISP&gt; (intern "FOO")  
+FOO  
+</code></pre>
+
+<pre><code class=" cl">CL-USER&gt; (intern "foo")  
+|foo|
+:INTERNAL
+CL-USER&gt; (intern "FOO")  
+FOO  
+:INTERNAL
+</code></pre>
+
+<p>Symbols in Emacs Lisp behave much as strings with regard to case sensitivity, whereas in Common Lisp casing must be escaped with these curious vertical bars. Intern will perform the appropriate escaping, but raw symbol input is always read by CL as upcased. This may also trip you up in the inverse case of symbol->string conversion-- make sure you use <strong>symbol-name</strong> or <strong>string</strong> instead of <strong>write-to-string</strong>!</p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Quixotic%20symbolism%20of%20Lisps&amp;url=http://192.168.1.11:2368/post/"
+                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://192.168.1.11:2368/post/"
+                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://192.168.1.11:2368/post/"
+                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="http://192.168.1.11:2368/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="/">~mispy</a> &copy; 2016 &bull; All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/prettify.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/footnotes.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/stars.js?v=e091030d4c"></script>
+</body>
+</html>

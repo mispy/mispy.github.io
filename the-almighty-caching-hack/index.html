@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ" />
+
+    <title>The almighty caching hack</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/prettify.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/mispy.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="http://192.168.1.11:2368/the-almighty-caching-hack/" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="~mispy" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="The almighty caching hack" />
+    <meta property="og:description" content="I have devised what might be considered an atrocity, but a potentially useful one nonetheless: require &#x27;memcache&#x27; Cache = MemCache.new(&#x27;127.0.0.1&#x27;) def memcache(key=nil, &amp;amp;b)     caller_file = caller[0].split(&#x27;:&#x27;)[0]   fullkey = Digest:..." />
+    <meta property="og:url" content="http://192.168.1.11:2368/the-almighty-caching-hack/" />
+    <meta property="article:published_time" content="2010-11-10T20:00:00.000Z" />
+    <meta property="article:modified_time" content="2014-04-26T11:47:36.900Z" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="The almighty caching hack" />
+    <meta name="twitter:description" content="I have devised what might be considered an atrocity, but a potentially useful one nonetheless: require &#x27;memcache&#x27; Cache = MemCache.new(&#x27;127.0.0.1&#x27;) def memcache(key=nil, &amp;amp;b)     caller_file = caller[0].split(&#x27;:&#x27;)[0]   fullkey = Digest:..." />
+    <meta name="twitter:url" content="http://192.168.1.11:2368/the-almighty-caching-hack/" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "~mispy",
+    "author": {
+        "@type": "Person",
+        "name": "Jaiden Mispy",
+        "image": "http://192.168.1.11:2368/content/images/2014/Mar/mispy5.png",
+        "url": "http://192.168.1.11:2368/author/jaiden-mispy",
+        "sameAs": "https://mispy.me/",
+        "description": null
+    },
+    "headline": "The almighty caching hack",
+    "url": "http://192.168.1.11:2368/the-almighty-caching-hack/",
+    "datePublished": "2010-11-10T20:00:00.000Z",
+    "dateModified": "2014-04-26T11:47:36.900Z",
+    "description": "I have devised what might be considered an atrocity, but a potentially useful one nonetheless: require &#x27;memcache&#x27; Cache = MemCache.new(&#x27;127.0.0.1&#x27;) def memcache(key=nil, &amp;amp;b)     caller_file = caller[0].split(&#x27;:&#x27;)[0]   fullkey = Digest:..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.7" />
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="http://192.168.1.11:2368/rss/" />
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template">
+
+    
+
+
+<header class="post-header">
+    <a class="blog-logo" href="/">
+        <img src="/content/images/2016/03/sweatervest.png" alt="Blog Logo" />
+    </a>
+</header>
+
+
+<main class="content" role="main">
+
+    <article class="post">
+
+
+            <span class="post-meta"><time datetime="2010-11-11">11 Nov 2010</time> </span>
+
+            <h1 class="post-title">The almighty caching hack</h1>
+
+            <section class="post-content">
+                <p>I have devised what might be considered an atrocity, but a potentially useful one nonetheless:</p>
+
+<pre><code class=" lang-ruby">require 'memcache'
+
+Cache = MemCache.new('127.0.0.1')
+
+def memcache(key=nil, &amp;b)  
+  caller_file = caller[0].split(':')[0]
+  fullkey = Digest::SHA1.hexdigest("\#{caller[0]}-\#{File.mtime(caller_file).to_i}-\#{key.nil? ? '' : Marshal.dump(key)}")
+  cached = Cache.get(fullkey)
+  return cached if cached
+  val = yield
+  Cache.set fullkey, val
+  val
+end  
+</code></pre>
+
+<p>It can be used like this:</p>
+
+<pre><code class=" ruby">memcache do  
+  some_taxing_database_operation
+end  
+</code></pre>
+
+<p>Ruby provides the inbuilt <strong>caller</strong> method, which will return a stack trace as an array of strings. The first element of this array contains the filename, line number and name of the method which called the current one. The above uses this information, along with the <strong>modification time</strong> of the file in question, to construct a key which is fed to <a href="http://memcached.org/">memcached</a>.</p>
+
+<p>The main advantage of this is that the key will change whenever you update the code associated with it, meaning you don't have to keep manually clearing caches during development. Of course, if you want this to scale with significant quantities of data, you should probably add some code to properly expire the old key. Otherwise your memory consumption will just keep rising!</p>
+
+<p>Incidentally, the memcached banner is <a href="http://memcached.org/images/memcached_banner75.jpg">made of adorable</a>.</p>
+            </section>
+
+            <footer class="post-footer">
+
+                <section class="author">
+                    <h4>Jaiden Mispy</h4>
+                    <p></p>
+                    <ul class="author-meta clearfix">
+                        <li>Melbourne, Australia</li>
+                        <li><a href="https://mispy.me/">https://mispy.me/</a></li>
+                    </ul>
+                </section>
+
+                <section class="share">
+                    <h4>Share this post</h4>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=The%20almighty%20caching%20hack&amp;url=http://192.168.1.11:2368/the-almighty-caching-hack/"
+                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <span class="hidden">Twitter</span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://192.168.1.11:2368/the-almighty-caching-hack/"
+                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <span class="hidden">Facebook</span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://192.168.1.11:2368/the-almighty-caching-hack/"
+                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                        <span class="hidden">Google+</span>
+                    </a>
+                </section>
+
+            </footer>
+
+
+    </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="http://192.168.1.11:2368/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="/">~mispy</a> &copy; 2016 &bull; All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/prettify.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/footnotes.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/stars.js?v=e091030d4c"></script>
+</body>
+</html>

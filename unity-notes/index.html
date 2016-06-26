@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ" />
+
+    <title>Unity notes</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/prettify.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/mispy.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="http://192.168.1.11:2368/unity-notes/" />
+    <meta name="referrer" content="origin" />
+    <meta name="generator" content="Ghost 0.7" />
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="http://192.168.1.11:2368/rss/" />
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template page-template page">
+
+    
+
+<header class="post-header">
+    <a class="blog-logo" href="/">
+        <img src="/content/images/2016/03/sweatervest.png" alt="Blog Logo" />
+    </a>
+</header>
+
+<main class="content" role="main">
+  <article class="post page">
+      <h1 class="post-title">Unity notes</h1>
+
+      <section class="post-content">
+        <ul>
+<li><p>Disabling a gameobject will NOT stop InvokeRepeating, but WILL stop coroutines. <a href="http://answers.unity3d.com/questions/458780/if-you-disable-a-gameobject-does-an-invokerepeatin.html">http://answers.unity3d.com/questions/458780/if-you-disable-a-gameobject-does-an-invokerepeatin.html</a></p></li>
+<li><p>Unity supports hot code reloading, but this can be very difficult to maintain in a working state for projects of any serious complexity. It relies on being able to retain state through a process of serialization, full game reload, and deserialization. Anything that is not linked into the Unity serialization system, such as static variable state, will be lost. If you're making a multiplayer game in particular you might as well forget about it.</p></li>
+<li><p>Unity serialization (of the ISerializationCallbackReceiver variety) is an editor-only thing. It is used for exposing data in the editor and for saving and loading prefabs, but cannot be used to e.g. create save games at runtime.</p></li>
+<li><p>Unity's collision detection system has 31 collision layers that are defined pre-runtime. This can be quite limiting for certain kinds of behavior (for example, preventing self-collision between a variable number of entities). Physics.IgnoreCollision goes some way to solving this.</p></li>
+<li><p>Colliders are abstract components that don't do much by themselves unless they are associated with a Rigidbody. A single Rigidbody will make use of all the Colliders attached to the game object and any children of that object, allowing composite structures composed of multiple Colliders to behave as a single structure physics-wise. However, you cannot have nested Rigidbodies, as they will interact with each other in strange ways.</p></li>
+</ul>
+      </section>
+  </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="http://192.168.1.11:2368/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="/">~mispy</a> &copy; 2016 &bull; All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/prettify.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/footnotes.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/stars.js?v=e091030d4c"></script>
+</body>
+</html>

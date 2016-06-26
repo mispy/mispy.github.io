@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ" />
+
+    <title>~mispy - Page 8</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/prettify.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/mispy.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="http://192.168.1.11:2368/page/8/" />
+    <meta name="referrer" content="origin" />
+    <link rel="prev" href="http://192.168.1.11:2368/page/7/" />
+    <meta name="generator" content="Ghost 0.7" />
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="http://192.168.1.11:2368/rss/" />
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="paged archive-template">
+
+    
+<header class="site-head" >
+
+    <img class="star" id="starO" src="/content/images/O.png" style="display: none;">
+    <img class="star" id="starB" src="/content/images/B.png" style="display: none;">
+    <img class="star" id="starA" src="/content/images/A.png" style="display: none;">
+    <img class="star" id="starF" src="/content/images/F.png" style="display: none;">
+    <img class="star" id="starG" src="/content/images/G.png" style="display: none;">
+    <img class="star" id="starK" src="/content/images/K.png" style="display: none;">
+    <img class="star" id="starM" src="/content/images/M.png" style="display: none;">
+    <canvas id="canvas" style="position: absolute; left: 0; width: 100%; height: 100%;"></canvas>
+
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <a class="blog-logo" href="/"><img src="/content/images/2016/03/sweatervest.png" alt="Blog Logo" /></a>
+            <h1 class="blog-title"><a href="/yes">~</a><a href="/">mispy</a></h1>
+            <h2 class="blog-description"></h2>
+            <ul class="site-nav">
+              <li><a href="/">Blog</a></li>
+              <li><a href="/projects">Projects</a></li>
+              <li><a href="https://github.com/mispy">GitHub</a></li>
+              <li><a href="https://twitter.com/m1sp">Twitter</a></li>
+              <!--<li><a href="/hireme" class="hireme">Hire Me!</a></li>-->
+            </ul>
+        </div>
+    </div>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2010-11-11">11 Nov 2010</time> </span>
+          <h2 class="post-title"><a href="/the-almighty-caching-hack/">The almighty caching hack</a></h2>
+        </header>
+        <section class="post-content">
+          <p><p>I have devised what might be considered an atrocity, but a potentially useful one nonetheless:</p>
+
+<pre><code class=" lang-ruby">require 'memcache'
+
+Cache = MemCache.new('127.0.0.1')
+
+def memcache(key=nil, &amp;b)  
+  caller_file = caller[0].split(':')[0]
+  fullkey = Digest::SHA1.hexdigest("\#{caller[0]}-\#{File.mtime(caller_file).to_i}-\#{key.nil? ? '' : Marshal.dump(key)}")
+  cached = Cache.get(fullkey)
+  return cached if cached
+  val = yield
+  Cache.set fullkey, val
+  val
+end  
+</code></pre>
+
+<p>It can be used like this:</p>
+
+<pre><code class=" ruby">memcache do  
+  some_taxing_database_operation
+end  
+</code></pre>
+
+<p>Ruby provides the inbuilt <strong>caller</strong> method, which will return a stack trace as an array of strings. The first element of this array contains the filename, line number and name of the method which called the current one. The above uses this information, along with the <strong>modification time</strong> of the file in question, to construct a key which is fed to <a href="http://memcached.org/">memcached</a>.</p>
+
+<p>The main advantage of this is that the key will change whenever you update the code associated with it, meaning you don't have to keep manually clearing caches during development. Of course, if you want this to scale with significant quantities of data, you should probably add some code to properly expire the old key. Otherwise your memory consumption will just keep rising!</p>
+
+<p>Incidentally, the memcached banner is <a href="http://memcached.org/images/memcached_banner75.jpg">made of adorable</a>.</p></p>
+        </section>
+    </article>
+
+
+    <article class="post tag-amusing tag-literature">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2010-10-24">24 Oct 2010</time> on <a href="/tag/amusing/">amusing</a>, <a href="/tag/literature/">literature</a></span>
+          <h2 class="post-title"><a href="/the-anachronisms-of-technological-megalomania/">The anachronisms of technological megalomania</a></h2>
+        </header>
+        <section class="post-content">
+          <p><blockquote>
+  <p>"Suraklin’s mind, his knowledge, and his personality have been living in the minds of others, like a self-perpetuating worm-program on a computer disk that lies about its own existence and eventually eats up all the other programs. And now he’s getting ready to download into a computer for real, a computer powered by electricity that will be generated by the life-energies of everyone in the world."</p>
+</blockquote>
+
+<p>The above hastily provides the background of <em>The Silicon Mage</em>, by Barbara Hambly. A more than slightly absurd plot under the best of circumstances, but made more entertaining by the publication date: <em>1988</em>. That's right: our titular villain concocts his technomagical transhumanist scheme in the age of 300-bit/s modems and green-on-black CRT terminals. At least he has a Cray.</p>
+
+<p>It's terribly silly, but oddly still an enjoyable work of fantasy fiction. The floppy-disk-toting female(!) hacker and her cadre of magical madmen and princesses lend a sort of twisted credibility to the standard save-the-multiverse adventure story.</p></p>
+        </section>
+    </article>
+
+
+    <article class="post tag-ruby">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2010-10-12">12 Oct 2010</time> on <a href="/tag/ruby/">ruby</a></span>
+          <h2 class="post-title"><a href="/the-caching-operator-of-ruby/">The &#x27;caching operator&#x27; of Ruby</a></h2>
+        </header>
+        <section class="post-content">
+          <p><p>Ruby is by nature a language of convenience-- possibly <em>the</em> language of convenience. It places a high priority on minimizing the wastage of developer time. One of the lesser-known means by which it achieves this is the operator <strong>||=</strong>.</p>
+
+<pre><code class=" lang-ruby">irb(main):002:0&gt; sneep ||= 1  
+=&gt; 1
+irb(main):003:0&gt; sneep  
+=&gt; 1
+irb(main):004:0&gt; sneep ||= 2  
+=&gt; 1
+irb(main):005:0&gt; sneep  
+=&gt; 1
+</code></pre>
+
+<p>Here, it is essentially behaving as shorthand for this:</p>
+
+<pre><code class=" lang-ruby">if !defined?(sneep) || sneep.nil?  
+  sneep = val
+else  
+  sneep
+end  
+</code></pre>
+
+<p>The reason I call it the 'caching operator' is because it not only assigns, but also returns the target and more importantly <strong>does not execute</strong> the right-hand argument if no assignment is to be made. This means you can just throw in an ||= assignment to an arbitrary class variable anywhere and get instant simple caching without breaking the flow of the code.</p>
+
+<pre><code class=" lang-ruby">display_results(@@cached ||= some_taxing_operation)  
+</code></pre>
+
+<p>Of course, in true Ruby spirit, you aren't limited to the operators shipped with the language. The <a href="https://github.com/jicksta/superators">superators gem</a> makes creating new ones almost as easy as defining methods. ^_^</p></p>
+        </section>
+    </article>
+
+
+    <nav class="pagination" role="navigation">
+        <a class="newer-posts" href="/page/7/"><span aria-hidden="true">&larr;</span> Newer Posts</a>
+    <span class="page-number">Page 8 of 8</span>
+</nav>
+
+
+</main>
+
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="http://192.168.1.11:2368/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="/">~mispy</a> &copy; 2016 &bull; All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/prettify.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/footnotes.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/stars.js?v=e091030d4c"></script>
+</body>
+</html>

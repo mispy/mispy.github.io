@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel><title><![CDATA[~mispy]]></title><description><![CDATA[~mispy]]></description><link>http://192.168.1.11:2368/</link><generator>Ghost 0.7</generator><lastBuildDate>Sun, 26 Jun 2016 05:37:38 GMT</lastBuildDate><atom:link href="http://192.168.1.11:2368/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[SVG cross-browser compatibility notes]]></title><description><![CDATA[<p>I just wrote a scaling resize handler for the <a href="http://ourworldindata.org/grapher/view/147">Our World In Data maps</a>. It worked wonderfully in Chrome. It didn't work in Firefox or Safari. Why?</p>
+
+<ul>
+<li><p>Firefox: getBoundingClientRect(), which I relied upon for getting the map and container dimensions, accounts for SVG transforms in Chrome but not Firefox. I</p></li></ul>]]></description><link>http://192.168.1.11:2368/svg-cross-browser-compatibility/</link><guid isPermaLink="false">6f9782e3-1285-49c9-b4a5-7d51e4c14f3c</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Tue, 23 Feb 2016 19:05:04 GMT</pubDate><content:encoded><![CDATA[<p>I just wrote a scaling resize handler for the <a href="http://ourworldindata.org/grapher/view/147">Our World In Data maps</a>. It worked wonderfully in Chrome. It didn't work in Firefox or Safari. Why?</p>
+
+<ul>
+<li><p>Firefox: getBoundingClientRect(), which I relied upon for getting the map and container dimensions, accounts for SVG transforms in Chrome but not Firefox. I switched it out for a calculation based on getBBox, which always returns the untransformed user space coordinates.</p></li>
+<li><p>Safari: I missed the end parenthesis on the matrix transform string. Chrome and Firefox will parse it anyway and won't bother telling you. Safari will silently fail to apply the matrix at all. Goodness!</p></li>
+</ul>]]></content:encoded></item><item><title><![CDATA[Linux tips and notes]]></title><description><![CDATA[<p>I've been using this silly OS for so long that sometimes I forget <em>why</em> I have things set up the way they are. Best write some of it down!</p>
+
+<p>In recent years, I mainly run Linux locally for web development and general scripting shenanigans with Python, Ruby and/or JS.</p>]]></description><link>http://192.168.1.11:2368/linux-notes/</link><guid isPermaLink="false">7d3c2d7a-c6a9-4b49-9564-2b3c87326309</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Thu, 14 Jan 2016 19:19:16 GMT</pubDate><content:encoded><![CDATA[<p>I've been using this silly OS for so long that sometimes I forget <em>why</em> I have things set up the way they are. Best write some of it down!</p>
+
+<p>In recent years, I mainly run Linux locally for web development and general scripting shenanigans with Python, Ruby and/or JS. Since it's also how my stuff gets deployed, I interact with servers running it via ssh a lot.</p>
+
+<ul>
+<li>I use <a href="http://www.vmware.com/au/products/player/playerpro-evaluation.html">VMware Workstation</a> to run Linux under Windows. </li>
+</ul>
+
+<p>For web development purposes, even if you run native Linux it's worth getting a VM environment set up so you can have a fresh system for testing with. VirtualBox (the non-proprietary alternative) is probably fine too, I just happen to have a VMware license and it's what I'm familiar with.</p>
+
+<ul>
+<li>I run the latest <a href="https://wiki.ubuntu.com/LTS">Ubuntu LTS</a> distribution.</li>
+</ul>
+
+<p>I will freely confess this is mostly just because it is very popular, meaning if you hit any issues they're likely to have been encountered and resolved by someone else and thus easy to google.</p>
+
+<ul>
+<li><a href="http://www.vim.org">vim</a> is my main text editor.</li>
+</ul>
+
+<p>But I wouldn't necessarily recommend learning it if you're not already familiar: it's not <em>obviously</em> superior to other stuff in a way that justifies the steep learning curve. There are more approachable alternatives these days like <a href="http://www.sublimetext.com/">Sublime Text</a> or <a href="http://atom.io/">Atom</a>. Perhaps one advantage vim has over these for me is that it's optimized to run in a terminal over ssh, for server-side work.</p>
+
+<p>My approach is pretty focused on shells and terminals rather than editors, which isn't necessarily the best way to do it. I tend to have multiple terminals with multiple vims rather than using features like split panes.</p>
+
+<p>The biggest customization I have is the addition of Sublime Text-like fuzzy file search and grep across a git repo, which runs off <a href="https://github.com/Shougo/unite.vim">unite.vim</a>.</p>
+
+<p>Another <code>.vimrc</code> thing that took me <em>way</em> too many years to discover is that you can get it to interface with the terminal to <a href="https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode">automatically recognize copy/paste</a> without having to type <code>:set paste</code>. You can also just hook the vim clipboard <a href="http://vim.wikia.com/wiki/Accessing_the_system_clipboard">into the system clipboard</a> so operations like <code>d</code> and <code>p</code> work across terminals.</p>
+
+<p>I could probably fill another entire thing with vim notes! The combination of decades of development and extremely poor discoverability means vim is littered with secrets.</p>
+
+<ul>
+<li><a href="http://www.howtogeek.com/112620/how-to-install-use-gnome-shell-on-ubuntu/">GNOME Shell</a> is my window manager.</li>
+</ul>
+
+<p>Though really any WM would do. It's rare that I need to open anything other than terminals-- any browsers I need to test web stuff run in the host Windows.</p>
+
+<ul>
+<li>I use <a href="http://www.zsh.org/">zsh</a> instead of bash. </li>
+</ul>
+
+<p>The most useful feature of zsh I've found is that it does case-insensitive substring tab completion rather than looking for the start of the filename. This means you can tab complete e.g. "Gemfile.lock" by typing "lock\t", instead of "Gem\t" (which would also match a normal "Gemfile" in the same dir). Given just <em>how much</em> time I spend typing in filenames, this is pretty important!</p>
+
+<p>There's a community collection of zsh scripts at <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a>. The script for Python <a href="https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/virtualenvwrapper/virtualenvwrapper.plugin.zsh">virtualenvwrapper integration</a> was originally my doing.</p>
+
+<ul>
+<li>Dotfiles are the main form of terminal-world configuration. </li>
+</ul>
+
+<p>I keep them synced across different systems by putting the canonical files in a Dropbox folder and symlinking them.</p>
+
+<ul>
+<li>History scroll (up arrow) and reverse-search (ctrl+r) are your friends. </li>
+</ul>
+
+<p>They will save you an incredible amount of typing. They're also useful when you need to execute a complex command again but have forgotten the precise arguments you wanted-- sometimes I've sshed into a server just to reverse search because I know the thing I want is there somewhere!</p>
+
+<ul>
+<li><code>ssh</code> is another dear friend. </li>
+</ul>
+
+<p>If you use ssh a lot, make sure to take the time to configure it a bit. When I have multiple terminals open, I often end up sshing to the same target multiple times-- this can be optimized to run off the same connection in <code>~/.ssh/config</code>:</p>
+
+<pre><code>ControlMaster auto  
+ControlPath /tmp/ssh_mux_%h_%p_%r  
+ControlPersist 4h  
+</code></pre>
+
+<p>Don't forget to set up key-based ssh authentication! Even if it weren't for the added security, it just saves a lot of password typing. <code>ssh-copy-id</code> makes this very easy to do.</p>
+
+<p>I have some particular machines I ssh into so frequently that they're aliased to a single letter in my <code>~/.zshrc</code>. e.g. my personal VPS, on which this site runs: <code>alias z="ssh mispy@zinzin"</code></p>
+
+<ul>
+<li><code>rsync</code> is wonderful, and will solve a lot of file transfer problems.</li>
+</ul>
+
+<p>In particular, it is <em>way</em> faster than <code>scp -r</code> for recursive network copying (and it still runs over ssh!). However, it has a bewildering multitude of command line options. I run this alias for general usage:</p>
+
+<p><code>alias rs="rsync --human-readable --archive --verbose --compress --progress"</code></p>
+
+<p>Of course, <code>--archive</code> then expands to <code>-rlptgoD</code>, which is <code>--recursive --links --perms --times --group --owner --devices --specials</code>. Got all that? Don't worry, it mostly Just Works. You use it like this:</p>
+
+<p><code>rs dir mispy@zinzin:/home/mispy/dir</code></p>]]></content:encoded></item><item><title><![CDATA[Unity runtime instantiation and event execution order]]></title><description><![CDATA[<p>The Unity manual has a fairly <a href="http://docs.unity3d.com/Manual/ExecutionOrder.html">comprehensive overview</a> of how MonoBehaviour event handlers are called in relation to each other. What it doesn't really tell you, though, is when they run relative to the code that created the object in the first place. The important points that are missing:</p>
+
+<ul>
+<li>Awake</li></ul>]]></description><link>http://192.168.1.11:2368/unity-runtime-instantiation-and-event-execution-order/</link><guid isPermaLink="false">ffb4a2d7-c5f4-4a66-8cb6-00e9bf0385cf</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sun, 29 Nov 2015 21:38:49 GMT</pubDate><content:encoded><![CDATA[<p>The Unity manual has a fairly <a href="http://docs.unity3d.com/Manual/ExecutionOrder.html">comprehensive overview</a> of how MonoBehaviour event handlers are called in relation to each other. What it doesn't really tell you, though, is when they run relative to the code that created the object in the first place. The important points that are missing:</p>
+
+<ul>
+<li>Awake and OnEnable are called <em>in the same stack as the line that activates the object</em></li>
+<li>Start is called <em>after</em> whatever code activated the object finishes</li>
+<li>This leaves a good space to do custom init in between OnEnable and Start</li>
+</ul>
+
+<p>Here's a block of code to illustrate:</p>
+
+<pre><code class="language-csharp">using UnityEngine;  
+using System.Collections;
+
+public static class ThingMaker {  
+    public static void MakeThing(GameObject prefab) {
+        Debug.Log("Before Instantiate");
+        var obj = Object.Instantiate(prefab).GetComponent&lt;Thing&gt;();
+        Debug.Log("After Instantiate");
+        // If the prefab was active, at this point Awake and OnEnable have been called but *not* Start
+        obj.Init(10);
+        // Start runs at some point after this
+    }
+}
+
+public class Thing : MonoBehaviour {  
+    Rigidbody rigidbody;
+    int boop = 0;
+
+    void Awake() {
+        // This is called immediately as soon as the object is first activated
+
+        // At this point, you wouldn't have had a chance to call Init, so your
+        // boop is still zero
+
+        rigidbody = GetComponent&lt;Rigidbody&gt;();
+        Debug.LogFormat("Awake {0}", boop);
+    }
+
+    void OnEnable() {
+        // This is called immediately after Awake
+        // However, if you disable and re-enable this object, it will get invoked
+        // a second time while Awake won't
+        Debug.LogFormat("OnEnable {0}", boop);
+    }
+
+    public void Init(int boop) {
+        this.boop = boop;
+    }
+
+    void Start() {
+        // This is called once, but it happens *after* whatever code activated the object
+        // finishes running, meaning in this case after Init
+
+        // We now have an appropriate level of boop to work with
+        Debug.LogFormat("Start {0}", boop);
+    }
+}
+</code></pre>
+
+<p>And the output:</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/11/unity.png" alt=""></p>]]></content:encoded></item><item><title><![CDATA[Social networks and individualism]]></title><description><![CDATA[<p>Twitter is pretty important to me. I'm a very quiet person, and it provides a pleasantly low-expectation way of interacting with a bunch of interesting humans (and robots?) that I wouldn't really have otherwise. Over the years, I have seen troubled people find acceptance, the formation of strong friendships and</p>]]></description><link>http://192.168.1.11:2368/social-networks-and-individualism/</link><guid isPermaLink="false">853c020e-0704-402b-b701-698d093a618d</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Tue, 24 Nov 2015 06:46:27 GMT</pubDate><content:encoded><![CDATA[<p>Twitter is pretty important to me. I'm a very quiet person, and it provides a pleasantly low-expectation way of interacting with a bunch of interesting humans (and robots?) that I wouldn't really have otherwise. Over the years, I have seen troubled people find acceptance, the formation of strong friendships and romances, and the activist power of many voices in unison. I have had opportunities to help others solve interesting problems and many people have helped me. Also there are a lot of puns. So many puns.</p>
+
+<p>The social architecture of Twitter is flat and centers around individuals. Anyone can follow anyone; the largest corporation account and the shyest of teens are all mechanically more-or-less identical. Twitter has no real concept of a <em>group</em> or a <em>topic</em>, just a whole bunch of people and a few searching functions like hashtags and mutes.</p>
+
+<p>While this flatness can be very empowering, especially in a political context, I have found it also makes certain kinds of social behavior difficult. When you follow someone on Twitter you are committing to see <em>everything</em> they say unless it is specifically directed to another account that you don't follow. For example, if I follow some brilliant programmer with obnoxious political views I must spend an awful lot of time rolling my eyes as they wax lyrical about the wonders of Ayn Rand and the horrors of millenial entitlement in order to read about interesting experiences with type systems. (I don't actually follow anyone like this, fortunately.)</p>
+
+<p>The way I tweet about stuff myself is also affected. I mostly discuss programming, video games and sometimes ethics or demography. People who follow me do so under the expectation that there will be more of such things. Sometimes, however, I find I am really interested in something else! What if I am reading a book on the <a href="https://twitter.com/m1sp/status/622773586504212480">history of the Byzantine Empire</a> and want to talk lots about the theological controversy of the Council of Chalcedon? Or just squee about cute anime boys? I end up self-censoring a lot, because at least one of those 2000 or so people is going to be bored by <em>one</em> of those things and there isn't really a way for them to opt out aside from opting out of <em>me</em> entirely.</p>
+
+<p>So I find myself wanting a place on the internet aside from just Twitter, one which has something closer to a traditional forum architecture where the focus is more on particular groups or topics than individuals. In a network based on threads or channels nobody has to look at the contents of any particular topic, so they can be as deep or niche as they like without bothering anyone else. Maybe freenode, or even Reddit?</p>]]></content:encoded></item><item><title><![CDATA[Preventing additive blending of transparent Unity sprites]]></title><description><![CDATA[<p>Let's say you have two overlapping circles. Instead of making something Venn diagram-esque, you'd rather they just marked out a continuous area.</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/08/circles.png" alt=""></p>
+
+<p>In my particular case, I want the power node supply radius indicators on this hollow-asteroid-turned-into-a-spaceship not to obscure everything underneath them by being too intense at the overlap</p>]]></description><link>http://192.168.1.11:2368/unity-alpha-blending-overlap/</link><guid isPermaLink="false">894dc7e2-fea2-491b-aae5-023e066d0d4a</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Wed, 19 Aug 2015 01:11:08 GMT</pubDate><content:encoded><![CDATA[<p>Let's say you have two overlapping circles. Instead of making something Venn diagram-esque, you'd rather they just marked out a continuous area.</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/08/circles.png" alt=""></p>
+
+<p>In my particular case, I want the power node supply radius indicators on this hollow-asteroid-turned-into-a-spaceship not to obscure everything underneath them by being too intense at the overlap points: <br>
+<img src="http://192.168.1.11:2368/content/images/2015/08/spaceship.png" alt=""></p>
+
+<p>This turns out to be <em>surprisingly difficult</em>. If it were just a matter of blending the two circles, you might accomplish it by using a Min shader <a href="http://docs.unity3d.com/Manual/SL-Blend.html">BlendOp</a>. However, what you want is to blend the circles one way and <em>then</em> blend the result of that blend in another way onto the screen. Since the rendering engine draws back-to-front, by the time you get to blending one circle onto another the first circle has already been blended with the scene and the necessary information lost.</p>
+
+<h2 id="usingstenciltests">Using stencil tests</h2>
+
+<p>One method to avoid overlap is to tell the circle shader to just not do anything if another circle has already claimed a given pixel. This is where the <a href="http://docs.unity3d.com/Manual/SL-Stencil.html">stencil buffer</a> comes in handy.</p>
+
+<pre><code class="language-cg"> Shader "Custom/PowerCircle" {
+     Properties {
+         _MainTex ("Base (RGB)", 2D) = "white" {}
+     }
+
+     SubShader {
+        Tags { "Queue"="Transparent" }
+
+        Pass {
+            Stencil {
+                Ref 2
+                Comp NotEqual
+                Pass Replace
+            }
+
+             Blend SrcAlpha OneMinusSrcAlpha     
+
+             CGPROGRAM
+             #pragma vertex vert
+             #pragma fragment frag
+             #include "UnityCG.cginc"
+
+             uniform sampler2D _MainTex;
+
+             struct v2f {
+                 half4 pos : POSITION;
+                 half2 uv : TEXCOORD0;
+             };
+
+             v2f vert(appdata_img v) {
+                 v2f o;
+                 o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+                 half2 uv = MultiplyUV( UNITY_MATRIX_TEXTURE0, v.texcoord );
+                 o.uv = uv;
+                 return o;
+             }
+
+             half4 frag (v2f i) : COLOR {
+                 half4 color = tex2D(_MainTex, i.uv);
+                 return color;
+             }
+             ENDCG
+        }
+
+    }
+
+    Fallback off
+}
+</code></pre>
+
+<p>The key here is the <code>Stencil</code> bit. <code>Comp NotEqual</code> means it will only run if the stencil buffer is not already equal to the number given by <code>Ref 2</code>, and <code>Pass Replace</code> means it will set it to 2 afterwards. So any number of this shader will only run once for a given pixel. Does it work? Well...</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/08/stencil.png" alt=""></p>
+
+<p>Not exactly, no. The problem is that each of the circles is actually a square sprite, and whoever renders first hogs all the pixels with useless completely transparent bits. We can fix this by telling the shader to discard any pixels with 0 alpha:</p>
+
+<pre><code class="language-cg">half4 frag (v2f i) : COLOR {  
+    half4 color = tex2D(_MainTex, i.uv);
+    if (color.a == 0.0)
+        discard;
+    return color;
+}
+</code></pre>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/08/alpha.png" alt=""></p>
+
+<p>That's a little better! But we still have weird things going on around the edges. That would be because in this particular texture, the edges are soft and gradually fade out with decreasing alpha values. Since they're not <em>zero</em> alpha they don't get discarded, and can prevent higher-alpha pixels from other circles from being rendered.</p>
+
+<p>We can eliminate the soft edges by editing the texture, and by ensuring the filter mode is set to <code>Point</code> rather than <code>Bilinear</code>:</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/08/aliased.png" alt=""></p>
+
+<p>Success! A continuous bubble of power.</p>
+
+<p>Those soft edges were kinda nice to have, though. It's possible the result could be postprocessed somehow to add them back in, or a different strategy could retain them. For the moment, I've opted for a compromise of keeping the soft edges on the image and just discarding a bunch more low alpha pixels:</p>
+
+<pre><code class="language-cg">half4 frag (v2f i) : COLOR {  
+    half4 color = tex2D(_MainTex, i.uv);
+    if (color.a &lt; 0.3)
+        discard;
+    return color;
+}
+</code></pre>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/08/gotit.png" alt=""></p>
+
+<p>I think that looks kinda nice (for placeholder developer art). If anyone has any other ideas please let me know!</p>
+
+<h2 id="alternatives">Alternatives</h2>
+
+<p>From poking around the Unity forums it sounds like there may be a way to do this by making clever use of <a href="http://docs.unity3d.com/Manual/SL-CullAndDepth.html">ZTest and ZWrite</a> that I didn't manage to puzzle out. The definitive solution is probably to use <a href="http://docs.unity3d.com/ScriptReference/RenderTexture.html">RenderTexture</a> to blend the circles in advance and then drop them all in at once as a big sprite, but that requires adding more moving parts than I'd like.</p>]]></content:encoded></item><item><title><![CDATA[Distributed networking in a multiplayer game]]></title><description><![CDATA[<p>A few months ago, I was tasked with porting the networking code of <a href="http://www.wanderthegame.com/">Wander</a> to the PS4, and ended up writing some bits of it from scratch. I've been programming for years, but this was my first foray into C++ and serious gamedev, so I had to learn a lot!</p>]]></description><link>http://192.168.1.11:2368/wander-networking/</link><guid isPermaLink="false">7bb90c91-8328-497c-90d4-dc7ef73e320c</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Fri, 14 Aug 2015 18:15:00 GMT</pubDate><content:encoded><![CDATA[<p>A few months ago, I was tasked with porting the networking code of <a href="http://www.wanderthegame.com/">Wander</a> to the PS4, and ended up writing some bits of it from scratch. I've been programming for years, but this was my first foray into C++ and serious gamedev, so I had to learn a lot!</p>
+
+<h3 id="theproblem">The problem</h3>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/08/griffin_landing.jpg" alt=""></p>
+
+<p>Wander was designed to be an open world, massively multiplayer<sup id="fnref:1"><a href="http://192.168.1.11:2368/wander-networking/#fn:1" rel="footnote">1</a></sup> exploration game. Players occupy the same universe and should be visible to one another as soon as they, uh, wander into range. Crucially, Wander is non-competitive, meaning clients can be trusted: there's not much to be gained from cheating, unless you get a kick out of teleporting yourself into odd places.</p>
+
+<p>The game is based on <a href="http://cryengine.com/">CRYENGINE</a><sup id="fnref:2"><a href="http://192.168.1.11:2368/wander-networking/#fn:2" rel="footnote">2</a></sup> and written in C++ and Lua. The engine has its own conception of networking, but it's based around matchmaking and lobbies and was generally a bit tangential to our requirements. So we needed an alternative that could connect nearby players, push state to the Cryengine objects, and work on both PC and PS4.</p>
+
+<p>When I joined the project, it was already sorta functional on PC. We were using a C# library called Badumna, invoked from C++ via a C++/CLI wrapper. Badumna was a University of Melbourne project turned startup turned bankrupt turned open source. The website no longer exists, so I had to go find the documentation <a href="https://web.archive.org/web/20131124073148/http://www.scalify.com/documentation/Manual/index.php">on archive.org</a>. Not... not terribly promising.</p>
+
+<h3 id="whatwetried">What we tried</h3>
+
+<p>Loki gave me two alternatives to pursue: port Badumna to C++, or get Mono working on the PS4.</p>
+
+<p>A quick look through the Badumna code made it clear the first option was waaay beyond my abilities. The library has around 72,000 lines of code, making heavy use of custom attributes and other C# features which aren't directly translatable to C++. Lots of fiddly meta stuff like this:</p>
+
+<p><img src="https://pbs.twimg.com/media/B7c83J3CEAA6Cwl.png:large" alt=""></p>
+
+<p>Much of the code is security features we didn't need, but separating that out from the critical network stuff is non-trivial. And while I had decent experience with C# and some prior knowledge of C, my C++ was not going to be good enough to port an entire networking library from scratch.</p>
+
+<p>So I looked at the second option. <a href="http://tirania.org/blog/archive/2014/Apr-14.html">Mono on PS4</a> is pretty experimental and requires <a href="http://www.mono-project.com/docs/advanced/aot/">AOT compilation</a>, but Badumna was designed to run on mobile devices so I did make some headway and eventually got it to compile. Unfortunately, I ran into a NOT IMPLEMENTED runtime error from the stdlibs: there was no System.Security.Cryptography. And I was <em>not</em> going to try and homebrew <em>a cryptography stdlib</em>, so...</p>
+
+<p>Having hit a dead end and feeling a bit frustrated, we went hunting for alternatives. Loki found a C++ library called <a href="http://vastlib.wikispaces.com/">VAST</a> which looked promising: spatial P2P for virtual worlds! Exactly what we wanted, and it didn't matter very much that it was based on a 2D instead of 3D coordinate space. Even if we do have a floating island.</p>
+
+<p>I set about trying to get the VAST code working on PS4. The library itself is small, but it has ... a dependency. Namely, The A Dynamically Assembled Protocol Transformation, Integration, and eValuation Environment Communication Environment™:</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/07/ace.png" alt=""></p>
+
+<p>Yes, that is the actual expansion of that acronym. But wait, it gets better! You can do real-time Common Object Request Broker Architecture® Component Model with Component Integrated A Dynamically Assembled Protocol Transformation, Integration, and eValuation Environment Communication Environment™ Object Request Broker™</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/07/ccm.png" alt=""></p>
+
+<p><em>what is happening</em></p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/07/new_yellow.gif"></p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/07/new_yellow.gif" width="150"></p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/07/new_yellow.gif" width="300"></p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2015/07/lastmodified.png"></p>
+
+<p><em>oh my gods</em></p>
+
+<p>So, a now-wiser Mispy would read all this as "FLEE, MORTAL" and seek greener pastures, but I was intrigued. This monstrosity <a href="http://www.dre.vanderbilt.edu/versions.html">runs on freakin' OpenVMS</a> so surely I could get it working on PS4. And after lots of tinkering with preprocessor conditionals and tearing my hair out over the threading API, I succeeded! My VAST prototype successfully established a connection.</p>
+
+<p>Of course at this point I discover that VAST doesn't really do any of the things we wanted it to in the first place.</p>
+
+<p>I am still to this day not entirely clear on what exactly VAST <em>is</em> supposed to do. It might be useful if you're trying to load balance a series of servers attached to a spatial responsibility zone? Maybe? At any rate, what it definitely <em>doesn't</em> do is any of the actual networking part of P2P-- there's no <a href="https://en.wikipedia.org/wiki/NAT_traversal">NAT punching</a>, <a href="https://en.wikipedia.org/wiki/STUN">STUN</a> or <a href="https://en.wikipedia.org/wiki/Traversal_Using_Relays_around_NAT">TURN</a> or what have you.</p>
+
+<p>The key mistake I'd been making here was assuming that since we started with a complex system (Badumna), some approximation of that complexity was needed if I wanted to replace it. Given the task "port Badumna", instead of trying to solve the surface-level problem I should've thought more carefully about <em>why</em> it was needed and if there was another way to tackle the underlying issue. </p>
+
+<p>Similarly, I should have analyzed VAST more carefully before getting too invested in the interesting technical process of getting it to work. Tinker mentality can be dangerous when what you need is careful design!</p>
+
+<h3 id="whatweactuallywentwith">What we actually went with</h3>
+
+<p>Badumna does decentralized peer discovery using <a href="http://192.168.1.11:2368/wander-networking/distributed hash tables">distributed hash tables</a> to avoid single-point-of-failure issues. This is huge technological overkill for a small indie game, and it eventually dawned on me that all the peer discovery could just be done by polling some Python script. That left the core "talk to given peer" networking problem, which falls well within the purview of <a href="https://partner.steamgames.com/documentation/api">SteamNetworking</a> (based on libjingle) and the PS4 libraries.</p>
+
+<p>I would like to take a moment to express my great fondness for Steam's P2P networking API, by the way! It's super no-nonsense: you don't even need to worry about the current connection state, you just give it a packet and a destination id and off it goes, idempotently setting up whatever it needs to along the way. If the libjingle NAT-punching stuff isn't enough, it'll even go through Steam's own relay servers for you.</p>
+
+<p>So the networking flow now looks like this:</p>
+
+<ul>
+<li>every few seconds, the game sends a POST request to a <a href="http://www.cherrypy.org/">cherrypy</a> server with the player's id (either Steam or PSN) and current world coordinates</li>
+<li>the server stores this information in Redis and does a <a href="http://redis.io/commands/ZRANGEBYSCORE">zrangebyscore</a> query to return a json array of other player ids within a certain radius</li>
+<li>the player ids are fed into a platform-agnostic networking layer wrapped around the Steam and PS4 APIs</li>
+<li>connections are established and players start pushing state to each other directly (using <a href="https://developer.valvesoftware.com/wiki/Source_Multiplayer_Networking#Entity_interpolation">interpolation</a> to avoid jerkiness)</li>
+</ul>
+
+<p>Player logouts are handled by expiring ids from the Redis cache if the server doesn't hear from them for a while, which means it can be out of sync but that's fine since there's little harm in trying and failing to connect to the occasional offline player.</p>
+
+<p>Loki worked out the Redis stuff and tied Cryengine into Steam, while I wrote a wrapper for the (rather lower-level) PS4 API to act as a drop-in replacement for SteamNetworking. This was reasonably non-trivial and the kind of thing I would love to open source, but <span style="background-color: black; color: black;">grumble grumble Sony mutter NDAs grumble</span></p>
+
+<p>Anyway, it worked! The first moment I saw another little Azertash<sup id="fnref:3"><a href="http://192.168.1.11:2368/wander-networking/#fn:3" rel="footnote">3</a></sup> swimming around on a TV was very satisfying indeed. </p>
+
+<h2 id="improvements">Improvements</h2>
+
+<p>There is one feature of Badumna it would be useful to replicate: relay messaging between peers. Currently, a player only sees another player if the two are directly connected to each other. This means the network topology is <a href="https://en.wikipedia.org/wiki/Network_topology#Mesh">fully connected</a> and the number of connections grows quadratically with the number of players:</p>
+
+<p><img src="https://upload.wikimedia.org/math/3/e/8/3e86e867a928d394c6e126bd725883de.png" alt="c = n(n-1)/2"></p>
+
+<p>So if you have 10 players in the same local area each of them is connected to 9 other people and there are 45 connections in total. For a small game like Wander this is fine, but if you wanted to handle high population density, you could instead organize players into <a href="https://en.wikipedia.org/wiki/Star_network">star topologies</a> where a single player relays information between two or more others. Much less overhead!</p>
+
+<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>In the technical sense of "there are lots of players in the same world". Wander has little in common with traditional MMORPGs. <a href="http://192.168.1.11:2368/wander-networking/#fnref:1" title="return to article">↩</a></p></li>
+<li class="footnote" id="fn:2"><p>Considered aptly named by frustrated devs. <a href="http://192.168.1.11:2368/wander-networking/#fnref:2" title="return to article">↩</a></p></li>
+<li class="footnote" id="fn:3"><p>A squat, colorful, fast-swimming gender-ambiguous lizard creature. By far my favorite of the four player forms. <a href="http://192.168.1.11:2368/wander-networking/#fnref:3" title="return to article">↩</a></p></li></ol></div>]]></content:encoded></item><item><title><![CDATA[Extracting dialogue from Dragon Age: Inquistion]]></title><description><![CDATA[<p>I thought this was an interesting case of technical problem solving. My friend <a href="https://twitter.com/aeleruil">@aeleruil</a> was trying to dump the dialogue text from DAI so he could make a <a href="https://twitter.com/DragonAgeEbooks">bot</a>. He found an <a href="http://sourceforge.net/projects/daitools/">existing tool</a>, but as you would expect from freshly baked OSS modding software it is not... immediately clear</p>]]></description><link>http://192.168.1.11:2368/extracting-dialogue-from-dragon-age-inquistion/</link><guid isPermaLink="false">1d9f8bfb-e191-4751-9bb7-50daf0a0463b</guid><category><![CDATA[modding]]></category><category><![CDATA[games]]></category><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Tue, 16 Dec 2014 18:34:03 GMT</pubDate><content:encoded><![CDATA[<p>I thought this was an interesting case of technical problem solving. My friend <a href="https://twitter.com/aeleruil">@aeleruil</a> was trying to dump the dialogue text from DAI so he could make a <a href="https://twitter.com/DragonAgeEbooks">bot</a>. He found an <a href="http://sourceforge.net/projects/daitools/">existing tool</a>, but as you would expect from freshly baked OSS modding software it is not... immediately clear how to use it:</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/12/dai-tool-1.png" alt=""></p>
+
+<p>He determined that it was definitely <em>capable</em> of doing what he wanted because the feature addition had been <a href="http://daitools.freeforums.org/update-rev-25-talktables-are-now-exportable-to-text-files-t60.html">mentioned</a> as being added in revision 25. After some searching and fiddling I realized I might have better luck just reading the code. What is added in revision 25?</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/12/Selection_057.png" alt=""></p>
+
+<p>From the filename we can see that we want the <code>Bundle Explorer</code>. This takes an SB file and a CAT file and produces a list of what look like path identifiers. I still don't know exactly what these file formats are, but we worked out by trial and error that providing it with <code>loctext/en.sb</code> and <code>cas.cat</code> made it do a thing.</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/12/dai-zlich.png" alt=""></p>
+
+<p>From the <code>totalSize</code> field, it seems <code>win32/loctext/en/text</code> is what we want: a big 2.5MB chunk of non-specific text. Unfortunately, just selecting that and running "Export Resource" does a good deal of nothing at all. Not even an error message!</p>
+
+<p>So, back to the code. What could cause it to fail silently?</p>
+
+<pre><code class="language-csharp">private void exportResourceToolStripMenuItem_Click(object sender, EventArgs e)  
+{
+    if (hb1.ByteProvider != null &amp;&amp; hb1.ByteProvider.Length != 0)
+    {
+        int n = listBox1.SelectedIndex;
+        int a = listBox2.SelectedIndex;
+        int b = listBox4.SelectedIndex;
+
+        if (n == -1 &amp;&amp; a == -1 &amp;&amp; b == -1)
+            return;
+
+        MemoryStream m = new MemoryStream();
+        for (int i = 0; i &lt; hb1.ByteProvider.Length; i++)
+            m.WriteByte(hb1.ByteProvider.ReadByte(i));
+        m.Seek(0, SeekOrigin.Begin);
+
+        byte[] buffer = null;
+        string filter = "";
+
+        if (a != -1)
+        {
+            Bundle c = sb.bundles[n];
+            Bundle.ebxtype entry = c.ebx[a];
+
+            buffer = ExtractEbx(m);
+            filter = "*.xml|*.xml";
+        }
+        else if (b != -1)
+        {
+            Bundle c = sb.bundles[n];
+            Bundle.restype entry = c.res[b];
+            string resExt = Tools.GetResType(BitConverter.ToUInt32(entry.rtype, 0));
+
+            if (resExt == ".mesh")
+            {
+                buffer = ExtractMesh(m);
+                filter = "*.obj|*.obj";
+            }
+            else if(resExt == ".itexture")
+            {
+                buffer = ExtractTexture(m);
+                filter = "*.dds|*.dds";
+            }
+            else if (resExt == ".talktable")
+            {
+                buffer = ExtractTalktable(m);
+                filter = "*.txt|*.txt";
+            }
+        }
+
+        if (buffer != null)
+        {
+            /* Write file here */
+            SaveFileDialog d = new SaveFileDialog();
+            d.Filter = filter;
+            if (d.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                BinaryWriter writer = new BinaryWriter(new FileStream(d.FileName, FileMode.Create));
+                writer.Write(buffer);
+                writer.Close();
+
+                MessageBox.Show("Resource saved to " + d.FileName);
+            }
+            else
+                return;
+        }
+    }
+}
+</code></pre>
+
+<p>This function should always create a <code>SaveFileDialog</code> unless <code>buffer</code> is null. <code>buffer</code> will be be null if <code>resExt</code> does not match a defined extension. Hang on-- that ".itexture" looks familiar! </p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/12/dai-talktable.png" alt=""></p>
+
+<p>Sure enough, there's .talktable, lurking in the dropdown. To get the text, you need to select the path immediately above <code>win32/loctext/en/text</code>, click <code>Find Next</code> to get the talktable, and <em>then</em> run <code>Export Resource</code>.</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/12/dai-allthetext.png" alt=""></p>
+
+<p>Sometimes the code really is just the best available documentation!</p>]]></content:encoded></item><item><title><![CDATA[Modding provinces.bmp in Crusader Kings II]]></title><description><![CDATA[<p>CK2 has a game area composed of ~1,435 individual provinces, representing the continent of Europe. Each of these corresponds to a color in a single 3072x2048 bmp:</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/12/provinces-1.jpg" alt=""></p>
+
+<p>Every province has a color but not every color has a province. White is used for areas outside the game boundaries and</p>]]></description><link>http://192.168.1.11:2368/ck2-province-modding/</link><guid isPermaLink="false">6c674651-99be-48f9-a509-dac77d6d0076</guid><category><![CDATA[modding]]></category><category><![CDATA[games]]></category><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Mon, 08 Dec 2014 14:42:15 GMT</pubDate><content:encoded><![CDATA[<p>CK2 has a game area composed of ~1,435 individual provinces, representing the continent of Europe. Each of these corresponds to a color in a single 3072x2048 bmp:</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/12/provinces-1.jpg" alt=""></p>
+
+<p>Every province has a color but not every color has a province. White is used for areas outside the game boundaries and black represents mountain ranges used as separators. Not all provinces are playable, either; some represent sea regions or uncolonized areas.</p>
+
+<p>Provinces are linked to gameplay information by their assigned number in <code>definition.csv</code>. This file gives numbers to many more colors than actually appear in <code>provinces.bmp</code>, but the inverse is not true: using a color in <code>provinces.bmp</code> which does not appear in the csv file will cause a CTD on startup.</p>
+
+<p>I couldn't quite get any of the <a href="http://forum.paradoxplaza.com/forum/showthread.php?598974-Tool-Clausewitz-Map-Checker">existing tools</a> to work, so I wrote a quick Python script which will update <code>definition.csv</code> with any changes to the bmp, by commenting out colors that are not present and adding any new ones at the end. This way, the numbering is preserved even if you make many sequential modifications:</p>
+
+<pre><code class="python">#!/usr/bin/env python
+
+MAX_PROVINCES = 10000
+
+from PIL import Image
+
+def province_color(line):  
+    """Gets the RGB tuple from a definition.csv line"""
+    spl = line.strip('#').split(';')
+    return (int(spl[1]), int(spl[2]), int(spl[3]))
+
+def province_num(line):  
+    """Gets the province number from a definition.csv line"""
+    spl = line.strip('#').split(';');
+    if not spl[0]:
+        return 0
+    else:
+        return int(spl[0])
+
+# Track all colors present in provinces.bmp
+# (int, int, int) =&gt; True
+bmp_colors = {}
+
+image = Image.open("provinces.bmp")  
+for tpl in image.getcolors(MAX_PROVINCES):  
+    bmp_colors[tpl[1]] = True
+
+province_defs = file("definition.csv").read().splitlines()[1:-1]
+
+# Track all colors in definition.csv
+# (int, int, int) =&gt; True
+def_colors = {  
+    # Black and white are special and don't need definitions
+    (0, 0, 0): True,
+    (255, 255, 255): True
+}
+
+output_defs = []
+
+# Toggle existing province defs that have been removed/readded
+for line in province_defs:  
+    if not line:
+        continue
+    color = province_color(line)
+    def_colors[color] = True
+
+    if color in bmp_colors and line.startswith("#"):
+        # Inactive but shouldn't be
+        print "Activating {}".format(line)
+        output_defs.append(line[1:-1])
+    elif color not in bmp_colors and not line.startswith("#"):
+        # Active but needs to be removed
+        print "Commenting out {}".format(line)
+        output_defs.append("#"+line)
+    else:
+        # No change needed
+        output_defs.append(line)
+
+# Now add any new colors that aren't in definition.csv at all
+max_num = max([province_num(line) for line in output_defs])  
+for color in bmp_colors.keys():  
+    if color not in def_colors:
+        max_num += 1
+        line = "{};{};{};{};;x".format(
+            max_num, color[0], color[1], color[2])
+        print "Adding new province {}".format(line)
+        output_defs.append(line)
+
+with open("definition.csv", 'w') as f:  
+    f.write("province;red;green;blue;x;x\n" + "\n".join(output_defs))
+</code></pre>]]></content:encoded></item><item><title><![CDATA[CK2 topology glitches]]></title><description><![CDATA[<p><a href="http://en.wikipedia.org/wiki/Crusader_Kings_II">Crusader Kings 2</a> defines its 3D game map structure with a set of overlaid bmp files: terrain.bmp, topology.bmp, rivers.bmp etc. I wondered what would happen if you ran them through a <a href="https://twitter.com/badpng">PNG encoding corruptor</a>.</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/12/ck2-shadowlands.jpg" alt=""></p>
+
+<p>The result: disturbing jagged shadowlands, like a vast intellect had rearranged Europe into</p>]]></description><link>http://192.168.1.11:2368/ck2-topology-glitches/</link><guid isPermaLink="false">118fbb1e-b0df-4de8-b7c5-5d315cd50c4a</guid><category><![CDATA[modding]]></category><category><![CDATA[games]]></category><category><![CDATA[art]]></category><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sun, 07 Dec 2014 19:01:07 GMT</pubDate><content:encoded><![CDATA[<p><a href="http://en.wikipedia.org/wiki/Crusader_Kings_II">Crusader Kings 2</a> defines its 3D game map structure with a set of overlaid bmp files: terrain.bmp, topology.bmp, rivers.bmp etc. I wondered what would happen if you ran them through a <a href="https://twitter.com/badpng">PNG encoding corruptor</a>.</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/12/ck2-shadowlands.jpg" alt=""></p>
+
+<p>The result: disturbing jagged shadowlands, like a vast intellect had rearranged Europe into impossible circuitry. </p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/12/ck2-serpents.jpg" alt=""></p>
+
+<p>Where the Holy Roman Empire once stood, great winding serpents lurk under disjointed oceans.</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/12/balticsea.png" alt=""></p>
+
+<p>The depths of the Baltic Sea are raised, to lie contorted and twisted.</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/12/ck2-forests.jpg" alt=""></p>
+
+<p>The corpses of Norway and Russia are blanketed in lush floating forests, grasping towards what little sunlight remains.</p>
+
+<p><iframe class="vine-embed" src="https://vine.co/v/OriZ7EjeKTI/embed/simple" width="600" height="600" frameborder="0"></iframe><script async src="//platform.vine.co/static/scripts/embed.js" charset="utf-8"></script></p>
+
+<p>And across the Byzantine Empire, rivers flow in swarms, heeding neither gravity nor obstacle.</p>]]></content:encoded></item><item><title><![CDATA[twitter_ebooks 3.0]]></title><description><![CDATA[<p>Version 3.0 of <a href="https://github.com/mispy/twitter_ebooks">twitter_ebooks</a> is out! New stuff:</p>
+
+<ul>
+<li>About 80% less memory and storage use for models</li>
+<li>Bots run in their own threads (no eventmachine), and startup is parallelized</li>
+<li>Bots start with <code>ebooks start</code>, and no longer die on unhandled exceptions</li>
+<li><code>ebooks auth</code> command will create new access</li></ul>]]></description><link>http://192.168.1.11:2368/twitter_ebooks-3-0/</link><guid isPermaLink="false">10dd82eb-57d5-4657-bc1b-3079bc161524</guid><category><![CDATA[ruby]]></category><category><![CDATA[release]]></category><category><![CDATA[twitter]]></category><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sat, 06 Dec 2014 13:17:00 GMT</pubDate><content:encoded><![CDATA[<p>Version 3.0 of <a href="https://github.com/mispy/twitter_ebooks">twitter_ebooks</a> is out! New stuff:</p>
+
+<ul>
+<li>About 80% less memory and storage use for models</li>
+<li>Bots run in their own threads (no eventmachine), and startup is parallelized</li>
+<li>Bots start with <code>ebooks start</code>, and no longer die on unhandled exceptions</li>
+<li><code>ebooks auth</code> command will create new access tokens, for running multiple bots</li>
+<li><code>ebooks console</code> starts a ruby interpreter with bots loaded (see Ebooks::Bot.all)</li>
+<li>Replies are slightly rate-limited to prevent infinite bot convos</li>
+<li>Non-participating users in a mention chain will be dropped after a few tweets</li>
+<li><a href="http://rdoc.info/github/mispy/twitter_ebooks">API documentation</a> and tests</li>
+</ul>
+
+<p>This should be the last major version release. I didn't expect to put this much work into a twitterbot library! Since a fair few people use it, though, I figured I owe it to them to make sure it behaves itself.</p>]]></content:encoded></item><item><title><![CDATA[Ideas]]></title><description><![CDATA[<p>An idea dump for stuff I'd like to try doing someday. This is periodically updated. Not filtered for plausibility!</p>
+
+<h2 id="ai">AI</h2>
+
+<p><a id="Write_a_bot_which_plays_Spelunky_and_tweets_about_it"></a></p>
+
+<ul>
+<li>Write a bot which plays Spelunky and tweets about it</li>
+</ul>
+
+<p>From <a href="https://twitter.com/m1sp/status/531682414456631296">this conversation</a>. Writing a bot which successfully plays Spelunky at all is hard, since it is a complex game</p>]]></description><link>http://192.168.1.11:2368/ideas/</link><guid isPermaLink="false">00cc8b35-c7a1-4ff5-b0bc-4fd7b662bccb</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Wed, 12 Nov 2014 09:13:55 GMT</pubDate><content:encoded><![CDATA[<p>An idea dump for stuff I'd like to try doing someday. This is periodically updated. Not filtered for plausibility!</p>
+
+<h2 id="ai">AI</h2>
+
+<p><a id="Write_a_bot_which_plays_Spelunky_and_tweets_about_it"></a></p>
+
+<ul>
+<li>Write a bot which plays Spelunky and tweets about it</li>
+</ul>
+
+<p>From <a href="https://twitter.com/m1sp/status/531682414456631296">this conversation</a>. Writing a bot which successfully plays Spelunky at all is hard, since it is a complex game which requires navigating a destructable environment and punishes mistakes very harshly. There is a <a href="https://t2thompson.files.wordpress.com/2013/08/paper_38.pdf">paper</a> discussing this and providing an API; bots are written in C++ or GML.</p>
+
+<p>Once you have a bot, making it describe its experiences could range from simple to tremendously complex. You could fake it with some pregenerated lines ("I defeated a snake on level [x]!") and have it be perfectly entertaining, but translating a variable sequence of events into a natural language narrative is a deep general problem.</p>
+
+<p><a id="Train_a_deep_neural_network_or_other_machine_learning_model_to_classify_cute_images"></a></p>
+
+<ul>
+<li>Train a <a href="http://en.wikipedia.org/wiki/Deep_learning#Deep_neural_networks">deep neural network</a> or other machine learning model to classify cute images</li>
+</ul>
+
+<p>Recent years have seen some cool developments in machine learning, particularly image recognition. Google <a href="http://static.googleusercontent.com/media/research.google.com/en//archive/unsupervised_icml2012.pdf">created a model</a> which was able to discover the notion of image generalities like "cats" and "human faces" without even being told to look for these. I think it would be a fun learning experience to train a classifier using data labeled for an ambiguous concept like <em>cuteness</em>, which is a human-assigned property associated with an image that can be quantified but not really associated with one specific set of image features.</p>
+
+<p>To quantify cuteness, use a side-by-side comparison system where users are presented with two semi-randomly selected images and asked to select which is cuter. I think Randall Munroe did this at one point, there's an algorithm somewhere. By only requiring them to select the cuter image, users make binary choices at any given step but you still end up with a sorted hierarchy of images.</p>
+
+<p>(n.b. I feel I should disclaim that cuteness is a subjective quality and what you would be measuring is "consensus cuteness" or the common denominator of what people find cute, there is no true total ordering of cuteness independent of individual experience)</p>
+
+<p>I suspect you would have lots of overfitting problems with the model-- it'd be very easy to train something that only recognizes kittens and gets stuck at a local optimum because kittens are reliably cute.</p>
+
+<h2 id="games">Games</h2>
+
+<p><a id="Procedural_generation_of_underlying_game_mechanics"></a></p>
+
+<ul>
+<li>Procedural generation of underlying game mechanics</li>
+</ul>
+
+<p>I remember a persistent myth about Pokémon games involving Mew and trucks. It's hard to imagine this forming with modern games unless they are <em>truly</em> obscure, because only one person needs to understand an aspect of the mechanics and write about it somewhere searchable for everyone to know.<sup id="fnref:1"><a href="http://192.168.1.11:2368/ideas/#fn:1" rel="footnote">1</a></sup></p>
+
+<p>Procedural generation tackles this by making everyone's game different, so that the past experience of others is not as solid a guide and you have to explore for yourself. However, even games that make heavy use of procgen only really use it for the <em>surface</em> world, the part that is visible to the player. A dragon in nethack always behaves predictably like a dragon, even if the dungeon in which it appears is configured slightly differently.</p>
+
+<p>I think a game which applied randomization even to invisible aspects of the game model would be especially interesting, because it would encourage players to do their own research and uncover things about the universe for themselves.</p>
+
+<p>Important consideration: the variation has to <em>matter</em>. For example, Starbound does procedural generation of enemies but you don't really pay much attention to it because you're mostly just going to shoot at them either way. You have to reward the player for learning things by allowing their optimal strategy to be dramatically changed by new information.</p>
+
+<p><a id="A_creature_breeding_game_inspired_by_real_genetics"></a></p>
+
+<ul>
+<li>A creature breeding game inspired by real genetics</li>
+</ul>
+
+<p>An idea from years ago when I was studying biology. Ties into the above idea about uncovering hidden game mechanics. The obvious point of comparison is the <a href="http://en.wikipedia.org/wiki/Creatures_(artificial_life_series)">Creatures</a> series, which did a nice job of <a href="http://www.gamewaredevelopment.com/images/uploads/biochem.htm">implementing basic biochemistry</a> by modelling organs as bags which both produced and contained a certain quantity of chemicals.</p>
+
+<p>How could you improve upon Creatures? Well, it'd be nice if there was more <em>game</em> to it. Creatures was a sandbox simulation in the truest sense, and didn't provide much in the way of goals to pursue. There are a few ways you could solve this; the two that come to mind are a multiplayer competitive element like Pokémon or a dynamic, hostile environment like Dwarf Fortress. Creatures would make very interesting elements in a trading game.</p>
+
+<p>Another example of this kind of game is Sonic Adventure 2, in the form of the <a href="http://sonic.wikia.com/wiki/Chao">Chao</a>. Chao are particularly cool because they have subtle gradients of morphological variation based on a combination of genetics and environment, which solves the other issue I had: Creatures just don't <em>look</em> very interesting. Breeding is much more fun when it produces distinct visual forms.</p>
+
+<p>In practice, you'd probably have simplified chromosomes as linear collections of "genes" which produce "proteins" at a given rate in particular parts of the body. The rates could be subject to mutation, and perhaps the protein properties; there's a lot of room for varying how simple or complex the proteins and their interactions are. Abstract physiology is actually pretty straightforward to implement compared to the messy work of producing a game world and graphics.</p>
+
+<p><a id="A_deterministic_tactical_RPG_in_the_spirit_of_Fire_Emblem"></a></p>
+
+<ul>
+<li>A deterministic tactical RPG in the spirit of Fire Emblem</li>
+</ul>
+
+<p>Some of my fondest memories are of JRPGs which involve teams of characters moving on a 2D grid, a system which ultimately derives from chess. Unlike chess, these games always include a pseudorandom element, like probability of an attack missing or variation in damage. I find this encourages less depth of thought, because no matter how well-considered your plan is there's always some chance of it just failing at any given step for unfair reasons.</p>
+
+<p>Chess shows that it is possible to make an enjoyable game like this without including random elements during gameplay. I think it would be an interesting challenge to design a more complex game along similar lines.</p>
+
+<p>This is one of the ideas I made a start on: <a href="https://github.com/mispy/tactics">https://github.com/mispy/tactics</a> I have lots of other thoughts about fun variations and story settings for TRPGs so  might come back to this one, especially since a basic Fire Emblem-like system is fairly easy to implement.</p>
+
+<p><a id="Make_a_small_game_based_on_this_HaxeFlixel_demo"></a></p>
+
+<ul>
+<li>Make a small game based on this <a href="http://haxeflixel.com/demos/Mode/">HaxeFlixel demo</a></li>
+</ul>
+
+<p>HaxeFlixel is sorta a spiritual successor to Flash for game development. I like C# as a language a bit better than Haxe, but it's still pretty nice and the environment is much friendlier than Monogame. (i.e. actual documentation!)</p>
+
+<p><a id="Make_a_Non-Lethal_Combat_mod_for_Starbound"></a></p>
+
+<ul>
+<li>Make a Non-Lethal Combat mod for Starbound</li>
+</ul>
+
+<p>Starbound exploration kinda mostly involves beating up native animals and taking people's stuff, which is weird for a game otherwise about cute fuzzy space animal people building things in space. I think adding more variety to combat aside from damaging attacks would also make it more fun!</p>
+
+<p><em>Immobilizing weapons</em></p>
+
+<p>Most obvious kind! There's a great tractor beam weapon on the Rho mech in the XS Corporation Mechs mod, could use similar bubble-y effects to hold a creature in place, send it flying away, etc. A weapon which force-activates the gravity techs on enemies would be very amusing, now that I think about it.</p>
+
+<p><em>Better defenses</em></p>
+
+<p>Bubble techs which cause attacks/enemies to bounce off! Maybe placeable obstacle type ones as well. Could perhaps use something like the existing "slow" effect on oil to make time distortion fields, or abilities which rearrange blocks around you automatically to make physical cover. </p>
+
+<p><em>Stealthy things</em></p>
+
+<p>Might be tricky to implement proper stealth platformer mechanics, but even just a basic energy-draining cloaking tech that just drops you out of combat while it's active would be great.</p>
+
+<p><em>How to reward player?</em></p>
+
+<p>The game incentivizes killing stuff with pixel rewards, hunting drops etc. One way we could encourage pacifism is by making the non-lethal weapons just more <em>effective</em> e.g. a stasis field gun that removes smaller enemies from combat quickly so you can get back to exploring. I found myself using paralysis in Skyrim for this a lot.</p>
+
+<p>If possible, it'd be neat if monster types you're consistently peaceful towards become consistently peaceful towards you as well, and perhaps ally with you against hostile enemies or otherwise behave in obviously friendly ways. And enemies you kill a lot of could get tougher and more numerous and start ganging up on you :3</p>
+
+<h2 id="webdevelopment">Web Development</h2>
+
+<p><a id="Add_search_functionality_to_the_Ghost_admin_panel"></a></p>
+
+<ul>
+<li>Add search functionality to the Ghost admin panel</li>
+</ul>
+
+<p>The way I use Ghost is closer to a semi-public Evernote than a blogging engine, and it would be extremely useful to be able to quickly search through posts from the admin panel. I expect this would be handy for normal blogs with a significant number of entries as well, since you do need to edit stuff in the distant past on occasion.</p>
+
+<p><a id="A_file_syncing_service_which_supports_image_tagging_and_source_annotation"></a></p>
+
+<ul>
+<li>A file syncing service which supports image tagging and source annotation</li>
+</ul>
+
+<p>There's lots of lovely artwork and interesting information in the form of image files on the internet. I like to collect these and share them with people. My current solution is just saving stuff <a href="http://cute.mispy.me/">to Dropbox</a>, which is fast because saving a file to a folder from a browser is fast and I do not have to wait for the Dropbox servers to do anything. However, Dropbox is not optimized for the purpose of image collections unlike systems like <a href="http://zerochan.net/">Zerochan</a>, so it's difficult to sort through them later and provide attribution to the creators.</p>
+
+<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>Melissa <a href="https://twitter.com/0xabad1dea/status/532552272874852353">rightly points out</a> that this may be more a consequence of us having been small children than how little access to the internet we had. A modern example is <a href="http://minecraft.gamepedia.com/Herobrine">Herobrine</a>. Still, it'd be nice to be able to create the same sense of mystery in adults, extelligence and all. <a href="http://192.168.1.11:2368/ideas/#fnref:1" title="return to article">↩</a></p></li></ol></div>]]></content:encoded></item><item><title><![CDATA[Frivolous things]]></title><description><![CDATA[<p>Reading this article about the <a href="http://www.theguardian.com/higher-education-network/blog/2014/oct/26/-sp-female-academics-dont-power-dress-forget-heels-and-no-flowing-hair-allowed">limited scope of dress for female academics</a> made me think a bit about what it means for something to be <em>frivolous</em>.</p>
+
+<p>When I was 13, I felt very sure that I knew what frivolous was. It was <a href="https://en.wikipedia.org/wiki/Final_Fantasy_X-2">Final Fantasy X-2</a>, to my teenage mind an</p>]]></description><link>http://192.168.1.11:2368/frivolous-things/</link><guid isPermaLink="false">d19161f0-453a-4eac-9c3e-3019f353ecde</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Wed, 29 Oct 2014 03:25:11 GMT</pubDate><content:encoded><![CDATA[<p>Reading this article about the <a href="http://www.theguardian.com/higher-education-network/blog/2014/oct/26/-sp-female-academics-dont-power-dress-forget-heels-and-no-flowing-hair-allowed">limited scope of dress for female academics</a> made me think a bit about what it means for something to be <em>frivolous</em>.</p>
+
+<p>When I was 13, I felt very sure that I knew what frivolous was. It was <a href="https://en.wikipedia.org/wiki/Final_Fantasy_X-2">Final Fantasy X-2</a>, to my teenage mind an irredeemable sacrilege of a sequel to the bestest and most amazingest game of all time. Final Fantasy X was a game about love, dreams and the cultural consequences of giant invincible flying doom monsters. X-2 seemed to involve a lot of pop singing and girls in fancy dresses.</p>
+
+<p>Shortly thereafter I discovered my sexuality and spent a few years semi-closeted trying to be more bi than I was. I had no direct objection to being attracted to guys, or even much of an interest in masculinity. I just really didn't want to be seen as <em>frivolous</em>, and I associated that with being openly gay.</p>
+
+<p>You might notice that what we're calling frivolous is really just cultural femininity. The google dictionary definition will even use it in a sentence for you, denouncing the evils of ribbons and frills:</p>
+
+<p><img src="http://192.168.1.11:2368/content/images/2014/10/frivolity.png" alt=""></p>
+
+<p>At some point I realized how <em>extremely selective and specific</em> this is. It just so happens that <em>frills</em> are frivolous and not, say, neckties? No impartial analysis of the distribution of human attention would ever come to the conclusion that the most serious distraction is how much effort they put into wearing ribbons!</p>
+
+<p>The true waste was all that worrying about whether things were frivolous or not and whether I might be perceived as such. If a woman wears a bright blue top instead of a grey one, she has expended nobody's time and energy in doing so. When a potential employer lowers their estimations of her professional ability as a result, and fails to hire her into a position for which she is ideal? A huge amount of everyone's time and energy has been wasted! It's absurdly inefficient!</p>
+
+<p>In this sense, people who engage in unusual and colorful self-expression are doing something extremely socially important. They're challenging norms and standards of behavior which are <em>distractingly frivolous</em>. Perhaps once they are dispensed with we can all get on with doing fun and interesting stuff!</p>]]></content:encoded></item><item><title><![CDATA[Memory profiling in Ruby]]></title><description><![CDATA[<p>The easiest approach is just calling out to ps with the current pid and receiving the resident set size (amount of physical memory allocated to the process).</p>
+
+<pre><code>def Process.rss; `ps -o rss= -p #{Process.pid}`.chomp.to_i; end  
+</code></pre>
+
+<p>If you're only interested in a temporary heuristic for debugging</p>]]></description><link>http://192.168.1.11:2368/memory-profiling-in-ruby/</link><guid isPermaLink="false">7ecfb1f8-0b6d-4f85-902a-00428edc144c</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sun, 19 Oct 2014 10:37:20 GMT</pubDate><content:encoded><![CDATA[<p>The easiest approach is just calling out to ps with the current pid and receiving the resident set size (amount of physical memory allocated to the process).</p>
+
+<pre><code>def Process.rss; `ps -o rss= -p #{Process.pid}`.chomp.to_i; end  
+</code></pre>
+
+<p>If you're only interested in a temporary heuristic for debugging a particular issue, this is probably fine. It's platform-specific, though, and you don't have any guarantees about what the garbage collector is doing between calls.</p>
+
+<p>You can use <a href="https://github.com/ruby-prof/ruby-prof">ruby-prof</a>, but measuring memory with it requires patching the Ruby interpreter.</p>
+
+<p>There's also the <a href="https://github.com/SamSaffron/memory_profiler">memory_profiler</a> gem, which uses the ObjectSpace allocation tracing API <a href="http://tmm1.net/ruby21-objspace/">introduced in 2.1</a>. Since this tracks allocations by origin, it can be resource intensive; in my particular case I found it used more memory than what it was profiling. It's also a young gem and still a bit <a href="https://github.com/SamSaffron/memory_profiler/pull/10">buggy</a>.</p>
+
+<p>I ended up extracting the core of memory_profiler into a more basic thing which just looks at the total amount of memory allocated over the course of a block, and so is particularly suitable for unit tests:</p>
+
+<pre><code class=" ruby">require 'objspace'                                                              
+
+module MemoryUsage  
+  MemoryReport = Struct.new(:total_memsize)                                     
+
+  def self.full_gc                                                              
+    GC.start(full_mark: true)                                                   
+  end                                                                           
+
+  def self.report(&amp;block)                                                       
+    rvalue_size = GC::INTERNAL_CONSTANTS[:RVALUE_SIZE]                          
+
+    full_gc                                                                     
+    GC.disable                                                                  
+
+    total_memsize = 0                                                           
+
+    generation = nil                                                            
+    ObjectSpace.trace_object_allocations do                                     
+      generation = GC.count                                                     
+      block.call                                                                
+    end                                                                         
+
+    ObjectSpace.each_object do |obj|                                            
+      next unless generation == ObjectSpace.allocation_generation(obj)          
+      memsize = ObjectSpace.memsize_of(obj) + rvalue_size                       
+      # compensate for API bug                                                  
+      memsize = rvalue_size if memsize &gt; 100_000_000_000                        
+      total_memsize += memsize                                                  
+    end                                                                         
+
+    GC.enable                                                                   
+    full_gc                                                                     
+
+    return MemoryReport.new(total_memsize)                                      
+  end                                                                           
+end  
+</code></pre>]]></content:encoded></item><item><title><![CDATA[Extending the Markdown syntax in Ghost]]></title><description><![CDATA[<p>I'm writing a somewhat lengthy thing which really wants footnotes, but <a href="https://github.com/TryGhost/Ghost">Ghost</a> doesn't have any native syntax for them yet. You can put them in manually using html, but it is tedious, and troublesome to reorder. Fortunately it wasn't too hard to add my own hacky<sup id="fnref:1"><a href="http://192.168.1.11:2368/extending-the-markdown-syntax-in-ghost/#fn:1" rel="footnote">1</a></sup> implementation<sup id="fnref:2"><a href="http://192.168.1.11:2368/extending-the-markdown-syntax-in-ghost/#fn:2" rel="footnote">2</a></sup>:</p>
+
+<pre><code class="lang-js">// Adds</code></pre>]]></description><link>http://192.168.1.11:2368/extending-the-markdown-syntax-in-ghost/</link><guid isPermaLink="false">6ea434bb-da01-4ac1-8bf8-faff0722d6e8</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sun, 12 Oct 2014 06:46:19 GMT</pubDate><content:encoded><![CDATA[<p>I'm writing a somewhat lengthy thing which really wants footnotes, but <a href="https://github.com/TryGhost/Ghost">Ghost</a> doesn't have any native syntax for them yet. You can put them in manually using html, but it is tedious, and troublesome to reorder. Fortunately it wasn't too hard to add my own hacky<sup id="fnref:1"><a href="http://192.168.1.11:2368/extending-the-markdown-syntax-in-ghost/#fn:1" rel="footnote">1</a></sup> implementation<sup id="fnref:2"><a href="http://192.168.1.11:2368/extending-the-markdown-syntax-in-ghost/#fn:2" rel="footnote">2</a></sup>:</p>
+
+<pre><code class="lang-js">// Adds footnote syntax as per Markdown Extra:
+//
+// https://michelf.ca/projects/php-markdown/extra/#footnotes
+//
+// That's some text with a footnote.[^1]
+//
+// [^1]: And that's the footnote.
+//
+//     That's the second paragraph.
+//
+// Also supports [^n] if you don't want to worry about preserving
+// the footnote order yourself.
+
+(function () {
+    var footnotes = function () {
+        return [
+            { type: 'lang', filter: function(text) {
+                var preExtractions = {},
+                    hashID = 0;
+
+                function hashId() {
+                    return hashID++;
+                }
+
+                // Extract pre blocks
+                text = text.replace(/```[\s\S]*?\n```/gim, function (x) {
+                    var hash = hashId();
+                    preExtractions[hash] = x;
+                    return "{gfm-js-extract-pre-" + hash + "}";
+                }, 'm');
+
+                // Inline footnotes e.g. "foo[^1]"
+                var i = 0;
+                var inline_regex = /(?!^)\[\^(\d|n)\]/gim;
+                text = text.replace(inline_regex, function(match, n) {
+                    // We allow both automatic and manual footnote numbering
+                    if (n == "n") n = i+1;
+
+                    var s = '&lt;sup id="fnref:'+n+'"&gt;' +
+                              '&lt;a href="#fn:'+n+'" rel="footnote"&gt;'+n+'&lt;/a&gt;' +
+                            '&lt;/sup&gt;';
+                    i += 1;
+                    return s;
+                });
+
+                // Expanded footnotes at the end e.g. "[^1]: cool stuff"
+                var end_regex = /\[\^(\d|n)\]: ([\s\S]*?)\n(?!    )/gim;
+                var m = text.match(end_regex);
+                var total = m ? m.length : 0;
+                var i = 0;
+
+                text = text.replace(end_regex, function(match, n, content) {
+                    if (n == "n") n = i+1;
+
+                    content = content.replace(/\n    /g, "&lt;br&gt;");
+
+                    var s = '&lt;li class="footnote" id="fn:'+n+'"&gt;' +
+                              '&lt;p&gt;'+content+'&lt;a href="#fnref:'+n +
+                                '" title="return to article"&gt; ↩&lt;/a&gt;' +
+                              '&lt;/p&gt;' +
+                            '&lt;/li&gt;';
+
+                    if (i == 0) {
+                        s = '&lt;div class="footnotes"&gt;&lt;ol&gt;' + s;
+                    }
+
+                    if (i == total-1) {
+                        s = s + '&lt;/ol&gt;&lt;/div&gt;';
+                    }
+
+                    i += 1;
+                    return s;
+                });
+
+                // replace extractions
+                text = text.replace(/\{gfm-js-extract-pre-([0-9]+)\}/gm, function (x, y) {
+                    return preExtractions[y];
+                });
+
+                return text;
+            }}
+        ];
+    };
+
+    // Client-side export
+    if (typeof window !== 'undefined' &amp;&amp; window.Showdown &amp;&amp; window.Showdown.extensions) {
+        window.Showdown.extensions.footnotes = footnotes;
+    }
+    // Server-side export
+    if (typeof module !== 'undefined') {
+        module.exports = footnotes;
+    }
+}());
+</code></pre>
+
+<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>Please don't do this with regexes unless you have to, kids. <a href="http://192.168.1.11:2368/extending-the-markdown-syntax-in-ghost/#fnref:1" title="return to article">↩</a></p></li>
+
+<li class="footnote" id="fn:2"><p>Can be found on a <a href="https://github.com/mispy/Ghost/tree/footnotes2">branch</a>. <a href="http://192.168.1.11:2368/extending-the-markdown-syntax-in-ghost/#fnref:2" title="return to article">↩</a></p></li></ol></div>]]></content:encoded></item><item><title><![CDATA[OSW 2014 Update]]></title><description><![CDATA[<p>The <a href="https://mispy.me/2014/07/open-science-workshop-2014/">open science workshop</a> went well! I gave my talk about <a href="https://scirate.com">SciRate</a> and improving the way people do science. Slides are up <a href="https://docs.google.com/presentation/d/1QMTtk2nDo_ldDcGUVIc5AuFs2Mx84n0KaYgDsoI93xw/edit#slide=id.p">here</a>. Also doubled as a useful opportunity to test the site on people in person, and I got some good usability feedback.</p>
+
+<p>Some of the other interesting projects</p>]]></description><link>http://192.168.1.11:2368/osw-2014-update/</link><guid isPermaLink="false">2dab7570-9fc3-4974-92da-a472d8b190b6</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Mon, 21 Jul 2014 02:00:00 GMT</pubDate><content:encoded><![CDATA[<p>The <a href="https://mispy.me/2014/07/open-science-workshop-2014/">open science workshop</a> went well! I gave my talk about <a href="https://scirate.com">SciRate</a> and improving the way people do science. Slides are up <a href="https://docs.google.com/presentation/d/1QMTtk2nDo_ldDcGUVIc5AuFs2Mx84n0KaYgDsoI93xw/edit#slide=id.p">here</a>. Also doubled as a useful opportunity to test the site on people in person, and I got some good usability feedback.</p>
+
+<p>Some of the other interesting projects I learned about:</p>
+
+<ul>
+<li><p><a href="https://cloud.sagemath.com/">SageMathCloud</a> is a computational mathematics tool based on the Python-based <a href="http://en.wikipedia.org/wiki/Sage_(mathematics_software)">Sage</a> framework, and lets you collaboratively edit Sage worksheets and IPython notebooks.</p></li>
+<li><p><a href="https://www.authorea.com/users/8390">Authorea</a> is a web-based paper authoring tool supporting LaTeX and Markdown which uses git as a backend. It takes a lot of inspiration from GitHub, with unlimited free public projects and paid private ones.</p></li>
+<li><p><a href="http://nbviewer.ipython.org/">NBViewer</a> is a simple tool for taking IPython notebooks and displaying them publicly on the web.</p></li>
+<li><p><a href="http://elifesciences.org/#">eLife</a> is an open access biosciences journal which uses a non-standard peer review process in which the reviewers collaborate directly with each other.</p></li>
+</ul>
+
+<p>There were also a lot of nifty groups and events:</p>
+
+<ul>
+<li><p><a href="http://inspire9.com/">Inspire9</a> is the little hackerspace in Richmond where the workshop was held, and they host regular Ruby and Python meetups, among other events. There's an entire room painted with flowers and butterflies, so I felt quite at home.</p></li>
+<li><p><a href="http://healthhackmelb.com/">HealthHack</a> in October this year, which brings together programmers and scientists to help solve medical research problems. It's been a good many years since I last used my biology background so I'm looking forward to this one.</p></li>
+<li><p>The <a href="http://au.okfn.org/">Open Knowledge Foundation</a> runs HealthHack and lots of other cool stuff, like <a href="http://www.govhack.org/">GovHack</a>.</p></li>
+<li><p><a href="http://www.opentechschool.org/">OpenTechSchool</a> runs a bunch of experimental tech education projects, including <a href="http://railsgirls.com/">Rails Girls</a> which I'd heard about earlier. It has a Melbourne chapter!</p></li>
+</ul>
+
+<p>I want to get involved in more of these things!</p>]]></content:encoded></item></channel></rss>

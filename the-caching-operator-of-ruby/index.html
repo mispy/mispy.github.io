@@ -1,38 +1,39 @@
-
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ" />
 
-    <title>The 'caching operator' of Ruby</title>
-    <meta name="description" content="">
+    <title>The &#x27;caching operator&#x27; of Ruby</title>
+    <meta name="description" content="" />
 
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="shortcut icon" href="https://mispy.me/favicon.png">
+    <link rel="shortcut icon" href="/favicon.png">
 
-    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=0717475246">
-    <link rel="stylesheet" type="text/css" href="../assets/css/prettify.css?v=0717475246">
-    <link rel="stylesheet" type="text/css" href="../assets/css/mispy.css?v=0717475246">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic%7COpen+Sans:700,400">
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/prettify.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/mispy.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
 
-    <link rel="canonical" href="/the-caching-operator-of-ruby/">
-    <meta name="referrer" content="origin">
+    <link rel="canonical" href="http://192.168.1.11:2368/the-caching-operator-of-ruby/" />
+    <meta name="referrer" content="origin" />
     
-    <meta property="og:site_name" content="~mispy">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="The 'caching operator' of Ruby">
-    <meta property="og:description" content="Ruby is by nature a language of convenience-- possibly the language of convenience. It places a high priority on minimizing the wastage of developer time. One of the lesser-known means by which it achieves this is the operator ||=. irb(main)...">
-    <meta property="og:url" content="/the-caching-operator-of-ruby/">
-    <meta property="article:published_time" content="2010-10-12T09:35:00.000Z">
-    <meta property="article:modified_time" content="2014-04-26T11:47:59.204Z">
-    <meta property="article:tag" content="ruby">
+    <meta property="og:site_name" content="~mispy" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="The &#x27;caching operator&#x27; of Ruby" />
+    <meta property="og:description" content="Ruby is by nature a language of convenience-- possibly the language of convenience. It places a high priority on minimizing the wastage of developer time. One of the lesser-known means by which it achieves this is the operator ||=. irb(main)..." />
+    <meta property="og:url" content="http://192.168.1.11:2368/the-caching-operator-of-ruby/" />
+    <meta property="article:published_time" content="2010-10-12T09:35:00.000Z" />
+    <meta property="article:modified_time" content="2014-04-26T11:47:59.204Z" />
+    <meta property="article:tag" content="ruby" />
     
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="The 'caching operator' of Ruby">
-    <meta name="twitter:description" content="Ruby is by nature a language of convenience-- possibly the language of convenience. It places a high priority on minimizing the wastage of developer time. One of the lesser-known means by which it achieves this is the operator ||=. irb(main)...">
-    <meta name="twitter:url" content="/the-caching-operator-of-ruby/">
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="The &#x27;caching operator&#x27; of Ruby" />
+    <meta name="twitter:description" content="Ruby is by nature a language of convenience-- possibly the language of convenience. It places a high priority on minimizing the wastage of developer time. One of the lesser-known means by which it achieves this is the operator ||=. irb(main)..." />
+    <meta name="twitter:url" content="http://192.168.1.11:2368/the-caching-operator-of-ruby/" />
     
     <script type="application/ld+json">
 {
@@ -42,13 +43,13 @@
     "author": {
         "@type": "Person",
         "name": "Jaiden Mispy",
-        "image": "/content/images/2014/Mar/mispy5.png",
-        "url": "/author/jaiden-mispy",
+        "image": "http://192.168.1.11:2368/content/images/2014/Mar/mispy5.png",
+        "url": "http://192.168.1.11:2368/author/jaiden-mispy",
         "sameAs": "https://mispy.me/",
         "description": null
     },
     "headline": "The &#x27;caching operator&#x27; of Ruby",
-    "url": "/the-caching-operator-of-ruby/",
+    "url": "http://192.168.1.11:2368/the-caching-operator-of-ruby/",
     "datePublished": "2010-10-12T09:35:00.000Z",
     "dateModified": "2014-04-26T11:47:59.204Z",
     "keywords": "ruby",
@@ -56,8 +57,8 @@
 }
     </script>
 
-    <meta name="generator" content="Ghost 0.7">
-    <link rel="alternate" type="application/rss+xml" title="~mispy" href="/rss/">
+    <meta name="generator" content="Ghost 0.7" />
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="http://192.168.1.11:2368/rss/" />
 
     <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
 </head>
@@ -67,8 +68,8 @@
 
 
 <header class="post-header">
-    <a class="blog-logo" href="../">
-        <img src="../content/images/2016/03/sweatervest.png" alt="Blog Logo">
+    <a class="blog-logo" href="/">
+        <img src="/content/images/2016/03/sweatervest.png" alt="Blog Logo" />
     </a>
 </header>
 
@@ -78,9 +79,9 @@
     <article class="post tag-ruby">
 
 
-            <span class="post-meta"><time datetime="2010-10-12">12 Oct 2010</time> on <a href="../tag/ruby/">ruby</a></span>
+            <span class="post-meta"><time datetime="2010-10-12">12 Oct 2010</time> on <a href="/tag/ruby/">ruby</a></span>
 
-            <h1 class="post-title">The 'caching operator' of Ruby</h1>
+            <h1 class="post-title">The &#x27;caching operator&#x27; of Ruby</h1>
 
             <section class="post-content">
                 <p>Ruby is by nature a language of convenience-- possibly <em>the</em> language of convenience. It places a high priority on minimizing the wastage of developer time. One of the lesser-known means by which it achieves this is the operator <strong>||=</strong>.</p>
@@ -125,13 +126,16 @@ end
 
                 <section class="share">
                     <h4>Share this post</h4>
-                    <a class="icon-twitter" href="https://twitter.com/share?text=The%20'caching%20operator'%20of%20Ruby&amp;url=/the-caching-operator-of-ruby/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <a class="icon-twitter" href="https://twitter.com/share?text=The%20'caching%20operator'%20of%20Ruby&amp;url=http://192.168.1.11:2368/the-caching-operator-of-ruby/"
+                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                         <span class="hidden">Twitter</span>
                     </a>
-                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/the-caching-operator-of-ruby/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://192.168.1.11:2368/the-caching-operator-of-ruby/"
+                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
                         <span class="hidden">Facebook</span>
                     </a>
-                    <a class="icon-google-plus" href="https://plus.google.com/share?url=/the-caching-operator-of-ruby/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://192.168.1.11:2368/the-caching-operator-of-ruby/"
+                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
                         <span class="hidden">Google+</span>
                     </a>
                 </section>
@@ -144,9 +148,9 @@ end
 
 
     <footer class="site-footer">
-        <a class="subscribe icon-feed" href="/rss/"><span class="tooltip">Subscribe!</span></a>
+        <a class="subscribe icon-feed" href="http://192.168.1.11:2368/rss/"><span class="tooltip">Subscribe!</span></a>
         <div class="inner">
-             <section class="copyright">All content copyright <a href="../">~mispy</a> © 2016 • All rights reserved.</section>
+             <section class="copyright">All content copyright <a href="/">~mispy</a> &copy; 2016 &bull; All rights reserved.</section>
              <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
         </div>
 <table class="cuties" border="0" cellpadding="2" cellspacing="0">
@@ -173,9 +177,10 @@ end
     <!-- You can safely delete this line if your theme does not require jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
-    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=0717475246"></script>
-    <script type="text/javascript" src="../assets/js/index.js?v=0717475246"></script>
-    <script type="text/javascript" src="../assets/js/prettify.js?v=0717475246"></script>
-    <script type="text/javascript" src="../assets/js/footnotes.js?v=0717475246"></script>
-    <script type="text/javascript" src="../assets/js/stars.js?v=0717475246"></script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/prettify.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/footnotes.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/stars.js?v=e091030d4c"></script>
 </body>
+</html>

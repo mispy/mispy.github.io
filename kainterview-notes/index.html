@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ" />
+
+    <title>kainterview notes</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/prettify.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/mispy.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="http://192.168.1.11:2368/kainterview-notes/" />
+    <meta name="referrer" content="origin" />
+    <meta name="generator" content="Ghost 0.7" />
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="http://192.168.1.11:2368/rss/" />
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="post-template page-template page">
+
+    
+
+<header class="post-header">
+    <a class="blog-logo" href="/">
+        <img src="/content/images/2016/03/sweatervest.png" alt="Blog Logo" />
+    </a>
+</header>
+
+<main class="content" role="main">
+  <article class="post page">
+      <h1 class="post-title">kainterview notes</h1>
+
+      <section class="post-content">
+        <h4 id=""> </h4>
+
+<h4 id="esprimaacorncomparison">Esprima &amp; Acorn comparison</h4>
+
+<ul>
+<li><p>Both github repos are reasonably popular, but esprima has more forks, is under jquery's organization account, and has 100% test coverage. In my experience these are good indications that an open source library has a higher <a href="https://en.wikipedia.org/wiki/Bus_factor">bus factor</a> and will continue to be maintained long-term. For a standalone project this doesn't matter too much, but if it were an actual work thing, avoiding possible technical debt caused in the future by complex unmaintained dependencies would be important to me.</p></li>
+<li><p>Both libraries support IE8+ (in the case of Acorn, IE6+)</p></li>
+<li><p>The Esprima source is a single monolithic 5000-line JS file, while Acorn is structured a bit more sensibly.</p></li>
+<li><p>Esprima is about twice as fast, at least according to its <a href="http://esprima.org/test/compare.html">own benchmarks</a>. Those benchmarks are run across very large libraries, though: it's still possible that Acorn would win for the particular use case of Khan Academy (which is small code snippets written by students).</p></li>
+<li><p>Khan Academy <a href="https://www.khanacademy.org/genfiles/javascript/en/scratchpads-package-44346a.js">already appears to use Esprima</a>:</p></li>
+</ul>
+
+<p><img src="/content/images/2015/09/esprima.png" alt="" /></p>
+
+<p>This decides me in favor of Esprima. In a work context, Acorn would need to be really obviously more awesome to justify the increase in complexity caused by introducing another dependency which does the same thing. Also, it seems like a better use of my time now to learn about the library KA already uses, since I'm more likely to be working with it in the future.</p>
+
+<h4 id="othernotes">Other notes</h4>
+
+<ul>
+<li><p>I'm not sure how much what I implemented resembles a "testing API", exactly. I made an esprima node wrapper which does little queries across the syntax tree, so the tests can easily check for various things.</p></li>
+<li><p>I decided to use just bower and check the components into git for simplicity's sake. In a production context, I'd also use some kind of JS minifier/combiner pipeline and most likely introduce requirejs.</p></li>
+<li><p>The KA website already has jquery and underscore so I didn't feel too bad about using them just for a few convenience methods (I think debounce is essential for any kind of responsive text input).</p></li>
+<li><p>This took about seven hours (11-6pm), though more of that was thinking about stuff and setting up an IE8 testing VM than coding. I decided I'd rather submit earlier than spend too much time fussing.</p></li>
+<li><p>On a real website I would use a fallback message for when JS is disabled or if running in an unsupported browser.</p></li>
+<li><p>The CSS is pretty ad hoc and not remotely mobile friendly. I hope this is not secretly testing my visual design skills too :)</p></li>
+</ul>
+      </section>
+  </article>
+</main>
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="http://192.168.1.11:2368/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="/">~mispy</a> &copy; 2016 &bull; All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/prettify.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/footnotes.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/stars.js?v=e091030d4c"></script>
+</body>
+</html>

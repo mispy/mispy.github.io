@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ" />
+
+    <title>~mispy - Page 7</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/prettify.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/mispy.css?v=e091030d4c" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="http://192.168.1.11:2368/page/7/" />
+    <meta name="referrer" content="origin" />
+    <link rel="prev" href="http://192.168.1.11:2368/page/6/" />
+    <link rel="next" href="http://192.168.1.11:2368/page/8/" />
+    <meta name="generator" content="Ghost 0.7" />
+    <link rel="alternate" type="application/rss+xml" title="~mispy" href="http://192.168.1.11:2368/rss/" />
+
+    <meta property="og:image" content="https://mispy.me/content/images/2014/Apr/mispy5_1-1.png">
+</head>
+<body class="paged archive-template">
+
+    
+<header class="site-head" >
+
+    <img class="star" id="starO" src="/content/images/O.png" style="display: none;">
+    <img class="star" id="starB" src="/content/images/B.png" style="display: none;">
+    <img class="star" id="starA" src="/content/images/A.png" style="display: none;">
+    <img class="star" id="starF" src="/content/images/F.png" style="display: none;">
+    <img class="star" id="starG" src="/content/images/G.png" style="display: none;">
+    <img class="star" id="starK" src="/content/images/K.png" style="display: none;">
+    <img class="star" id="starM" src="/content/images/M.png" style="display: none;">
+    <canvas id="canvas" style="position: absolute; left: 0; width: 100%; height: 100%;"></canvas>
+
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <a class="blog-logo" href="/"><img src="/content/images/2016/03/sweatervest.png" alt="Blog Logo" /></a>
+            <h1 class="blog-title"><a href="/yes">~</a><a href="/">mispy</a></h1>
+            <h2 class="blog-description"></h2>
+            <ul class="site-nav">
+              <li><a href="/">Blog</a></li>
+              <li><a href="/projects">Projects</a></li>
+              <li><a href="https://github.com/mispy">GitHub</a></li>
+              <li><a href="https://twitter.com/m1sp">Twitter</a></li>
+              <!--<li><a href="/hireme" class="hireme">Hire Me!</a></li>-->
+            </ul>
+        </div>
+    </div>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+    <article class="post tag-ruby tag-android">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2011-04-17">17 Apr 2011</time> on <a href="/tag/ruby/">ruby</a>, <a href="/tag/android/">android</a></span>
+          <h2 class="post-title"><a href="/culture-shock/">Culture shock</a></h2>
+        </header>
+        <section class="post-content">
+          <p><p>Consider the common Hash, a well-known inhabitant of the world of Ruby.</p>
+
+<pre><code class=" lang-ruby">hashy = { :kvpairs =&gt; 'yo', :syntactic_sugar =&gt; 'coolness', :trope =&gt; "What Do You Mean, It's Not Awesome?" }  
+hashy.each { |k,v| puts "Iteration: \#{v}" }  
+</code></pre>
+
+<p>Now witness the Java HashMap, a creature believed by some radical structologists to share common conceptual descent with our bracetacular friend.</p>
+
+<pre><code class=" lang-java">HashMap&lt;String, Object&gt; ugh = new HashMap&lt;String, Object&gt;();  
+ugh.put("verbosity", "high");  
+ugh.put("type_signature", "disturbing");  
+ugh.put("complaints", "many");
+
+for (String key: message.keySet()) {  
+  Object value = message.get(key);
+  Log.i("please kill me", "Hyperbolisms: " + value);
+}
+</code></pre>
+
+<p>Admittedly, it's not <em>that</em> bad. At one point Java didn't even have for-each style loops, and demanded explicit iterator construction. Still, my foray into Android app creation is certainly making apparent how dependent I have become on higher-level, dynamically-typed languages where simplicity and elegance of coding form are key. I need to be more flexible!</p></p>
+        </section>
+    </article>
+
+
+    <article class="post tag-rails">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2011-04-07">07 Apr 2011</time> on <a href="/tag/rails/">rails</a></span>
+          <h2 class="post-title"><a href="/empty-sessions-in-rails-3-when-using-jquery-ajax-requests/">Empty sessions in Rails 3 when using jQuery AJAX requests</a></h2>
+        </header>
+        <section class="post-content">
+          <p><p>This problem has been <a href="http://weblog.rubyonrails.org/2011/2/8/csrf-protection-bypass-in-ruby-on-rails">addressed</a>, but it took me a little while to find. What you need to do is explicitly tell jQuery to send the CSRF token along with every AJAX request:</p>
+
+<pre><code class=" lang-javascript">$(document).ajaxSend(function(e, xhr, options) {
+  var token = $("meta[name='csrf-token']").attr("content");
+  xhr.setRequestHeader("X-CSRF-Token", token);
+});
+</code></pre>
+
+<p>Just stick that somewhere in your layout head and your sessions should come back :)</p></p>
+        </section>
+    </article>
+
+
+    <article class="post tag-pokemon tag-projects tag-rails">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2011-04-02">02 Apr 2011</time> on <a href="/tag/pokemon/">pokémon</a>, <a href="/tag/projects/">projects</a>, <a href="/tag/rails/">rails</a></span>
+          <h2 class="post-title"><a href="/beldum-labs/">Beldum Labs</a></h2>
+        </header>
+        <section class="post-content">
+          <p><p>I maded a Pokémon website!</p>
+
+<p><a href="http://beldum.org"><img src="/content/images/2014/Apr/beldumlabs__1_.png" alt="" title="" /></a></p>
+
+<p>Okay, so, it’s really just the one tool at the moment: the <a href="http://beldum.org/synergy">Synergy Pokédex</a>. It’s an attempt to quantify and tabulate defensive type synergy relationships between Pokémon. Hopefully someone will find it useful; I spent an inordinate amount of time (trying to) optimise it. Good learning experience though!</p>
+
+<p>(and yes, the name is a pun on Bell Labs >.>)</p></p>
+        </section>
+    </article>
+
+
+    <article class="post tag-amusing">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2011-03-16">16 Mar 2011</time> on <a href="/tag/amusing/">amusing</a></span>
+          <h2 class="post-title"><a href="/debian-developer-humour/">Debian developer humour</a></h2>
+        </header>
+        <section class="post-content">
+          <p><pre><code>[mispy@zinzolin ~]$ aptitude moo
+There are no Easter Eggs in this program.  
+[mispy@zinzolin ~]$ aptitude -v moo
+There really are no Easter Eggs in this program.  
+[mispy@zinzolin ~]$ aptitude -vv moo
+Didn't I already tell you that there are no Easter Eggs in this program?  
+[mispy@zinzolin ~]$ aptitude -vvv moo
+Stop it!  
+[mispy@zinzolin ~]$ aptitude -vvvv moo
+Okay, okay, if I give you an Easter Egg, will you go away?  
+[mispy@zinzolin ~]$ aptitude -vvvvv moo
+All right, you win.
+
+                               /----\
+                       -------/      \
+                      /               \
+                     /                |
+   -----------------/                  --------\
+   ----------------------------------------------
+[mispy@zinzolin ~]$ aptitude -vvvvvv moo
+What is it?  It's an elephant being eaten by a snake, of course.  
+</code></pre></p>
+        </section>
+    </article>
+
+
+    <article class="post tag-design">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2011-02-22">22 Feb 2011</time> on <a href="/tag/design/">design</a></span>
+          <h2 class="post-title"><a href="/creating-seamless-directionally-tiled-images-with-gimp/">Creating seamless, directionally-tiled images with Gimp</a></h2>
+        </header>
+        <section class="post-content">
+          <p><p>Don't bother with the default Make Seamless filter. You want the <a href="http://www.logarithmic.net/pfh/resynthesizer">resynthesizer plugin</a> (gimp-resynthesizer under APT).</p>
+
+<p><img src="/content/images/2014/Apr/gimp_screenie.png" alt="" /></p>
+
+<p>I used the plugin, along with the <strong>Edge-Detect -> Neon</strong> filter and some manual editing, to construct a new banner image for this site out of one of my favourite <a href="http://xkcd.com/154/">xkcd</a> comics. The colour scheme kind of reminds me of orange chocolate; I hope it looks sensible to people who aren't me :)</p></p>
+        </section>
+    </article>
+
+
+    <article class="post">
+        <header class="post-header">
+          <span class="post-meta"><time datetime="2011-01-28">28 Jan 2011</time> </span>
+          <h2 class="post-title"><a href="/accessing-separate-read-only-databases-in-rails/">Accessing separate, read-only databases in Rails</a></h2>
+        </header>
+        <section class="post-content">
+          <p><p>Surprisingly trivial:</p>
+
+<pre><code class=" lang-ruby">module AwesomeDatabase  
+  def readonly?
+    true
+  end
+
+  def self.included(receiver)
+    receiver.establish_connection "awesome_database"
+  end
+end
+
+class AwesomeModel &lt; ActiveRecord::Base  
+  include AwesomeDatabase
+end  
+</code></pre>
+
+<p>You'll also need to add a new definition in <strong>config/database.yml</strong>:</p>
+
+<pre><code class=" lang-ruby">awesome_database:  
+  adapter: postgresql
+  database: awesome_database
+  pool: 5
+  username: sneep
+  password: sneepi3s
+</code></pre>
+
+<p>I find this is very useful for web apps which have to handle dynamic data (such as login information) but also draw from a large predefined dataset without polluting it. For example, anything which deals with <a href="http://bugs.veekun.com/projects/pokedex/wiki/CLI">Pokémon data</a>!</p></p>
+        </section>
+    </article>
+
+
+    <nav class="pagination" role="navigation">
+        <a class="newer-posts" href="/page/6/"><span aria-hidden="true">&larr;</span> Newer Posts</a>
+    <span class="page-number">Page 7 of 8</span>
+        <a class="older-posts" href="/page/8/">Older Posts <span aria-hidden="true">&rarr;</span></a>
+</nav>
+
+
+</main>
+
+
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="http://192.168.1.11:2368/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="/">~mispy</a> &copy; 2016 &bull; All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="https://ghost.org">Ghost</a></section>
+        </div>
+<table class="cuties" border="0" cellpadding="2" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="text-align:center;font-style:italic;"><span class="rainbow">Cuties Online</span></th>
+    </tr>
+  </thead>
+ <tbody>
+    <tr>
+      <td style="text-align:center;">
+        <a href="http://cuties.online/?Go&amp;Prev&amp;7" target="_top">Previous</a> |
+        <a href="http://cuties.online/" target="_top">Home</a> |
+        <a href="http://cuties.online/?Join" target="_top">Join</a> |
+        <a href="http://cuties.online/?Go&amp;Rand&amp;7" target="_top">Random</a> |
+        <a href="http://cuties.online/?Go&amp;Next&amp;7" target="_top">Next</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </footer>
+
+
+    <!-- You can safely delete this line if your theme does not require jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/index.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/prettify.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/footnotes.js?v=e091030d4c"></script>
+    <script type="text/javascript" src="/assets/js/stars.js?v=e091030d4c"></script>
+</body>
+</html>
