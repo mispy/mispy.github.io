@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="google-site-verification" content="Ua048qUUjZqxUjmcmx_3LjZ4tlTxlWZop0XvXLqeHbQ" />
 
-    <title>Unity notes</title>
+    <title>Strategies for handling annoying internet people</title>
     <meta name="description" content="" />
 
     <meta name="HandheldFriendly" content="True" />
@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/mispy.css?v=c609617b0b" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
 
-    <link rel="canonical" href="http://ubuntu:2368/unity-notes/" />
+    <link rel="canonical" href="http://ubuntu:2368/troll-strategies/" />
     <meta name="referrer" content="origin" />
     <meta name="generator" content="Ghost 0.7" />
     <link rel="alternate" type="application/rss+xml" title="~mispy" href="http://ubuntu:2368/rss/" />
@@ -37,16 +37,30 @@
 
 <main class="content" role="main">
   <article class="post page">
-      <h1 class="post-title">Unity notes</h1>
+      <h1 class="post-title">Strategies for handling annoying internet people</h1>
 
       <section class="post-content">
-        <ul>
-<li><p>Disabling a gameobject will NOT stop InvokeRepeating, but WILL stop coroutines. <a href="http://answers.unity3d.com/questions/458780/if-you-disable-a-gameobject-does-an-invokerepeatin.html">http://answers.unity3d.com/questions/458780/if-you-disable-a-gameobject-does-an-invokerepeatin.html</a></p></li>
-<li><p>Unity supports hot code reloading, but this can be very difficult to maintain in a working state for projects of any serious complexity. It relies on being able to retain state through a process of serialization, full game reload, and deserialization. Anything that is not linked into the Unity serialization system, such as static variable state, will be lost. If you're making a multiplayer game in particular you might as well forget about it.</p></li>
-<li><p>Unity serialization (of the ISerializationCallbackReceiver variety) is an editor-only thing. It is used for exposing data in the editor and for saving and loading prefabs, but cannot be used to e.g. create save games at runtime.</p></li>
-<li><p>Unity's collision detection system has 31 collision layers that are defined pre-runtime. This can be quite limiting for certain kinds of behavior (for example, preventing self-collision between a variable number of entities). Physics.IgnoreCollision goes some way to solving this.</p></li>
-<li><p>Colliders are abstract components that don't do much by themselves unless they are associated with a Rigidbody. A single Rigidbody will make use of all the Colliders attached to the game object and any children of that object, allowing composite structures composed of multiple Colliders to behave as a single structure physics-wise. However, you cannot have nested Rigidbodies, as they will interact with each other in strange ways.</p></li>
+        <p>I've generally encountered three types of people on the internet who will engage me unprompted in an irritating way.</p>
+
+<p><strong>Type A</strong> - Knows they are being annoying and actually just wants to annoy you. Classic troll type.</p>
+
+<p><strong>Type B</strong> - Clueless kind, doesn't realize that they're annoying. Often these are ESL speakers.</p>
+
+<p><strong>Type C</strong> - Knows that you consider their behavior annoying but thinks you are being unfair or oversensitive because they believe they would not be annoyed if someone treated them in this way. Tends to be petulant.</p>
+
+<p>How should I deal with these people? I think first we should consider what kind of goal we have in interacting with them at all. Often it is simply to make them go away, which is perfectly legitimate. However I also have some other goals:</p>
+
+<ul>
+<li>I want to avoid hurting them more than is necessary, especially since I do not know how vulnerable they may be.</li>
+<li>I would like to also discourage them from harrassing <em>other</em> people.</li>
+<li>In cases of ideological conflict, I would like to discourage further polarization and (if at all possible) plant seeds that allow them to later change their mind about a subject.</li>
 </ul>
+
+<p><strong>Type A</strong> - Outright trolls tend to be about dehumanization and othering. They do not recognize you as an individual, do not believe you are capable of affording them respect (as you are part of the Evil Team), and so will give none to you. Responding with sincerity and patience to these people can sometimes shame them into normal human interaction as they must resolve the cognitive dissonance between your kindness and their image of you.</p>
+
+<p><strong>Type B</strong> - The most important thing here is that a Type B can be easily converted into a Type C if they are treated with excessive hostility. I think the best approach is to combine engagement with gentle rebuke-- talk to them about the subject, but also point out that there are better ways to approach people. This combination of positive and negative feedback makes them more likely to accept the criticism rather than activating their defensiveness.</p>
+
+<p><strong>Type C</strong> - These are the ones I am least sure how to deal with. Since they already have a meta belief structure about what is appropriate to consider appropriate as well as what is appropriate, almost any action you take is likely to induce polarization. I think it is probably easier to avoid creating these people than it is to handle them once they are around.</p>
       </section>
   </article>
 </main>
