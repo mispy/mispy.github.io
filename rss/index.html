@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel><title><![CDATA[~mispy]]></title><description><![CDATA[~mispy]]></description><link>http://ubuntu:2368/</link><generator>Ghost 0.7</generator><lastBuildDate>Tue, 12 Jul 2016 21:22:24 GMT</lastBuildDate><atom:link href="http://ubuntu:2368/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[SVG cross-browser compatibility notes]]></title><description><![CDATA[<p>I just wrote a scaling resize handler for the <a href="http://ourworldindata.org/grapher/view/147">Our World In Data maps</a>. It worked wonderfully in Chrome. It didn't work in Firefox or Safari. Why?</p>
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="/</link><generator>Ghost 0.7</generator><lastBuildDate>Tue, 12 Jul 2016 21:22:24 GMT</lastBuildDate><atom:link href="/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[SVG cross-browser compatibility notes]]></title><description><![CDATA[<p>I just wrote a scaling resize handler for the <a href="http://ourworldindata.org/grapher/view/147">Our World In Data maps</a>. It worked wonderfully in Chrome. It didn't work in Firefox or Safari. Why?</p>
 
 <ul>
-<li><p>Firefox: getBoundingClientRect(), which I relied upon for getting the map and container dimensions, accounts for SVG transforms in Chrome but not Firefox. I</p></li></ul>]]></description><link>http://ubuntu:2368/svg-cross-browser-compatibility/</link><guid isPermaLink="false">6f9782e3-1285-49c9-b4a5-7d51e4c14f3c</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Tue, 23 Feb 2016 19:05:04 GMT</pubDate><content:encoded><![CDATA[<p>I just wrote a scaling resize handler for the <a href="http://ourworldindata.org/grapher/view/147">Our World In Data maps</a>. It worked wonderfully in Chrome. It didn't work in Firefox or Safari. Why?</p>
+<li><p>Firefox: getBoundingClientRect(), which I relied upon for getting the map and container dimensions, accounts for SVG transforms in Chrome but not Firefox. I</p></li></ul>]]></description><link>/svg-cross-browser-compatibility/</link><guid isPermaLink="false">6f9782e3-1285-49c9-b4a5-7d51e4c14f3c</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Tue, 23 Feb 2016 19:05:04 GMT</pubDate><content:encoded><![CDATA[<p>I just wrote a scaling resize handler for the <a href="http://ourworldindata.org/grapher/view/147">Our World In Data maps</a>. It worked wonderfully in Chrome. It didn't work in Firefox or Safari. Why?</p>
 
 <ul>
 <li><p>Firefox: getBoundingClientRect(), which I relied upon for getting the map and container dimensions, accounts for SVG transforms in Chrome but not Firefox. I switched it out for a calculation based on getBBox, which always returns the untransformed user space coordinates.</p></li>
 <li><p>Safari: I missed the end parenthesis on the matrix transform string. Chrome and Firefox will parse it anyway and won't bother telling you. Safari will silently fail to apply the matrix at all. Goodness!</p></li>
 </ul>]]></content:encoded></item><item><title><![CDATA[Linux tips and notes]]></title><description><![CDATA[<p>I've been using this silly OS for so long that sometimes I forget <em>why</em> I have things set up the way they are. Best write some of it down!</p>
 
-<p>In recent years, I mainly run Linux locally for web development and general scripting shenanigans with Python, Ruby and/or JS.</p>]]></description><link>http://ubuntu:2368/linux-notes/</link><guid isPermaLink="false">7d3c2d7a-c6a9-4b49-9564-2b3c87326309</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Thu, 14 Jan 2016 19:19:16 GMT</pubDate><content:encoded><![CDATA[<p>I've been using this silly OS for so long that sometimes I forget <em>why</em> I have things set up the way they are. Best write some of it down!</p>
+<p>In recent years, I mainly run Linux locally for web development and general scripting shenanigans with Python, Ruby and/or JS.</p>]]></description><link>/linux-notes/</link><guid isPermaLink="false">7d3c2d7a-c6a9-4b49-9564-2b3c87326309</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Thu, 14 Jan 2016 19:19:16 GMT</pubDate><content:encoded><![CDATA[<p>I've been using this silly OS for so long that sometimes I forget <em>why</em> I have things set up the way they are. Best write some of it down!</p>
 
 <p>In recent years, I mainly run Linux locally for web development and general scripting shenanigans with Python, Ruby and/or JS. Since it's also how my stuff gets deployed, I interact with servers running it via ssh a lot.</p>
 
@@ -92,7 +92,7 @@ ControlPersist 4h
 <p><code>rs dir mispy@zinzin:/home/mispy/dir</code></p>]]></content:encoded></item><item><title><![CDATA[Unity runtime instantiation and event execution order]]></title><description><![CDATA[<p>The Unity manual has a fairly <a href="http://docs.unity3d.com/Manual/ExecutionOrder.html">comprehensive overview</a> of how MonoBehaviour event handlers are called in relation to each other. What it doesn't really tell you, though, is when they run relative to the code that created the object in the first place. The important points that are missing:</p>
 
 <ul>
-<li>Awake</li></ul>]]></description><link>http://ubuntu:2368/unity-runtime-instantiation-and-event-execution-order/</link><guid isPermaLink="false">ffb4a2d7-c5f4-4a66-8cb6-00e9bf0385cf</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sun, 29 Nov 2015 21:38:49 GMT</pubDate><content:encoded><![CDATA[<p>The Unity manual has a fairly <a href="http://docs.unity3d.com/Manual/ExecutionOrder.html">comprehensive overview</a> of how MonoBehaviour event handlers are called in relation to each other. What it doesn't really tell you, though, is when they run relative to the code that created the object in the first place. The important points that are missing:</p>
+<li>Awake</li></ul>]]></description><link>/unity-runtime-instantiation-and-event-execution-order/</link><guid isPermaLink="false">ffb4a2d7-c5f4-4a66-8cb6-00e9bf0385cf</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sun, 29 Nov 2015 21:38:49 GMT</pubDate><content:encoded><![CDATA[<p>The Unity manual has a fairly <a href="http://docs.unity3d.com/Manual/ExecutionOrder.html">comprehensive overview</a> of how MonoBehaviour event handlers are called in relation to each other. What it doesn't really tell you, though, is when they run relative to the code that created the object in the first place. The important points that are missing:</p>
 
 <ul>
 <li>Awake and OnEnable are called <em>in the same stack as the line that activates the object</em></li>
@@ -153,7 +153,7 @@ public class Thing : MonoBehaviour {
 
 <p>And the output:</p>
 
-<p><img src="http://ubuntu:2368/content/images/2015/11/unity.png" alt=""></p>]]></content:encoded></item><item><title><![CDATA[Social networks and individualism]]></title><description><![CDATA[<p>Twitter is pretty important to me. I'm a very quiet person, and it provides a pleasantly low-expectation way of interacting with a bunch of interesting humans (and robots?) that I wouldn't really have otherwise. Over the years, I have seen troubled people find acceptance, the formation of strong friendships and</p>]]></description><link>http://ubuntu:2368/social-networks-and-individualism/</link><guid isPermaLink="false">853c020e-0704-402b-b701-698d093a618d</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Tue, 24 Nov 2015 06:46:27 GMT</pubDate><content:encoded><![CDATA[<p>Twitter is pretty important to me. I'm a very quiet person, and it provides a pleasantly low-expectation way of interacting with a bunch of interesting humans (and robots?) that I wouldn't really have otherwise. Over the years, I have seen troubled people find acceptance, the formation of strong friendships and romances, and the activist power of many voices in unison. I have had opportunities to help others solve interesting problems and many people have helped me. Also there are a lot of puns. So many puns.</p>
+<p><img src="/content/images/2015/11/unity.png" alt=""></p>]]></content:encoded></item><item><title><![CDATA[Social networks and individualism]]></title><description><![CDATA[<p>Twitter is pretty important to me. I'm a very quiet person, and it provides a pleasantly low-expectation way of interacting with a bunch of interesting humans (and robots?) that I wouldn't really have otherwise. Over the years, I have seen troubled people find acceptance, the formation of strong friendships and</p>]]></description><link>/social-networks-and-individualism/</link><guid isPermaLink="false">853c020e-0704-402b-b701-698d093a618d</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Tue, 24 Nov 2015 06:46:27 GMT</pubDate><content:encoded><![CDATA[<p>Twitter is pretty important to me. I'm a very quiet person, and it provides a pleasantly low-expectation way of interacting with a bunch of interesting humans (and robots?) that I wouldn't really have otherwise. Over the years, I have seen troubled people find acceptance, the formation of strong friendships and romances, and the activist power of many voices in unison. I have had opportunities to help others solve interesting problems and many people have helped me. Also there are a lot of puns. So many puns.</p>
 
 <p>The social architecture of Twitter is flat and centers around individuals. Anyone can follow anyone; the largest corporation account and the shyest of teens are all mechanically more-or-less identical. Twitter has no real concept of a <em>group</em> or a <em>topic</em>, just a whole bunch of people and a few searching functions like hashtags and mutes.</p>
 
@@ -163,14 +163,14 @@ public class Thing : MonoBehaviour {
 
 <p>So I find myself wanting a place on the internet aside from just Twitter, one which has something closer to a traditional forum architecture where the focus is more on particular groups or topics than individuals. In a network based on threads or channels nobody has to look at the contents of any particular topic, so they can be as deep or niche as they like without bothering anyone else. Maybe freenode, or even Reddit?</p>]]></content:encoded></item><item><title><![CDATA[Preventing additive blending of transparent Unity sprites]]></title><description><![CDATA[<p>Let's say you have two overlapping circles. Instead of making something Venn diagram-esque, you'd rather they just marked out a continuous area.</p>
 
-<p><img src="http://ubuntu:2368/content/images/2015/08/circles.png" alt=""></p>
+<p><img src="/content/images/2015/08/circles.png" alt=""></p>
 
-<p>In my particular case, I want the power node supply radius indicators on this hollow-asteroid-turned-into-a-spaceship not to obscure everything underneath them by being too intense at the overlap</p>]]></description><link>http://ubuntu:2368/unity-alpha-blending-overlap/</link><guid isPermaLink="false">894dc7e2-fea2-491b-aae5-023e066d0d4a</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Wed, 19 Aug 2015 01:11:08 GMT</pubDate><content:encoded><![CDATA[<p>Let's say you have two overlapping circles. Instead of making something Venn diagram-esque, you'd rather they just marked out a continuous area.</p>
+<p>In my particular case, I want the power node supply radius indicators on this hollow-asteroid-turned-into-a-spaceship not to obscure everything underneath them by being too intense at the overlap</p>]]></description><link>/unity-alpha-blending-overlap/</link><guid isPermaLink="false">894dc7e2-fea2-491b-aae5-023e066d0d4a</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Wed, 19 Aug 2015 01:11:08 GMT</pubDate><content:encoded><![CDATA[<p>Let's say you have two overlapping circles. Instead of making something Venn diagram-esque, you'd rather they just marked out a continuous area.</p>
 
-<p><img src="http://ubuntu:2368/content/images/2015/08/circles.png" alt=""></p>
+<p><img src="/content/images/2015/08/circles.png" alt=""></p>
 
 <p>In my particular case, I want the power node supply radius indicators on this hollow-asteroid-turned-into-a-spaceship not to obscure everything underneath them by being too intense at the overlap points: <br>
-<img src="http://ubuntu:2368/content/images/2015/08/spaceship.png" alt=""></p>
+<img src="/content/images/2015/08/spaceship.png" alt=""></p>
 
 <p>This turns out to be <em>surprisingly difficult</em>. If it were just a matter of blending the two circles, you might accomplish it by using a Min shader <a href="http://docs.unity3d.com/Manual/SL-Blend.html">BlendOp</a>. However, what you want is to blend the circles one way and <em>then</em> blend the result of that blend in another way onto the screen. Since the rendering engine draws back-to-front, by the time you get to blending one circle onto another the first circle has already been blended with the scene and the necessary information lost.</p>
 
@@ -230,7 +230,7 @@ public class Thing : MonoBehaviour {
 
 <p>The key here is the <code>Stencil</code> bit. <code>Comp NotEqual</code> means it will only run if the stencil buffer is not already equal to the number given by <code>Ref 2</code>, and <code>Pass Replace</code> means it will set it to 2 afterwards. So any number of this shader will only run once for a given pixel. Does it work? Well...</p>
 
-<p><img src="http://ubuntu:2368/content/images/2015/08/stencil.png" alt=""></p>
+<p><img src="/content/images/2015/08/stencil.png" alt=""></p>
 
 <p>Not exactly, no. The problem is that each of the circles is actually a square sprite, and whoever renders first hogs all the pixels with useless completely transparent bits. We can fix this by telling the shader to discard any pixels with 0 alpha:</p>
 
@@ -242,13 +242,13 @@ public class Thing : MonoBehaviour {
 }
 </code></pre>
 
-<p><img src="http://ubuntu:2368/content/images/2015/08/alpha.png" alt=""></p>
+<p><img src="/content/images/2015/08/alpha.png" alt=""></p>
 
 <p>That's a little better! But we still have weird things going on around the edges. That would be because in this particular texture, the edges are soft and gradually fade out with decreasing alpha values. Since they're not <em>zero</em> alpha they don't get discarded, and can prevent higher-alpha pixels from other circles from being rendered.</p>
 
 <p>We can eliminate the soft edges by editing the texture, and by ensuring the filter mode is set to <code>Point</code> rather than <code>Bilinear</code>:</p>
 
-<p><img src="http://ubuntu:2368/content/images/2015/08/aliased.png" alt=""></p>
+<p><img src="/content/images/2015/08/aliased.png" alt=""></p>
 
 <p>Success! A continuous bubble of power.</p>
 
@@ -262,21 +262,21 @@ public class Thing : MonoBehaviour {
 }
 </code></pre>
 
-<p><img src="http://ubuntu:2368/content/images/2015/08/gotit.png" alt=""></p>
+<p><img src="/content/images/2015/08/gotit.png" alt=""></p>
 
 <p>I think that looks kinda nice (for placeholder developer art). If anyone has any other ideas please let me know!</p>
 
 <h2 id="alternatives">Alternatives</h2>
 
-<p>From poking around the Unity forums it sounds like there may be a way to do this by making clever use of <a href="http://docs.unity3d.com/Manual/SL-CullAndDepth.html">ZTest and ZWrite</a> that I didn't manage to puzzle out. The definitive solution is probably to use <a href="http://docs.unity3d.com/ScriptReference/RenderTexture.html">RenderTexture</a> to blend the circles in advance and then drop them all in at once as a big sprite, but that requires adding more moving parts than I'd like.</p>]]></content:encoded></item><item><title><![CDATA[Distributed networking in a multiplayer game]]></title><description><![CDATA[<p>A few months ago, I was tasked with porting the networking code of <a href="http://www.wanderthegame.com/">Wander</a> to the PS4, and ended up writing some bits of it from scratch. I've been programming for years, but this was my first foray into C++ and serious gamedev, so I had to learn a lot!</p>]]></description><link>http://ubuntu:2368/wander-networking/</link><guid isPermaLink="false">7bb90c91-8328-497c-90d4-dc7ef73e320c</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Fri, 14 Aug 2015 18:15:00 GMT</pubDate><content:encoded><![CDATA[<p>A few months ago, I was tasked with porting the networking code of <a href="http://www.wanderthegame.com/">Wander</a> to the PS4, and ended up writing some bits of it from scratch. I've been programming for years, but this was my first foray into C++ and serious gamedev, so I had to learn a lot!</p>
+<p>From poking around the Unity forums it sounds like there may be a way to do this by making clever use of <a href="/wander-networking/</link><guid isPermaLink="false">7bb90c91-8328-497c-90d4-dc7ef73e320c</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Fri, 14 Aug 2015 18:15:00 GMT</pubDate><content:encoded><![CDATA[<p>A few months ago, I was tasked with porting the networking code of <a href="http://www.wanderthegame.com/">Wander</a> to the PS4, and ended up writing some bits of it from scratch. I've been programming for years, but this was my first foray into C++ and serious gamedev, so I had to learn a lot!</p>
 
 <h3 id="theproblem">The problem</h3>
 
-<p><img src="http://ubuntu:2368/content/images/2015/08/griffin_landing.jpg" alt=""></p>
+<p><img src="/content/images/2015/08/griffin_landing.jpg" alt=""></p>
 
-<p>Wander was designed to be an open world, massively multiplayer<sup id="fnref:1"><a href="http://ubuntu:2368/wander-networking/#fn:1" rel="footnote">1</a></sup> exploration game. Players occupy the same universe and should be visible to one another as soon as they, uh, wander into range. Crucially, Wander is non-competitive, meaning clients can be trusted: there's not much to be gained from cheating, unless you get a kick out of teleporting yourself into odd places.</p>
+<p>Wander was designed to be an open world, massively multiplayer<sup id="fnref:1"><a href="/wander-networking/#fn:1" rel="footnote">1</a></sup> exploration game. Players occupy the same universe and should be visible to one another as soon as they, uh, wander into range. Crucially, Wander is non-competitive, meaning clients can be trusted: there's not much to be gained from cheating, unless you get a kick out of teleporting yourself into odd places.</p>
 
-<p>The game is based on <a href="http://cryengine.com/">CRYENGINE</a><sup id="fnref:2"><a href="http://ubuntu:2368/wander-networking/#fn:2" rel="footnote">2</a></sup> and written in C++ and Lua. The engine has its own conception of networking, but it's based around matchmaking and lobbies and was generally a bit tangential to our requirements. So we needed an alternative that could connect nearby players, push state to the Cryengine objects, and work on both PC and PS4.</p>
+<p>The game is based on <a href="/wander-networking/#fn:2" rel="footnote">2</a></sup> and written in C++ and Lua. The engine has its own conception of networking, but it's based around matchmaking and lobbies and was generally a bit tangential to our requirements. So we needed an alternative that could connect nearby players, push state to the Cryengine objects, and work on both PC and PS4.</p>
 
 <p>When I joined the project, it was already sorta functional on PC. We were using a C# library called Badumna, invoked from C++ via a C++/CLI wrapper. Badumna was a University of Melbourne project turned startup turned bankrupt turned open source. The website no longer exists, so I had to go find the documentation <a href="https://web.archive.org/web/20131124073148/http://www.scalify.com/documentation/Manual/index.php">on archive.org</a>. Not... not terribly promising.</p>
 
@@ -296,21 +296,21 @@ public class Thing : MonoBehaviour {
 
 <p>I set about trying to get the VAST code working on PS4. The library itself is small, but it has ... a dependency. Namely, The A Dynamically Assembled Protocol Transformation, Integration, and eValuation Environment Communication Environment™:</p>
 
-<p><img src="http://ubuntu:2368/content/images/2015/07/ace.png" alt=""></p>
+<p><img src="/content/images/2015/07/ace.png" alt=""></p>
 
 <p>Yes, that is the actual expansion of that acronym. But wait, it gets better! You can do real-time Common Object Request Broker Architecture® Component Model with Component Integrated A Dynamically Assembled Protocol Transformation, Integration, and eValuation Environment Communication Environment™ Object Request Broker™</p>
 
-<p><img src="http://ubuntu:2368/content/images/2015/07/ccm.png" alt=""></p>
+<p><img src="/content/images/2015/07/ccm.png" alt=""></p>
 
 <p><em>what is happening</em></p>
 
-<p><img src="http://ubuntu:2368/content/images/2015/07/new_yellow.gif"></p>
+<p><img src="/content/images/2015/07/new_yellow.gif"></p>
 
-<p><img src="http://ubuntu:2368/content/images/2015/07/new_yellow.gif" width="150"></p>
+<p><img src="/content/images/2015/07/new_yellow.gif" width="150"></p>
 
-<p><img src="http://ubuntu:2368/content/images/2015/07/new_yellow.gif" width="300"></p>
+<p><img src="/content/images/2015/07/new_yellow.gif" width="300"></p>
 
-<p><img src="http://ubuntu:2368/content/images/2015/07/lastmodified.png"></p>
+<p><img src="/content/images/2015/07/lastmodified.png"></p>
 
 <p><em>oh my gods</em></p>
 
@@ -326,7 +326,7 @@ public class Thing : MonoBehaviour {
 
 <h3 id="whatweactuallywentwith">What we actually went with</h3>
 
-<p>Badumna does decentralized peer discovery using <a href="http://ubuntu:2368/wander-networking/distributed hash tables">distributed hash tables</a> to avoid single-point-of-failure issues. This is huge technological overkill for a small indie game, and it eventually dawned on me that all the peer discovery could just be done by polling some Python script. That left the core "talk to given peer" networking problem, which falls well within the purview of <a href="https://partner.steamgames.com/documentation/api">SteamNetworking</a> (based on libjingle) and the PS4 libraries.</p>
+<p>Badumna does decentralized peer discovery using <a href="/wander-networking/distributed hash tables">distributed hash tables</a> to avoid single-point-of-failure issues. This is huge technological overkill for a small indie game, and it eventually dawned on me that all the peer discovery could just be done by polling some Python script. That left the core "talk to given peer" networking problem, which falls well within the purview of <a href="https://partner.steamgames.com/documentation/api">SteamNetworking</a> (based on libjingle) and the PS4 libraries.</p>
 
 <p>I would like to take a moment to express my great fondness for Steam's P2P networking API, by the way! It's super no-nonsense: you don't even need to worry about the current connection state, you just give it a packet and a destination id and off it goes, idempotently setting up whatever it needs to along the way. If the libjingle NAT-punching stuff isn't enough, it'll even go through Steam's own relay servers for you.</p>
 
@@ -343,7 +343,7 @@ public class Thing : MonoBehaviour {
 
 <p>Loki worked out the Redis stuff and tied Cryengine into Steam, while I wrote a wrapper for the (rather lower-level) PS4 API to act as a drop-in replacement for SteamNetworking. This was reasonably non-trivial and the kind of thing I would love to open source, but <span style="background-color: black; color: black;">grumble grumble Sony mutter NDAs grumble</span></p>
 
-<p>Anyway, it worked! The first moment I saw another little Azertash<sup id="fnref:3"><a href="http://ubuntu:2368/wander-networking/#fn:3" rel="footnote">3</a></sup> swimming around on a TV was very satisfying indeed. </p>
+<p>Anyway, it worked! The first moment I saw another little Azertash<sup id="fnref:3"><a href="/wander-networking/#fn:3" rel="footnote">3</a></sup> swimming around on a TV was very satisfying indeed. </p>
 
 <h2 id="improvements">Improvements</h2>
 
@@ -353,19 +353,19 @@ public class Thing : MonoBehaviour {
 
 <p>So if you have 10 players in the same local area each of them is connected to 9 other people and there are 45 connections in total. For a small game like Wander this is fine, but if you wanted to handle high population density, you could instead organize players into <a href="https://en.wikipedia.org/wiki/Star_network">star topologies</a> where a single player relays information between two or more others. Much less overhead!</p>
 
-<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>In the technical sense of "there are lots of players in the same world". Wander has little in common with traditional MMORPGs. <a href="http://ubuntu:2368/wander-networking/#fnref:1" title="return to article">↩</a></p></li>
-<li class="footnote" id="fn:2"><p>Considered aptly named by frustrated devs. <a href="http://ubuntu:2368/wander-networking/#fnref:2" title="return to article">↩</a></p></li>
-<li class="footnote" id="fn:3"><p>A squat, colorful, fast-swimming gender-ambiguous lizard creature. By far my favorite of the four player forms. <a href="http://ubuntu:2368/wander-networking/#fnref:3" title="return to article">↩</a></p></li></ol></div>]]></content:encoded></item><item><title><![CDATA[Extracting dialogue from Dragon Age: Inquistion]]></title><description><![CDATA[<p>I thought this was an interesting case of technical problem solving. My friend <a href="https://twitter.com/aeleruil">@aeleruil</a> was trying to dump the dialogue text from DAI so he could make a <a href="https://twitter.com/DragonAgeEbooks">bot</a>. He found an <a href="http://sourceforge.net/projects/daitools/">existing tool</a>, but as you would expect from freshly baked OSS modding software it is not... immediately clear</p>]]></description><link>http://ubuntu:2368/extracting-dialogue-from-dragon-age-inquistion/</link><guid isPermaLink="false">1d9f8bfb-e191-4751-9bb7-50daf0a0463b</guid><category><![CDATA[modding]]></category><category><![CDATA[games]]></category><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Tue, 16 Dec 2014 18:34:03 GMT</pubDate><content:encoded><![CDATA[<p>I thought this was an interesting case of technical problem solving. My friend <a href="https://twitter.com/aeleruil">@aeleruil</a> was trying to dump the dialogue text from DAI so he could make a <a href="https://twitter.com/DragonAgeEbooks">bot</a>. He found an <a href="http://sourceforge.net/projects/daitools/">existing tool</a>, but as you would expect from freshly baked OSS modding software it is not... immediately clear how to use it:</p>
+<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>In the technical sense of "there are lots of players in the same world". Wander has little in common with traditional MMORPGs. <a href="/wander-networking/#fnref:1" title="return to article">↩</a></p></li>
+<li class="footnote" id="fn:2"><p>Considered aptly named by frustrated devs. <a href="/wander-networking/#fnref:2" title="return to article">↩</a></p></li>
+<li class="footnote" id="fn:3"><p>A squat, colorful, fast-swimming gender-ambiguous lizard creature. By far my favorite of the four player forms. <a href="/wander-networking/#fnref:3" title="return to article">↩</a></p></li></ol></div>]]></content:encoded></item><item><title><![CDATA[Extracting dialogue from Dragon Age: Inquistion]]></title><description><![CDATA[<p>I thought this was an interesting case of technical problem solving. My friend <a href="/extracting-dialogue-from-dragon-age-inquistion/</link><guid isPermaLink="false">1d9f8bfb-e191-4751-9bb7-50daf0a0463b</guid><category><![CDATA[modding]]></category><category><![CDATA[games]]></category><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Tue, 16 Dec 2014 18:34:03 GMT</pubDate><content:encoded><![CDATA[<p>I thought this was an interesting case of technical problem solving. My friend <a href="https://twitter.com/aeleruil">@aeleruil</a> was trying to dump the dialogue text from DAI so he could make a <a href="https://twitter.com/DragonAgeEbooks">bot</a>. He found an <a href="http://sourceforge.net/projects/daitools/">existing tool</a>, but as you would expect from freshly baked OSS modding software it is not... immediately clear how to use it:</p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/12/dai-tool-1.png" alt=""></p>
+<p><img src="/content/images/2014/12/dai-tool-1.png" alt=""></p>
 
 <p>He determined that it was definitely <em>capable</em> of doing what he wanted because the feature addition had been <a href="http://daitools.freeforums.org/update-rev-25-talktables-are-now-exportable-to-text-files-t60.html">mentioned</a> as being added in revision 25. After some searching and fiddling I realized I might have better luck just reading the code. What is added in revision 25?</p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/12/Selection_057.png" alt=""></p>
+<p><img src="/content/images/2014/12/Selection_057.png" alt=""></p>
 
 <p>From the filename we can see that we want the <code>Bundle Explorer</code>. This takes an SB file and a CAT file and produces a list of what look like path identifiers. I still don't know exactly what these file formats are, but we worked out by trial and error that providing it with <code>loctext/en.sb</code> and <code>cas.cat</code> made it do a thing.</p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/12/dai-zlich.png" alt=""></p>
+<p><img src="/content/images/2014/12/dai-zlich.png" alt=""></p>
 
 <p>From the <code>totalSize</code> field, it seems <code>win32/loctext/en/text</code> is what we want: a big 2.5MB chunk of non-specific text. Unfortunately, just selecting that and running "Export Resource" does a good deal of nothing at all. Not even an error message!</p>
 
@@ -443,19 +443,19 @@ public class Thing : MonoBehaviour {
 
 <p>This function should always create a <code>SaveFileDialog</code> unless <code>buffer</code> is null. <code>buffer</code> will be be null if <code>resExt</code> does not match a defined extension. Hang on-- that ".itexture" looks familiar! </p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/12/dai-talktable.png" alt=""></p>
+<p><img src="/content/images/2014/12/dai-talktable.png" alt=""></p>
 
 <p>Sure enough, there's .talktable, lurking in the dropdown. To get the text, you need to select the path immediately above <code>win32/loctext/en/text</code>, click <code>Find Next</code> to get the talktable, and <em>then</em> run <code>Export Resource</code>.</p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/12/dai-allthetext.png" alt=""></p>
+<p><img src="/content/images/2014/12/dai-allthetext.png" alt=""></p>
 
 <p>Sometimes the code really is just the best available documentation!</p>]]></content:encoded></item><item><title><![CDATA[Modding provinces.bmp in Crusader Kings II]]></title><description><![CDATA[<p>CK2 has a game area composed of ~1,435 individual provinces, representing the continent of Europe. Each of these corresponds to a color in a single 3072x2048 bmp:</p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/12/provinces-1.jpg" alt=""></p>
+<p><img src="/content/images/2014/12/provinces-1.jpg" alt=""></p>
 
-<p>Every province has a color but not every color has a province. White is used for areas outside the game boundaries and</p>]]></description><link>http://ubuntu:2368/ck2-province-modding/</link><guid isPermaLink="false">6c674651-99be-48f9-a509-dac77d6d0076</guid><category><![CDATA[modding]]></category><category><![CDATA[games]]></category><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Mon, 08 Dec 2014 14:42:15 GMT</pubDate><content:encoded><![CDATA[<p>CK2 has a game area composed of ~1,435 individual provinces, representing the continent of Europe. Each of these corresponds to a color in a single 3072x2048 bmp:</p>
+<p>Every province has a color but not every color has a province. White is used for areas outside the game boundaries and</p>]]></description><link>/ck2-province-modding/</link><guid isPermaLink="false">6c674651-99be-48f9-a509-dac77d6d0076</guid><category><![CDATA[modding]]></category><category><![CDATA[games]]></category><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Mon, 08 Dec 2014 14:42:15 GMT</pubDate><content:encoded><![CDATA[<p>CK2 has a game area composed of ~1,435 individual provinces, representing the continent of Europe. Each of these corresponds to a color in a single 3072x2048 bmp:</p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/12/provinces-1.jpg" alt=""></p>
+<p><img src="/content/images/2014/12/provinces-1.jpg" alt=""></p>
 
 <p>Every province has a color but not every color has a province. White is used for areas outside the game boundaries and black represents mountain ranges used as separators. Not all provinces are playable, either; some represent sea regions or uncolonized areas.</p>
 
@@ -535,23 +535,23 @@ with open("definition.csv", 'w') as f:
     f.write("province;red;green;blue;x;x\n" + "\n".join(output_defs))
 </code></pre>]]></content:encoded></item><item><title><![CDATA[CK2 topology glitches]]></title><description><![CDATA[<p><a href="http://en.wikipedia.org/wiki/Crusader_Kings_II">Crusader Kings 2</a> defines its 3D game map structure with a set of overlaid bmp files: terrain.bmp, topology.bmp, rivers.bmp etc. I wondered what would happen if you ran them through a <a href="https://twitter.com/badpng">PNG encoding corruptor</a>.</p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/12/ck2-shadowlands.jpg" alt=""></p>
+<p><img src="/content/images/2014/12/ck2-shadowlands.jpg" alt=""></p>
 
-<p>The result: disturbing jagged shadowlands, like a vast intellect had rearranged Europe into</p>]]></description><link>http://ubuntu:2368/ck2-topology-glitches/</link><guid isPermaLink="false">118fbb1e-b0df-4de8-b7c5-5d315cd50c4a</guid><category><![CDATA[modding]]></category><category><![CDATA[games]]></category><category><![CDATA[art]]></category><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sun, 07 Dec 2014 19:01:07 GMT</pubDate><content:encoded><![CDATA[<p><a href="http://en.wikipedia.org/wiki/Crusader_Kings_II">Crusader Kings 2</a> defines its 3D game map structure with a set of overlaid bmp files: terrain.bmp, topology.bmp, rivers.bmp etc. I wondered what would happen if you ran them through a <a href="https://twitter.com/badpng">PNG encoding corruptor</a>.</p>
+<p>The result: disturbing jagged shadowlands, like a vast intellect had rearranged Europe into</p>]]></description><link>/ck2-topology-glitches/</link><guid isPermaLink="false">118fbb1e-b0df-4de8-b7c5-5d315cd50c4a</guid><category><![CDATA[modding]]></category><category><![CDATA[games]]></category><category><![CDATA[art]]></category><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sun, 07 Dec 2014 19:01:07 GMT</pubDate><content:encoded><![CDATA[<p><a href="http://en.wikipedia.org/wiki/Crusader_Kings_II">Crusader Kings 2</a> defines its 3D game map structure with a set of overlaid bmp files: terrain.bmp, topology.bmp, rivers.bmp etc. I wondered what would happen if you ran them through a <a href="https://twitter.com/badpng">PNG encoding corruptor</a>.</p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/12/ck2-shadowlands.jpg" alt=""></p>
+<p><img src="/content/images/2014/12/ck2-shadowlands.jpg" alt=""></p>
 
 <p>The result: disturbing jagged shadowlands, like a vast intellect had rearranged Europe into impossible circuitry. </p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/12/ck2-serpents.jpg" alt=""></p>
+<p><img src="/content/images/2014/12/ck2-serpents.jpg" alt=""></p>
 
 <p>Where the Holy Roman Empire once stood, great winding serpents lurk under disjointed oceans.</p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/12/balticsea.png" alt=""></p>
+<p><img src="/content/images/2014/12/balticsea.png" alt=""></p>
 
 <p>The depths of the Baltic Sea are raised, to lie contorted and twisted.</p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/12/ck2-forests.jpg" alt=""></p>
+<p><img src="/content/images/2014/12/ck2-forests.jpg" alt=""></p>
 
 <p>The corpses of Norway and Russia are blanketed in lush floating forests, grasping towards what little sunlight remains.</p>
 
@@ -563,7 +563,7 @@ with open("definition.csv", 'w') as f:
 <li>About 80% less memory and storage use for models</li>
 <li>Bots run in their own threads (no eventmachine), and startup is parallelized</li>
 <li>Bots start with <code>ebooks start</code>, and no longer die on unhandled exceptions</li>
-<li><code>ebooks auth</code> command will create new access</li></ul>]]></description><link>http://ubuntu:2368/twitter_ebooks-3-0/</link><guid isPermaLink="false">10dd82eb-57d5-4657-bc1b-3079bc161524</guid><category><![CDATA[ruby]]></category><category><![CDATA[release]]></category><category><![CDATA[twitter]]></category><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sat, 06 Dec 2014 13:17:00 GMT</pubDate><content:encoded><![CDATA[<p>Version 3.0 of <a href="https://github.com/mispy/twitter_ebooks">twitter_ebooks</a> is out! New stuff:</p>
+<li><code>ebooks auth</code> command will create new access</li></ul>]]></description><link>/twitter_ebooks-3-0/</link><guid isPermaLink="false">10dd82eb-57d5-4657-bc1b-3079bc161524</guid><category><![CDATA[ruby]]></category><category><![CDATA[release]]></category><category><![CDATA[twitter]]></category><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sat, 06 Dec 2014 13:17:00 GMT</pubDate><content:encoded><![CDATA[<p>Version 3.0 of <a href="https://github.com/mispy/twitter_ebooks">twitter_ebooks</a> is out! New stuff:</p>
 
 <ul>
 <li>About 80% less memory and storage use for models</li>
@@ -586,7 +586,7 @@ with open("definition.csv", 'w') as f:
 <li>Write a bot which plays Spelunky and tweets about it</li>
 </ul>
 
-<p>From <a href="https://twitter.com/m1sp/status/531682414456631296">this conversation</a>. Writing a bot which successfully plays Spelunky at all is hard, since it is a complex game</p>]]></description><link>http://ubuntu:2368/ideas/</link><guid isPermaLink="false">00cc8b35-c7a1-4ff5-b0bc-4fd7b662bccb</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Wed, 12 Nov 2014 09:13:55 GMT</pubDate><content:encoded><![CDATA[<p>An idea dump for stuff I'd like to try doing someday. This is periodically updated. Not filtered for plausibility!</p>
+<p>From <a href="/ideas/</link><guid isPermaLink="false">00cc8b35-c7a1-4ff5-b0bc-4fd7b662bccb</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Wed, 12 Nov 2014 09:13:55 GMT</pubDate><content:encoded><![CDATA[<p>An idea dump for stuff I'd like to try doing someday. This is periodically updated. Not filtered for plausibility!</p>
 
 <h2 id="ai">AI</h2>
 
@@ -622,7 +622,7 @@ with open("definition.csv", 'w') as f:
 <li>Procedural generation of underlying game mechanics</li>
 </ul>
 
-<p>I remember a persistent myth about Pokémon games involving Mew and trucks. It's hard to imagine this forming with modern games unless they are <em>truly</em> obscure, because only one person needs to understand an aspect of the mechanics and write about it somewhere searchable for everyone to know.<sup id="fnref:1"><a href="http://ubuntu:2368/ideas/#fn:1" rel="footnote">1</a></sup></p>
+<p>I remember a persistent myth about Pokémon games involving Mew and trucks. It's hard to imagine this forming with modern games unless they are <em>truly</em> obscure, because only one person needs to understand an aspect of the mechanics and write about it somewhere searchable for everyone to know.<sup id="fnref:1"><a href="/ideas/#fn:1" rel="footnote">1</a></sup></p>
 
 <p>Procedural generation tackles this by making everyone's game different, so that the past experience of others is not as solid a guide and you have to explore for yourself. However, even games that make heavy use of procgen only really use it for the <em>surface</em> world, the part that is visible to the player. A dragon in nethack always behaves predictably like a dragon, even if the dungeon in which it appears is configured slightly differently.</p>
 
@@ -708,9 +708,9 @@ with open("definition.csv", 'w') as f:
 
 <p>There's lots of lovely artwork and interesting information in the form of image files on the internet. I like to collect these and share them with people. My current solution is just saving stuff <a href="http://cute.mispy.me/">to Dropbox</a>, which is fast because saving a file to a folder from a browser is fast and I do not have to wait for the Dropbox servers to do anything. However, Dropbox is not optimized for the purpose of image collections unlike systems like <a href="http://zerochan.net/">Zerochan</a>, so it's difficult to sort through them later and provide attribution to the creators.</p>
 
-<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>Melissa <a href="https://twitter.com/0xabad1dea/status/532552272874852353">rightly points out</a> that this may be more a consequence of us having been small children than how little access to the internet we had. A modern example is <a href="http://minecraft.gamepedia.com/Herobrine">Herobrine</a>. Still, it'd be nice to be able to create the same sense of mystery in adults, extelligence and all. <a href="http://ubuntu:2368/ideas/#fnref:1" title="return to article">↩</a></p></li></ol></div>]]></content:encoded></item><item><title><![CDATA[Frivolous things]]></title><description><![CDATA[<p>Reading this article about the <a href="http://www.theguardian.com/higher-education-network/blog/2014/oct/26/-sp-female-academics-dont-power-dress-forget-heels-and-no-flowing-hair-allowed">limited scope of dress for female academics</a> made me think a bit about what it means for something to be <em>frivolous</em>.</p>
+<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>Melissa <a href="/ideas/#fnref:1" title="return to article">↩</a></p></li></ol></div>]]></content:encoded></item><item><title><![CDATA[Frivolous things]]></title><description><![CDATA[<p>Reading this article about the <a href="http://www.theguardian.com/higher-education-network/blog/2014/oct/26/-sp-female-academics-dont-power-dress-forget-heels-and-no-flowing-hair-allowed">limited scope of dress for female academics</a> made me think a bit about what it means for something to be <em>frivolous</em>.</p>
 
-<p>When I was 13, I felt very sure that I knew what frivolous was. It was <a href="https://en.wikipedia.org/wiki/Final_Fantasy_X-2">Final Fantasy X-2</a>, to my teenage mind an</p>]]></description><link>http://ubuntu:2368/frivolous-things/</link><guid isPermaLink="false">d19161f0-453a-4eac-9c3e-3019f353ecde</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Wed, 29 Oct 2014 03:25:11 GMT</pubDate><content:encoded><![CDATA[<p>Reading this article about the <a href="http://www.theguardian.com/higher-education-network/blog/2014/oct/26/-sp-female-academics-dont-power-dress-forget-heels-and-no-flowing-hair-allowed">limited scope of dress for female academics</a> made me think a bit about what it means for something to be <em>frivolous</em>.</p>
+<p>When I was 13, I felt very sure that I knew what frivolous was. It was <a href="/frivolous-things/</link><guid isPermaLink="false">d19161f0-453a-4eac-9c3e-3019f353ecde</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Wed, 29 Oct 2014 03:25:11 GMT</pubDate><content:encoded><![CDATA[<p>Reading this article about the <a href="http://www.theguardian.com/higher-education-network/blog/2014/oct/26/-sp-female-academics-dont-power-dress-forget-heels-and-no-flowing-hair-allowed">limited scope of dress for female academics</a> made me think a bit about what it means for something to be <em>frivolous</em>.</p>
 
 <p>When I was 13, I felt very sure that I knew what frivolous was. It was <a href="https://en.wikipedia.org/wiki/Final_Fantasy_X-2">Final Fantasy X-2</a>, to my teenage mind an irredeemable sacrilege of a sequel to the bestest and most amazingest game of all time. Final Fantasy X was a game about love, dreams and the cultural consequences of giant invincible flying doom monsters. X-2 seemed to involve a lot of pop singing and girls in fancy dresses.</p>
 
@@ -718,7 +718,7 @@ with open("definition.csv", 'w') as f:
 
 <p>You might notice that what we're calling frivolous is really just cultural femininity. The google dictionary definition will even use it in a sentence for you, denouncing the evils of ribbons and frills:</p>
 
-<p><img src="http://ubuntu:2368/content/images/2014/10/frivolity.png" alt=""></p>
+<p><img src="/content/images/2014/10/frivolity.png" alt=""></p>
 
 <p>At some point I realized how <em>extremely selective and specific</em> this is. It just so happens that <em>frills</em> are frivolous and not, say, neckties? No impartial analysis of the distribution of human attention would ever come to the conclusion that the most serious distraction is how much effort they put into wearing ribbons!</p>
 
@@ -729,7 +729,7 @@ with open("definition.csv", 'w') as f:
 <pre><code>def Process.rss; `ps -o rss= -p #{Process.pid}`.chomp.to_i; end  
 </code></pre>
 
-<p>If you're only interested in a temporary heuristic for debugging</p>]]></description><link>http://ubuntu:2368/memory-profiling-in-ruby/</link><guid isPermaLink="false">7ecfb1f8-0b6d-4f85-902a-00428edc144c</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sun, 19 Oct 2014 10:37:20 GMT</pubDate><content:encoded><![CDATA[<p>The easiest approach is just calling out to ps with the current pid and receiving the resident set size (amount of physical memory allocated to the process).</p>
+<p>If you're only interested in a temporary heuristic for debugging</p>]]></description><link>/memory-profiling-in-ruby/</link><guid isPermaLink="false">7ecfb1f8-0b6d-4f85-902a-00428edc144c</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sun, 19 Oct 2014 10:37:20 GMT</pubDate><content:encoded><![CDATA[<p>The easiest approach is just calling out to ps with the current pid and receiving the resident set size (amount of physical memory allocated to the process).</p>
 
 <pre><code>def Process.rss; `ps -o rss= -p #{Process.pid}`.chomp.to_i; end  
 </code></pre>
@@ -779,9 +779,9 @@ module MemoryUsage
     return MemoryReport.new(total_memsize)                                      
   end                                                                           
 end  
-</code></pre>]]></content:encoded></item><item><title><![CDATA[Extending the Markdown syntax in Ghost]]></title><description><![CDATA[<p>I'm writing a somewhat lengthy thing which really wants footnotes, but <a href="https://github.com/TryGhost/Ghost">Ghost</a> doesn't have any native syntax for them yet. You can put them in manually using html, but it is tedious, and troublesome to reorder. Fortunately it wasn't too hard to add my own hacky<sup id="fnref:1"><a href="http://ubuntu:2368/extending-the-markdown-syntax-in-ghost/#fn:1" rel="footnote">1</a></sup> implementation<sup id="fnref:2"><a href="http://ubuntu:2368/extending-the-markdown-syntax-in-ghost/#fn:2" rel="footnote">2</a></sup>:</p>
+</code></pre>]]></content:encoded></item><item><title><![CDATA[Extending the Markdown syntax in Ghost]]></title><description><![CDATA[<p>I'm writing a somewhat lengthy thing which really wants footnotes, but <a href="/extending-the-markdown-syntax-in-ghost/#fn:1" rel="footnote">1</a></sup> implementation<sup id="fnref:2"><a href="/extending-the-markdown-syntax-in-ghost/#fn:2" rel="footnote">2</a></sup>:</p>
 
-<pre><code class="lang-js">// Adds</code></pre>]]></description><link>http://ubuntu:2368/extending-the-markdown-syntax-in-ghost/</link><guid isPermaLink="false">6ea434bb-da01-4ac1-8bf8-faff0722d6e8</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sun, 12 Oct 2014 06:46:19 GMT</pubDate><content:encoded><![CDATA[<p>I'm writing a somewhat lengthy thing which really wants footnotes, but <a href="https://github.com/TryGhost/Ghost">Ghost</a> doesn't have any native syntax for them yet. You can put them in manually using html, but it is tedious, and troublesome to reorder. Fortunately it wasn't too hard to add my own hacky<sup id="fnref:1"><a href="http://ubuntu:2368/extending-the-markdown-syntax-in-ghost/#fn:1" rel="footnote">1</a></sup> implementation<sup id="fnref:2"><a href="http://ubuntu:2368/extending-the-markdown-syntax-in-ghost/#fn:2" rel="footnote">2</a></sup>:</p>
+<pre><code class="lang-js">// Adds</code></pre>]]></description><link>/extending-the-markdown-syntax-in-ghost/</link><guid isPermaLink="false">6ea434bb-da01-4ac1-8bf8-faff0722d6e8</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Sun, 12 Oct 2014 06:46:19 GMT</pubDate><content:encoded><![CDATA[<p>I'm writing a somewhat lengthy thing which really wants footnotes, but <a href="/extending-the-markdown-syntax-in-ghost/#fn:1" rel="footnote">1</a></sup> implementation<sup id="fnref:2"><a href="/extending-the-markdown-syntax-in-ghost/#fn:2" rel="footnote">2</a></sup>:</p>
 
 <pre><code class="lang-js">// Adds footnote syntax as per Markdown Extra:
 //
@@ -878,11 +878,11 @@ end
 }());
 </code></pre>
 
-<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>Please don't do this with regexes unless you have to, kids. <a href="http://ubuntu:2368/extending-the-markdown-syntax-in-ghost/#fnref:1" title="return to article">↩</a></p></li>
+<div class="footnotes"><ol><li class="footnote" id="fn:1"><p>Please don't do this with regexes unless you have to, kids. <a href="/extending-the-markdown-syntax-in-ghost/#fnref:1" title="return to article">↩</a></p></li>
 
-<li class="footnote" id="fn:2"><p>Can be found on a <a href="https://github.com/mispy/Ghost/tree/footnotes2">branch</a>. <a href="http://ubuntu:2368/extending-the-markdown-syntax-in-ghost/#fnref:2" title="return to article">↩</a></p></li></ol></div>]]></content:encoded></item><item><title><![CDATA[OSW 2014 Update]]></title><description><![CDATA[<p>The <a href="https://mispy.me/2014/07/open-science-workshop-2014/">open science workshop</a> went well! I gave my talk about <a href="https://scirate.com">SciRate</a> and improving the way people do science. Slides are up <a href="https://docs.google.com/presentation/d/1QMTtk2nDo_ldDcGUVIc5AuFs2Mx84n0KaYgDsoI93xw/edit#slide=id.p">here</a>. Also doubled as a useful opportunity to test the site on people in person, and I got some good usability feedback.</p>
+<li class="footnote" id="fn:2"><p>Can be found on a <a href="/extending-the-markdown-syntax-in-ghost/#fnref:2" title="return to article">↩</a></p></li></ol></div>]]></content:encoded></item><item><title><![CDATA[OSW 2014 Update]]></title><description><![CDATA[<p>The <a href="https://mispy.me/2014/07/open-science-workshop-2014/">open science workshop</a> went well! I gave my talk about <a href="https://scirate.com">SciRate</a> and improving the way people do science. Slides are up <a href="https://docs.google.com/presentation/d/1QMTtk2nDo_ldDcGUVIc5AuFs2Mx84n0KaYgDsoI93xw/edit#slide=id.p">here</a>. Also doubled as a useful opportunity to test the site on people in person, and I got some good usability feedback.</p>
 
-<p>Some of the other interesting projects</p>]]></description><link>http://ubuntu:2368/osw-2014-update/</link><guid isPermaLink="false">2dab7570-9fc3-4974-92da-a472d8b190b6</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Mon, 21 Jul 2014 02:00:00 GMT</pubDate><content:encoded><![CDATA[<p>The <a href="https://mispy.me/2014/07/open-science-workshop-2014/">open science workshop</a> went well! I gave my talk about <a href="https://scirate.com">SciRate</a> and improving the way people do science. Slides are up <a href="https://docs.google.com/presentation/d/1QMTtk2nDo_ldDcGUVIc5AuFs2Mx84n0KaYgDsoI93xw/edit#slide=id.p">here</a>. Also doubled as a useful opportunity to test the site on people in person, and I got some good usability feedback.</p>
+<p>Some of the other interesting projects</p>]]></description><link>/osw-2014-update/</link><guid isPermaLink="false">2dab7570-9fc3-4974-92da-a472d8b190b6</guid><dc:creator><![CDATA[Jaiden Mispy]]></dc:creator><pubDate>Mon, 21 Jul 2014 02:00:00 GMT</pubDate><content:encoded><![CDATA[<p>The <a href="https://mispy.me/2014/07/open-science-workshop-2014/">open science workshop</a> went well! I gave my talk about <a href="https://scirate.com">SciRate</a> and improving the way people do science. Slides are up <a href="https://docs.google.com/presentation/d/1QMTtk2nDo_ldDcGUVIc5AuFs2Mx84n0KaYgDsoI93xw/edit#slide=id.p">here</a>. Also doubled as a useful opportunity to test the site on people in person, and I got some good usability feedback.</p>
 
 <p>Some of the other interesting projects I learned about:</p>
 
