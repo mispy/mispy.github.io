@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <script type="text/javascript">
+      setInterval(function() {
+        var el = document.createElement("b");
+        el.innerHTML = 'hi';
+        el.style.position = 'absolute';
+        el.style.top = Math.random()*window.innerHeight + 'px';
+        el.style.left = Math.random()*window.innerWidth + 'px';
+        el.style.fontSize = Math.random()*100 + 'px';
+        document.body.appendChild(el);
+      }, 50);
+
+      setInterval(function() {
+        var el = document.createElement("img");
+        el.style.position = 'absolute';
+        el.style.top = Math.random()*window.innerHeight + 'px';
+        el.style.left = Math.random()*window.innerWidth + 'px';
+        el.style.width = "200px";
+        el.src = "shufflejoy.jpg";
+        document.body.appendChild(el);
+      }, 500);
+    </script>
+  </body>
+</html>

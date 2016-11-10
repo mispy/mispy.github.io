@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      @font-face {
+          font-family: 'rosettaicons';
+          src: url('rosetta-icons-Regular.woff') format('woff');
+          font-style: normal;
+          font-weight: normal;
+      }      
+
+      body {
+        background: black;
+      }
+
+      b {
+        font-family: 'rosettaicons';
+        color: #ff9b00;
+      }
+
+      b:before {
+        content: "\f147";
+      }
+    </style>
+
+    <script type="text/javascript">
+      var n = 1;
+      function star() {
+        var el = document.createElement("b");
+        el.style.position = 'absolute';
+        el.style.top = Math.random()*window.innerHeight-50 + 'px';
+        el.style.left = Math.random()*window.innerWidth-50 + 'px';
+        //el.style.fontSize = Math.random()*100 + 'px';
+        document.body.appendChild(el);
+
+        setTimeout(star, 1000/Math.max(n*0.4, 1));
+        n+=1;
+      }
+
+      setTimeout(star, 100);
+    </script>
+  </head>
+</html>
